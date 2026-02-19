@@ -1,0 +1,162 @@
+import { useEffect, useRef } from "react";
+import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { Vehicle } from "@/data/vehicles";
+
+interface VehicleBottomSheetProps {
+  vehicle: Vehicle | null;
+  open: boolean;
+  onClose: () => void;
+  onContact: () => void;
+}
+
+const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottomSheetProps) => {
+  const sheetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  if (!vehicle) return null;
+
+  return (
+    <>
+      {/* Overlay */}
+      <div
+        className={`fixed inset-0 z-40 bg-foreground/50 transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={onClose}
+      />
+
+      {/* Bottom Sheet */}
+      <div
+        ref={sheetRef}
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out max-h-[90vh] overflow-y-auto ${open ? "translate-y-0" : "translate-y-full"}`}
+      >
+        {/* Handle bar */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-10 h-1 bg-border rounded-full" />
+        </div>
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full bg-muted text-muted-foreground"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        {/* Car image */}
+        <div className="h-52 bg-secondary overflow-hidden mx-4 rounded-2xl mt-2">
+          <img
+            src={vehicle.imageUrl}
+            alt={vehicle.model}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="p-5 pb-8">
+          {/* Title + price */}
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-xl font-extrabold text-foreground">{vehicle.model}</h2>
+              <div className="flex items-center gap-2 mt-1">
+                {vehicle.availability === "available" ? (
+                  <span className="inline-flex items-center gap-1 bg-available-bg text-available text-xs font-semibold px-2.5 py-1 rounded-full">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Disponível
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 bg-soon-bg text-soon-foreground text-xs font-semibold px-2.5 py-1 rounded-full">
+                    <Clock className="w-3 h-3" />
+                    Disponível em breve
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-3xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
+              <p className="text-xs text-muted-foreground">por semana</p>
+            </div>
+          </div>
+
+          {/* Details grid */}
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-accent shrink-0" />
+              <div>
+                <p className="text-xs text-muted-foreground">Ano</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.year}</p>
+              </div>
+            </div>
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-accent shrink-0" />
+              <div>
+                <p className="text-xs text-muted-foreground">Caução</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.deposit}€</p>
+              </div>
+            </div>
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              {vehicle.fuel === "Elétrico" ? (
+                <Zap className="w-4 h-4 text-accent shrink-0" />
+              ) : (
+                <Fuel className="w-4 h-4 text-accent shrink-0" />
+              )}
+              <div>
+                <p className="text-xs text-muted-foreground">Combustível</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.fuel}</p>
+              </div>
+            </div>
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3" />
+              </svg>
+              <div>
+                <p className="text-xs text-muted-foreground">Caixa</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.transmission}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Specs list */}
+          <ul className="mb-6 space-y-1.5">
+            {vehicle.specs.map((spec, i) => (
+              <li key={i} className="flex items-center gap-2 text-sm text-foreground">
+                <CheckCircle2 className="w-4 h-4 text-available shrink-0" />
+                {spec}
+              </li>
+            ))}
+          </ul>
+
+          {/* Deposit note */}
+          <div className="bg-secondary rounded-xl p-3 mb-5 border border-border">
+            <p className="text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em 3 prestações sem juros. Se precisar de dividir por mais meses, temos opção com financiadora (sujeito a aprovação).
+            </p>
+          </div>
+
+          <Button
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold rounded-xl h-13 text-base"
+            size="lg"
+            onClick={() => {
+              onClose();
+              onContact();
+            }}
+          >
+            Pedir contacto sobre esta viatura
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default VehicleBottomSheet;
