@@ -1,8 +1,18 @@
+import { useEffect } from "react";
+
 interface GHLFormSectionProps {
   formRef: React.RefObject<HTMLElement>;
 }
 
 const GHLFormSection = ({ formRef }: GHLFormSectionProps) => {
+  useEffect(() => {
+    if (document.querySelector('script[src="https://api.bfdigital.io/js/form_embed.js"]')) return;
+    const script = document.createElement("script");
+    script.src = "https://api.bfdigital.io/js/form_embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <section
       ref={formRef as React.RefObject<HTMLDivElement>}
@@ -17,25 +27,23 @@ const GHLFormSection = ({ formRef }: GHLFormSectionProps) => {
           Preencheu o formulário? A nossa equipa entra em contacto em breve.
         </p>
 
-        {/* ============================================================
-            SUBSTITUA O BLOCO ABAIXO PELO CÓDIGO EMBED DO SEU FORMULÁRIO GHL
-            ============================================================ */}
-        <div className="w-full rounded-2xl border-2 border-dashed border-border bg-muted min-h-64 flex flex-col items-center justify-center gap-3 p-6 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center">
-            <svg className="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="16" rx="2" />
-              <path d="M8 9h8M8 13h5" />
-            </svg>
-          </div>
-          <p className="font-semibold text-foreground text-sm">Formulário GoHighLevel</p>
-          <p className="text-xs text-muted-foreground max-w-xs">
-            Cole aqui o código embed do seu formulário GHL. O bloco acima será substituído pelo formulário real.
-          </p>
-          <code className="text-xs bg-border/50 px-3 py-1.5 rounded-lg text-muted-foreground font-mono">
-            {`<!-- Cole o código GHL aqui -->`}
-          </code>
-        </div>
-        {/* ============================================================ */}
+        <iframe
+          src="https://api.bfdigital.io/widget/form/D26uSHUDyRjZS4ZZuij4"
+          style={{ width: "100%", height: "1007px", border: "none", borderRadius: "3px" }}
+          id="inline-D26uSHUDyRjZS4ZZuij4"
+          data-layout='{"id":"INLINE"}'
+          data-trigger-type="alwaysShow"
+          data-trigger-value=""
+          data-activation-type="alwaysActivated"
+          data-activation-value=""
+          data-deactivation-type="neverDeactivate"
+          data-deactivation-value=""
+          data-form-name="Form 0"
+          data-height="1007"
+          data-layout-iframe-id="inline-D26uSHUDyRjZS4ZZuij4"
+          data-form-id="D26uSHUDyRjZS4ZZuij4"
+          title="Form 0"
+        />
       </div>
     </section>
   );
