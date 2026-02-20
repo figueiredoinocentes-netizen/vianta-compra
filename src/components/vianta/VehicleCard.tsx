@@ -15,14 +15,14 @@ const FuelIcon = ({ fuel }: { fuel: string }) => {
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
     <div
-      className="flex-none w-[82vw] max-w-[320px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center cursor-pointer active:scale-[0.98] transition-transform"
+      className="flex-none w-[88vw] max-w-[360px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center cursor-pointer active:scale-[0.98] transition-transform"
       onClick={() => onSelect(vehicle)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onSelect(vehicle)}
     >
       {/* Car image */}
-      <div className="relative bg-secondary h-44 overflow-hidden">
+      <div className="relative bg-secondary h-52 overflow-hidden">
         <img
           src={vehicle.imageUrl}
           alt={vehicle.model}
@@ -46,20 +46,20 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
       </div>
 
       {/* Card body */}
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-3">
+      <div className="p-5">
+        <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="font-semibold text-foreground text-base leading-tight font-heading">{vehicle.model}</h3>
+            <h3 className="font-semibold text-foreground text-lg leading-tight font-heading">{vehicle.model}</h3>
             <p className="text-muted-foreground text-sm">{vehicle.year}</p>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
+            <p className="text-3xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
           </div>
         </div>
 
         {/* Specs icons */}
-        <div className="flex items-center gap-3 mb-4 text-muted-foreground">
+        <div className="flex items-center gap-3 mb-5 text-muted-foreground">
           <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="3" />
@@ -74,7 +74,7 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
         </div>
 
         <Button
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-11"
+          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-12"
         >
           Mais Informação
         </Button>
