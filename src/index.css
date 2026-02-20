@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbars globally where applied */
+.scrollbar-none {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+
 @layer base {
   :root {
     --background: 0 0% 99%;
