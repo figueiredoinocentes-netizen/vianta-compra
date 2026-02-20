@@ -13,25 +13,25 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 30% 10%;
 
-    /* Azul carvão Vianta */
-    --primary: 220 50% 18%;
+    /* Dark charcoal Vianta */
+    --primary: 220 15% 12%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 213 30% 94%;
-    --secondary-foreground: 220 50% 18%;
+    --secondary: 49 40% 95%;
+    --secondary-foreground: 220 15% 12%;
 
-    --muted: 213 20% 96%;
+    --muted: 0 0% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 213 85% 45%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 49 74% 68%;
+    --accent-foreground: 220 15% 10%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 20% 90%;
-    --input: 214 20% 90%;
-    --ring: 220 50% 18%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 49 74% 68%;
 
     --radius: 0.75rem;
 
