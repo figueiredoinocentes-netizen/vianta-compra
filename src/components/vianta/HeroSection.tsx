@@ -26,8 +26,9 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       className="bg-primary pt-6 pb-8">
 
       <div className="px-5 mb-6">
-        <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2 text-center">Escolha a viatura
-e comece já!<br />e comece já.
+        <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2 text-center">Escolha a viatura e comece já!
+
+          <br />e comece já.
         </h1>
         <p className="text-primary-foreground/70 text-sm text-center">
           Veja disponibilidade e preços — sem compromisso.
@@ -35,10 +36,9 @@ e comece já!<br />e comece já.
       </div>
 
       {/* Carousel */}
-      <div
-        ref={carouselRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw]"
-        style={{ WebkitOverflowScrolling: "touch" }}>
+      <div ref={carouselRef}
+      className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw]"
+      style={{ WebkitOverflowScrolling: "touch" }}>
 
         {vehicles.map((vehicle) =>
         <VehicleCard
