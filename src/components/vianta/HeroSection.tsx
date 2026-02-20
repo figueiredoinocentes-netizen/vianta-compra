@@ -29,7 +29,7 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2 text-center">Escolha a viatura
 e comece já!<br />e comece já.
         </h1>
-        <p className="text-primary-foreground/70 text-sm">
+        <p className="text-primary-foreground/70 text-sm text-center">
           Veja disponibilidade e preços — sem compromisso.
         </p>
       </div>
