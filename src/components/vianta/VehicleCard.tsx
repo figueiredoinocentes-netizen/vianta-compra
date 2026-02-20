@@ -53,7 +53,10 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
             <p className="text-muted-foreground text-sm">{vehicle.year}</p>
           </div>
           <div className="text-right">
-            <p className="text-3xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
+            {vehicle.previousPrice && (
+              <p className="text-sm text-muted-foreground line-through leading-none mb-0.5">{vehicle.previousPrice}€</p>
+            )}
+            <p className="text-3xl font-extrabold text-primary leading-none">{vehicle.weeklyPrice}€</p>
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
           </div>
         </div>
@@ -69,7 +72,7 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           </span>
           <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
             <FuelIcon fuel={vehicle.fuel} />
-            {vehicle.fuel}
+            {vehicle.fuelLabel ?? vehicle.fuel}
           </span>
         </div>
 
