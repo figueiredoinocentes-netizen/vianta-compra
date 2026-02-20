@@ -1,56 +1,48 @@
 
-## Substituição de Azul por Amarelo #ecdb70
+## Esconder a barra de scroll do carrossel de viaturas
 
-### O que muda
+### Problema
 
-O `#ecdb70` em HSL é aproximadamente `49 74% 68%`. Este amarelo vai substituir todas as instâncias de azul no design system e nos componentes.
+O carousel usa a classe Tailwind `scrollbar-none`, que gera:
+```css
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+```
 
----
+Isto devia funcionar — mas pode não estar a ser aplicado porque o `pb-2` no mesmo elemento está a criar espaço vertical onde a scrollbar aparece, e em alguns browsers (especialmente desktop ou Android Chrome) a scrollbar sobrepõe-se mesmo com `scrollbar-none`.
 
-### Ficheiros a alterar
+### Solução
 
-#### 1. `src/index.css` — Design tokens
+Duas alterações simples:
 
-Todas as variáveis que actualmente usam azul (hsl 213–220) são substituídas:
+**1. `src/index.css`** — Adicionar regra CSS global para garantir que funciona em todos os browsers (incluindo Firefox):
 
-| Token | Antes (azul) | Depois (amarelo) |
-|---|---|---|
-| `--primary` | `220 50% 18%` | `220 15% 12%` — dark charcoal (mantém-se, é o fundo escuro) |
-| `--accent` | `213 85% 45%` | `49 74% 68%` — amarelo #ecdb70 |
-| `--accent-foreground` | `0 0% 100%` (branco) | `220 15% 10%` (escuro, para legibilidade em fundo amarelo) |
-| `--secondary` | `213 30% 94%` (azul claro) | `49 40% 95%` (bege/amarelo muito claro) |
-| `--secondary-foreground` | `220 50% 18%` | `220 15% 12%` |
-| `--muted` | `213 20% 96%` | `0 0% 96%` (cinzento neutro) |
-| `--border` | `214 20% 90%` | `0 0% 88%` (neutro) |
-| `--input` | `214 20% 90%` | `0 0% 88%` |
-| `--ring` | `220 50% 18%` | `49 74% 68%` — foco com amarelo |
-| `--strip-bg` | `220 50% 18%` | mantém dark charcoal |
-| `--strip-foreground` | `210 40% 90%` | mantém claro |
-| Comentário inline | "Azul carvão Vianta" | "Dark charcoal Vianta" |
+```css
+/* Hide scrollbars globally where applied */
+.scrollbar-none {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+```
 
-O resultado: botões CTA, ícones de vantagens, badges de acento, e o ring de foco passam todos para o amarelo #ecdb70. O fundo da página, o hero, o top strip e o footer mantêm-se no charcoal escuro — criando o contraste premium preto/dourado-amarelo que reflecte o logo.
+**2. `src/components/vianta/HeroSection.tsx`** — Remover o `pb-2` do container do carousel (esse padding estava a criar espaço para a scrollbar aparecer), e substituir por `py-1` ou sem padding:
 
-#### 2. `src/components/vianta/VehicleBottomSheet.tsx`
+```tsx
+// Antes
+className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 px-5"
 
-O botão "Pedir contacto" usa `bg-accent` — vai automaticamente herdar o amarelo. Verificar que `text-accent-foreground` está correctamente definido como escuro para leitura.
+// Depois
+className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-5"
+```
 
-#### 3. `src/components/vianta/VehicleCard.tsx`
+### Ficheiros alterados
 
-O botão "Quero esta" usa `bg-accent` — herda automaticamente. Os badges de disponibilidade já usam tokens `available` (verde) e `soon` (laranja), que não são afectados.
+| Ficheiro | Alteração |
+|---|---|
+| `src/index.css` | Adicionar bloco CSS explícito para `.scrollbar-none` |
+| `src/components/vianta/HeroSection.tsx` | Remover `pb-2` do div do carousel |
 
-#### 4. `src/components/vianta/StickyButton.tsx`
-
-Actualmente usa `bg-primary text-primary-foreground`. Pode manter-se (dark com texto branco), fica elegante. Sem alteração necessária.
-
----
-
-### Resultado visual esperado
-
-- **Hero/TopStrip/Footer**: fundo dark charcoal, texto branco — igual ao logo
-- **Botões CTA ("Quero esta", "Pedir contacto")**: fundo amarelo #ecdb70, texto escuro — destaque premium
-- **Ícones nas vantagens**: amarelo #ecdb70 sobre fundo claro
-- **Secundários e bordas**: tons neutros bege/cinzento — sem vestígios de azul
-- **Badges "Disponível"**: verde (mantém — é status, não branding)
-- **Badges "Disponível em breve"**: laranja/âmbar (mantém — é status)
-
-Um único ficheiro (`src/index.css`) resolve tudo via CSS variables — os componentes não precisam de alterações directas porque todos usam os tokens semânticos (`bg-accent`, `text-accent`, etc.).
+Pequena alteração, resultado imediato — a barra de scroll desaparece completamente em todos os browsers.
