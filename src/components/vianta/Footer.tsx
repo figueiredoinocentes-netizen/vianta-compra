@@ -1,4 +1,4 @@
-import logo from "@/assets/logo-vianta-black.png";
+import logo from "@/assets/logo-vianta-footer.svg";
 
 const Footer = () => {
   return (
