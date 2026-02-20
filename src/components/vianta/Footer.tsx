@@ -4,9 +4,9 @@ const Footer = () => {
       <div className="max-w-2xl mx-auto">
         <div className="flex flex-col items-center gap-4 text-center">
           {/* Logo */}
-          <div className="text-2xl font-bold tracking-tight font-heading">
-            Vianta
-          </div>
+          
+
+
 
           {/* Legal info */}
           <div className="text-xs text-primary-foreground/70 space-y-1">
