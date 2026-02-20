@@ -58,7 +58,7 @@ export const vehicles: Vehicle[] = [
     deposit: 300,
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
-    imageUrl: "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&q=80",
+    imageUrl: "/images/fiat-tipo-sw.jpg",
     specs: ["5 lugares", "Familiar SW", "Espaçoso e prático"],
   },
   {
@@ -72,7 +72,7 @@ export const vehicles: Vehicle[] = [
     deposit: 300,
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
-    imageUrl: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80",
+    imageUrl: "/images/fiat-tipo-sw.jpg",
     specs: ["5 lugares", "Familiar SW", "Espaçoso e prático"],
   },
 ];
