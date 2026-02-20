@@ -44,7 +44,7 @@ export const vehicles: Vehicle[] = [
     deposit: 300,
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
-    imageUrl: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80",
+    imageUrl: "/images/seat-leon.jpg",
     specs: ["5 lugares", "Caixa manual", "Eficiência diesel"],
   },
   {
