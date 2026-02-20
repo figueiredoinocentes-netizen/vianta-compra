@@ -1,10 +1,13 @@
+import logo from "@/assets/logo-vianta-black.png";
+
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground py-8 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="flex flex-col items-center gap-4 text-center">
           {/* Logo */}
-          
+          <img src={logo} alt="Vianta" className="h-11 w-auto" />
+
 
 
 
