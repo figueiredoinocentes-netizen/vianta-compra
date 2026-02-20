@@ -80,7 +80,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
           {/* Title + price */}
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h2 className="text-xl font-extrabold text-foreground">{vehicle.model}</h2>
+              <h2 className="text-xl font-semibold text-foreground font-heading tracking-tight">{vehicle.model}</h2>
               <div className="flex items-center gap-2 mt-1">
                 {vehicle.availability === "available" ? (
                   <span className="inline-flex items-center gap-1 bg-available-bg text-available text-xs font-semibold px-2.5 py-1 rounded-full">
@@ -97,7 +97,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             </div>
             <div className="text-right">
               <p className="text-3xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
-              <p className="text-xs text-muted-foreground">por semana</p>
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
             </div>
           </div>
 
@@ -118,14 +118,14 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
               <Calendar className="w-4 h-4 text-accent shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground">Ano</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Ano</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.year}</p>
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
               <Shield className="w-4 h-4 text-accent shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground">Caução</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Caução</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.deposit}€</p>
               </div>
             </div>
@@ -136,7 +136,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                 <Fuel className="w-4 h-4 text-accent shrink-0" />
               )}
               <div>
-                <p className="text-xs text-muted-foreground">Combustível</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Combustível</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.fuel}</p>
               </div>
             </div>
@@ -146,7 +146,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                 <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3" />
               </svg>
               <div>
-                <p className="text-xs text-muted-foreground">Caixa</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Caixa</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.transmission}</p>
               </div>
             </div>
