@@ -44,7 +44,7 @@ const AdvantagesSection = () => {
   return (
     <section className="bg-muted py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl font-extrabold text-foreground text-center mb-2 leading-tight">
+        <h2 className="text-2xl font-semibold text-foreground text-center mb-2 leading-tight font-heading tracking-tight">
           No mercado desde 2017.
         </h2>
         <p className="text-muted-foreground text-center text-sm mb-8 max-w-xs mx-auto">
@@ -63,7 +63,7 @@ const AdvantagesSection = () => {
                   <Icon className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground text-sm mb-1">{adv.title}</h3>
+                  <h3 className="font-semibold text-foreground text-sm mb-1 font-heading">{adv.title}</h3>
                   <p className="text-muted-foreground text-xs leading-relaxed">{adv.description}</p>
                 </div>
               </div>

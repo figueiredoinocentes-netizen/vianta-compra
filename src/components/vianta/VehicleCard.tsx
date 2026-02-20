@@ -49,12 +49,12 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
       <div className="p-4">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h3 className="font-bold text-foreground text-base leading-tight">{vehicle.model}</h3>
+            <h3 className="font-semibold text-foreground text-base leading-tight font-heading">{vehicle.model}</h3>
             <p className="text-muted-foreground text-sm">{vehicle.year}</p>
           </div>
           <div className="text-right">
             <p className="text-2xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
-            <p className="text-xs text-muted-foreground">por semana</p>
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
           </div>
         </div>
 
