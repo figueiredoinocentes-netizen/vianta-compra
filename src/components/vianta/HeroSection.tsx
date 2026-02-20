@@ -25,10 +25,6 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       id="hero"
       className="bg-primary pt-6 pb-8">
 
-      <div className="px-5 pt-2 pb-0 flex items-center mb-4">
-        <span className="text-2xl font-extrabold tracking-tight text-accent font-serif">Vianta</span>
-      </div>
-
       <div className="px-5 mb-6">
         <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2 text-center font-serif">Escolha a viatura e comece já!</h1>
         <p className="text-primary-foreground/70 text-sm text-center">
