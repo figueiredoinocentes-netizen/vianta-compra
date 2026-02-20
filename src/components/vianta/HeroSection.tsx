@@ -37,7 +37,7 @@ e comece já!<br />e comece já.
       {/* Carousel */}
       <div
         ref={carouselRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 px-5"
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-5"
         style={{ WebkitOverflowScrolling: "touch" }}>
 
         {vehicles.map((vehicle) =>
