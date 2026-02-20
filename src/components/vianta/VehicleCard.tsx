@@ -14,7 +14,13 @@ const FuelIcon = ({ fuel }: { fuel: string }) => {
 
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
-    <div className="flex-none w-[82vw] max-w-[320px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center">
+    <div
+      className="flex-none w-[82vw] max-w-[320px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center cursor-pointer active:scale-[0.98] transition-transform"
+      onClick={() => onSelect(vehicle)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && onSelect(vehicle)}
+    >
       {/* Car image */}
       <div className="relative bg-secondary h-44 overflow-hidden">
         <img
@@ -69,9 +75,8 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
 
         <Button
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-11"
-          onClick={() => onSelect(vehicle)}
         >
-          Quero esta
+          Mais Informação
         </Button>
       </div>
     </div>

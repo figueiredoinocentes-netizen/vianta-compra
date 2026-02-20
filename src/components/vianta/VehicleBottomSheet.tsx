@@ -12,6 +12,7 @@ interface VehicleBottomSheetProps {
 
 const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottomSheetProps) => {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0);
 
   useEffect(() => {
     if (open) {
@@ -23,6 +24,17 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+    if (deltaY > 80) {
+      onClose();
+    }
+  };
 
   if (!vehicle) return null;
 
@@ -37,6 +49,8 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
       {/* Bottom Sheet */}
       <div
         ref={sheetRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         className={`fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out max-h-[90vh] overflow-y-auto ${open ? "translate-y-0" : "translate-y-full"}`}
       >
         {/* Handle bar */}
@@ -64,7 +78,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
         {/* Content */}
         <div className="p-5 pb-8">
           {/* Title + price */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="text-xl font-extrabold text-foreground">{vehicle.model}</h2>
               <div className="flex items-center gap-2 mt-1">
@@ -86,6 +100,18 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               <p className="text-xs text-muted-foreground">por semana</p>
             </div>
           </div>
+
+          {/* CTA button — immediately below title/price */}
+          <Button
+            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-extrabold rounded-xl text-base h-14 shadow-md mt-4 mb-5"
+            size="lg"
+            onClick={() => {
+              onClose();
+              onContact();
+            }}
+          >
+            Pedir contacto sobre esta viatura
+          </Button>
 
           {/* Details grid */}
           <div className="grid grid-cols-2 gap-3 mb-5">
@@ -137,22 +163,11 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
           </ul>
 
           {/* Deposit note */}
-          <div className="bg-secondary rounded-xl p-3 mb-5 border border-border">
+          <div className="bg-secondary rounded-xl p-3 border border-border">
             <p className="text-xs text-muted-foreground">
               <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em 3 prestações sem juros. Se precisar de dividir por mais meses, temos opção com financiadora (sujeito a aprovação).
             </p>
           </div>
-
-          <Button
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold rounded-xl h-13 text-base"
-            size="lg"
-            onClick={() => {
-              onClose();
-              onContact();
-            }}
-          >
-            Pedir contacto sobre esta viatura
-          </Button>
         </div>
       </div>
     </>
@@ -160,3 +175,4 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
 };
 
 export default VehicleBottomSheet;
+
