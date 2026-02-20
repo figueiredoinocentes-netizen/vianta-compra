@@ -7,7 +7,7 @@ interface VehicleBottomSheetProps {
   vehicle: Vehicle | null;
   open: boolean;
   onClose: () => void;
-  onContact: () => void;
+  onContact: (vehicleLabel: string) => void;
 }
 
 const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottomSheetProps) => {
@@ -110,7 +110,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             size="lg"
             onClick={() => {
               onClose();
-              onContact();
+              onContact(`${vehicle.model} (${vehicle.year})`);
             }}
           >
             Pedir contacto sobre esta viatura

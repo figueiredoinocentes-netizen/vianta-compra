@@ -10,8 +10,10 @@ const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLElement>(null);
   const [showStickyBtn, setShowStickyBtn] = useState(false);
+  const [selectedVehicleLabel, setSelectedVehicleLabel] = useState<string | null>(null);
 
-  const scrollToForm = () => {
+  const scrollToForm = (vehicleLabel?: string) => {
+    if (vehicleLabel !== undefined) setSelectedVehicleLabel(vehicleLabel);
     formRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -44,7 +46,7 @@ const Index = () => {
       <TopStrip />
       <HeroSection heroRef={heroRef} onContact={scrollToForm} />
       <AdvantagesSection />
-      <GHLFormSection formRef={formRef} />
+      <GHLFormSection formRef={formRef} selectedVehicle={selectedVehicleLabel} onClearVehicle={() => setSelectedVehicleLabel(null)} />
       <Footer />
 
       <StickyButton visible={showStickyBtn} onScrollToTop={scrollToHero} />

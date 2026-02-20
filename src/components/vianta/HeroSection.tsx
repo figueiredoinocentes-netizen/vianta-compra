@@ -6,7 +6,7 @@ import type { Vehicle } from "@/data/vehicles";
 
 interface HeroSectionProps {
   heroRef: React.RefObject<HTMLElement>;
-  onContact: () => void;
+  onContact: (vehicleLabel: string) => void;
 }
 
 const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
