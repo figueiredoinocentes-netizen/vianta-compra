@@ -1,84 +1,56 @@
 
-## Landing Page Vianta — Aluguer de Viaturas TVDE (plano final)
+## Substituição de Azul por Amarelo #ecdb70
 
-### Visão Geral
-Landing page em português (PT), com tratamento formal ("você"), altamente otimizada para mobile, com foco em conversão imediata. O visitante vê as viaturas disponíveis **logo ao carregar a página**, sem necessidade de scroll.
+### O que muda
 
----
-
-### 1. Top Strip
-Barra fina no topo:
-**"Desde 2017 • Entrega rápida • Processo transparente"**
-Fundo escuro (azul carvão), texto claro — ocupa o mínimo de espaço mas transmite credibilidade.
+O `#ecdb70` em HSL é aproximadamente `49 74% 68%`. Este amarelo vai substituir todas as instâncias de azul no design system e nos componentes.
 
 ---
 
-### 2. Hero Section + Carrossel (tudo acima da dobra)
-A hero section integra diretamente as viaturas:
+### Ficheiros a alterar
 
-- **Headline:** "Escolha a viatura e comece já."
-- **Subheadline:** "Veja disponibilidade e preços — sem compromisso."
-- Imediatamente abaixo (sem botão intermédio): **o carrossel de viaturas**
+#### 1. `src/index.css` — Design tokens
 
-O carrossel ocupa a maior parte do ecrã na hero:
-- Scroll horizontal com snapping, mostrando **1.2 cards** (para sinalizar que existe mais)
-- Cada card inclui:
-  - Foto do carro
-  - Modelo e ano
-  - Ícones: Automático/Manual + Combustível
-  - Preço semanal em destaque (ex: **"189€/semana"**)
-  - Badge de disponibilidade: `Disponível` (verde) ou `Disponível em breve` (amarelo)
-  - Botão **"Quero esta"**
+Todas as variáveis que actualmente usam azul (hsl 213–220) são substituídas:
 
-**Ao clicar "Quero esta":** abre um **bottom sheet** (estilo app nativo) com:
-- Foto e detalhe da viatura (caução, ano, especificações)
-- Botão grande: **"Pedir contacto"** → faz scroll suave até ao formulário GHL
+| Token | Antes (azul) | Depois (amarelo) |
+|---|---|---|
+| `--primary` | `220 50% 18%` | `220 15% 12%` — dark charcoal (mantém-se, é o fundo escuro) |
+| `--accent` | `213 85% 45%` | `49 74% 68%` — amarelo #ecdb70 |
+| `--accent-foreground` | `0 0% 100%` (branco) | `220 15% 10%` (escuro, para legibilidade em fundo amarelo) |
+| `--secondary` | `213 30% 94%` (azul claro) | `49 40% 95%` (bege/amarelo muito claro) |
+| `--secondary-foreground` | `220 50% 18%` | `220 15% 12%` |
+| `--muted` | `213 20% 96%` | `0 0% 96%` (cinzento neutro) |
+| `--border` | `214 20% 90%` | `0 0% 88%` (neutro) |
+| `--input` | `214 20% 90%` | `0 0% 88%` |
+| `--ring` | `220 50% 18%` | `49 74% 68%` — foco com amarelo |
+| `--strip-bg` | `220 50% 18%` | mantém dark charcoal |
+| `--strip-foreground` | `210 40% 90%` | mantém claro |
+| Comentário inline | "Azul carvão Vianta" | "Dark charcoal Vianta" |
 
----
+O resultado: botões CTA, ícones de vantagens, badges de acento, e o ring de foco passam todos para o amarelo #ecdb70. O fundo da página, o hero, o top strip e o footer mantêm-se no charcoal escuro — criando o contraste premium preto/dourado-amarelo que reflecte o logo.
 
-### 3. Secção de Vantagens (abaixo da dobra)
-Título: *"No mercado desde 2017. Processo simples, oferta clara."*
+#### 2. `src/components/vianta/VehicleBottomSheet.tsx`
 
-5 cards em grid (2 colunas mobile), cada um com ícone e microcopy:
+O botão "Pedir contacto" usa `bg-accent` — vai automaticamente herdar o amarelo. Verificar que `text-accent-foreground` está correctamente definido como escuro para leitura.
 
-1. **Caução flexível (sem juros)** — Pode pagar em 3 prestações. Se precisar de mais meses, temos opção com financiadora (sujeito a aprovação).
-2. **Processo rápido e transparente** — Condições claras antes de avançar. Sem surpresas.
-3. **Viaturas preparadas para TVDE** — Documentação organizada para validação nas plataformas.
-4. **Apoio e acompanhamento** — Ajudamos no onboarding para reduzir dias parados.
-5. **Menos tempo parado** — Suporte em caso de avaria ou sinistro para voltar à estrada rapidamente.
+#### 3. `src/components/vianta/VehicleCard.tsx`
 
----
+O botão "Quero esta" usa `bg-accent` — herda automaticamente. Os badges de disponibilidade já usam tokens `available` (verde) e `soon` (laranja), que não são afectados.
 
-### 4. Formulário GoHighLevel (Embed)
-Secção com título: *"Peça contacto — é rápido"*
-- Embed full-width do formulário GHL (placeholder para o código que vai fornecer)
-- Totalmente responsivo em mobile
-- Submissão cria/atualiza contacto diretamente no GHL
+#### 4. `src/components/vianta/StickyButton.tsx`
+
+Actualmente usa `bg-primary text-primary-foreground`. Pode manter-se (dark com texto branco), fica elegante. Sem alteração necessária.
 
 ---
 
-### 5. Rodapé Minimalista
-- Logo Vianta
-- NIF / morada (confiança legal)
-- Link para Política de Privacidade (RGPD)
-- Copyright
+### Resultado visual esperado
 
----
+- **Hero/TopStrip/Footer**: fundo dark charcoal, texto branco — igual ao logo
+- **Botões CTA ("Quero esta", "Pedir contacto")**: fundo amarelo #ecdb70, texto escuro — destaque premium
+- **Ícones nas vantagens**: amarelo #ecdb70 sobre fundo claro
+- **Secundários e bordas**: tons neutros bege/cinzento — sem vestígios de azul
+- **Badges "Disponível"**: verde (mantém — é status, não branding)
+- **Badges "Disponível em breve"**: laranja/âmbar (mantém — é status)
 
-### 6. Botão Sticky CTA (Mobile)
-Botão fixo no fundo do ecrã:
-- Aparece quando o utilizador já fez scroll para baixo das viaturas
-- Texto: **"Ver viaturas"** → scroll de volta ao topo
-- Desaparece quando o utilizador está na hero ou no formulário
-
----
-
-### Dados das Viaturas
-3 viaturas com dados de exemplo facilmente editáveis (modelo, preço, caução, disponibilidade, foto), em ficheiro de configuração simples — prontos para atualizar manualmente enquanto não há integração com Frota 360.
-
----
-
-### O que não está incluído nesta fase
-- Integração automática com Frota 360
-- Autenticação ou área de cliente
-- Processamento de pagamentos online
+Um único ficheiro (`src/index.css`) resolve tudo via CSS variables — os componentes não precisam de alterações directas porque todos usam os tokens semânticos (`bg-accent`, `text-accent`, etc.).
