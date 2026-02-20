@@ -26,9 +26,9 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       className="bg-primary pt-8 pb-10">
 
       <div className="px-5 mb-8">
-        <h1 className="text-3xl font-bold text-primary-foreground leading-tight mb-2 text-center font-heading tracking-tight">Escolha a sua viatura e comece já!</h1>
-        <p className="text-primary-foreground/70 text-sm text-center mt-1">
-          Veja disponibilidade e preços — sem compromisso.
+        <h1 className="text-3xl font-bold text-primary-foreground leading-tight mb-2 text-center font-heading tracking-tight">Escolha a sua viatura TVDE e comece já!</h1>
+        <p className="text-primary-foreground/70 text-sm text-center mt-1">Veja as nossas opções e deixe o seu contacto — sem compromisso.
+
         </p>
       </div>
 
