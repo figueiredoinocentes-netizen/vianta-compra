@@ -23,11 +23,11 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
     <section
       ref={heroRef as React.RefObject<HTMLDivElement>}
       id="hero"
-      className="bg-primary pt-6 pb-8"
-    >
+      className="bg-primary pt-6 pb-8">
+
       <div className="px-5 mb-6">
-        <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2">
-          Escolha a viatura<br />e comece já.
+        <h1 className="text-3xl font-extrabold text-primary-foreground leading-tight mb-2 text-center">Escolha a viatura
+e comece já!<br />e comece já.
         </h1>
         <p className="text-primary-foreground/70 text-sm">
           Veja disponibilidade e preços — sem compromisso.
@@ -38,15 +38,15 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       <div
         ref={carouselRef}
         className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 px-5"
-        style={{ WebkitOverflowScrolling: "touch" }}
-      >
-        {vehicles.map((vehicle) => (
-          <VehicleCard
-            key={vehicle.id}
-            vehicle={vehicle}
-            onSelect={handleSelect}
-          />
-        ))}
+        style={{ WebkitOverflowScrolling: "touch" }}>
+
+        {vehicles.map((vehicle) =>
+        <VehicleCard
+          key={vehicle.id}
+          vehicle={vehicle}
+          onSelect={handleSelect} />
+
+        )}
         {/* Trailing spacer so last card doesn't sit flush against edge */}
         <div className="flex-none w-4" />
       </div>
@@ -60,10 +60,10 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         vehicle={selectedVehicle}
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
-        onContact={onContact}
-      />
-    </section>
-  );
+        onContact={onContact} />
+
+    </section>);
+
 };
 
 export default HeroSection;
