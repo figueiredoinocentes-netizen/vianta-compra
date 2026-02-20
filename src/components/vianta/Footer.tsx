@@ -10,8 +10,8 @@ const Footer = () => {
 
           {/* Legal info */}
           <div className="text-xs text-primary-foreground/70 space-y-1">
-            <p>Vianta Lda. &bull; NIF: 000 000 000</p>
-            <p>Av. Exemplo, 123 &bull; 1000-001 Lisboa, Portugal</p>
+            <p>Dos Inocentes Lda. • NIF: 514 455 624</p>
+            <p>Av. Silvério Galrão Nogueira, nº8 • 2640-169 Cheleiros, Portugal</p>
           </div>
 
           {/* Links */}
@@ -30,8 +30,8 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default Footer;
