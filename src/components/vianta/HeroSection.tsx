@@ -37,7 +37,7 @@ e comece já!<br />e comece já.
       {/* Carousel */}
       <div
         ref={carouselRef}
-        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-5"
+        className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw]"
         style={{ WebkitOverflowScrolling: "touch" }}>
 
         {vehicles.map((vehicle) =>
@@ -47,8 +47,6 @@ e comece já!<br />e comece já.
           onSelect={handleSelect} />
 
         )}
-        {/* Trailing spacer so last card doesn't sit flush against edge */}
-        <div className="flex-none w-4" />
       </div>
 
       {/* Swipe hint */}

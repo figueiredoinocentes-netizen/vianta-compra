@@ -14,7 +14,7 @@ const FuelIcon = ({ fuel }: { fuel: string }) => {
 
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
-    <div className="flex-none w-[82vw] max-w-[320px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-start">
+    <div className="flex-none w-[82vw] max-w-[320px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center">
       {/* Car image */}
       <div className="relative bg-secondary h-44 overflow-hidden">
         <img
