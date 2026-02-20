@@ -30,7 +30,7 @@ export const vehicles: Vehicle[] = [
     deposit: 600,
     depositInstallments: "300€ + 100€ + 100€ + 100€",
     availability: "available",
-    imageUrl: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=80",
+    imageUrl: "/images/tesla-model-3.jpg",
     specs: ["5 lugares", "Autonomia ~450km", "Supercharger incluído"],
   },
   {
