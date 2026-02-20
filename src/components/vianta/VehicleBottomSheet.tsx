@@ -96,7 +96,10 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               </div>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-extrabold text-primary">{vehicle.weeklyPrice}€</p>
+              {vehicle.previousPrice && (
+                <p className="text-sm text-muted-foreground line-through leading-none mb-0.5">{vehicle.previousPrice}€</p>
+              )}
+              <p className="text-3xl font-extrabold text-primary leading-none">{vehicle.weeklyPrice}€</p>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
             </div>
           </div>
@@ -137,7 +140,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               )}
               <div>
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Combustível</p>
-                <p className="text-sm font-semibold text-foreground">{vehicle.fuel}</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.fuelLabel ?? vehicle.fuel}</p>
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
@@ -165,7 +168,8 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
           {/* Deposit note */}
           <div className="bg-secondary rounded-xl p-3 border border-border">
             <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em 3 prestações sem juros. Se precisar de dividir por mais meses, temos opção com financiadora (sujeito a aprovação).
+              <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em prestações sem juros:{" "}
+              <span className="font-semibold text-foreground">{vehicle.depositInstallments}</span>
             </p>
           </div>
         </div>
