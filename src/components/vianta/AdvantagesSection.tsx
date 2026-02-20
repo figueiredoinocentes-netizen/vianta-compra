@@ -12,7 +12,7 @@ const advantages = [
   icon: Shield,
   title: "Caução flexível (sem juros)",
   description:
-  "Pode pagar a caução em 3 prestações sem juros. Se precisar de dividir por mais meses, temos opção com financiadora (sujeito a aprovação)."
+  "Pode pagar a caução em 3 prestações sem juros. Se precisar de dividir por mais parcelas, temos opção com financiadora (sujeito a aprovação)."
 },
 {
   icon: CheckCircle2,
