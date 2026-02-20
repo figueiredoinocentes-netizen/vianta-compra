@@ -1,48 +1,73 @@
 
-## Esconder a barra de scroll do carrossel de viaturas
+## Centrar cada card da viatura no ecrã
 
 ### Problema
 
-O carousel usa a classe Tailwind `scrollbar-none`, que gera:
-```css
-.scrollbar-none { scrollbar-width: none; }
-.scrollbar-none::-webkit-scrollbar { display: none; }
-```
+Actualmente o carousel tem:
+- `snap-x snap-mandatory` no container — correcto
+- `snap-start` em cada card — o snap ancora no **bordo esquerdo** do card, não no centro do ecrã
 
-Isto devia funcionar — mas pode não estar a ser aplicado porque o `pb-2` no mesmo elemento está a criar espaço vertical onde a scrollbar aparece, e em alguns browsers (especialmente desktop ou Android Chrome) a scrollbar sobrepõe-se mesmo com `scrollbar-none`.
+Resultado: o card fica encostado à esquerda, não centrado.
 
 ### Solução
 
-Duas alterações simples:
+Duas alterações em dois ficheiros:
 
-**1. `src/index.css`** — Adicionar regra CSS global para garantir que funciona em todos os browsers (incluindo Firefox):
+---
 
-```css
-/* Hide scrollbars globally where applied */
-.scrollbar-none {
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE/Edge */
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari, Opera */
-}
-```
-
-**2. `src/components/vianta/HeroSection.tsx`** — Remover o `pb-2` do container do carousel (esse padding estava a criar espaço para a scrollbar aparecer), e substituir por `py-1` ou sem padding:
+#### 1. `src/components/vianta/VehicleCard.tsx` — `snap-start` → `snap-center`
 
 ```tsx
 // Antes
-className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 px-5"
+className="flex-none w-[82vw] max-w-[320px] ... snap-start"
 
 // Depois
-className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-5"
+className="flex-none w-[82vw] max-w-[320px] ... snap-center"
 ```
 
-### Ficheiros alterados
+Com `snap-center`, o browser alinha o **centro do card** com o **centro do viewport** a cada snap.
+
+---
+
+#### 2. `src/components/vianta/HeroSection.tsx` — Padding lateral simétrico no carousel
+
+Com `snap-center`, é necessário dar espaço lateral ao container para o primeiro e último card também possam centrar correctamente (caso contrário o primeiro/último card ficam truncados). Isto faz-se com `scroll-padding` ou padding lateral no próprio container:
+
+```tsx
+// Antes
+className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-5"
+
+// Depois
+className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none"
+style={{ 
+  WebkitOverflowScrolling: "touch",
+  paddingLeft: "calc(50vw - 41vw)",   // (100vw - 82vw) / 2
+  paddingRight: "calc(50vw - 41vw)"
+}}
+```
+
+Ou de forma mais simples e eficaz, usar `px-[9vw]` (aprox. `(100 - 82) / 2 = 9vw`):
+
+```tsx
+className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw]"
+```
+
+Isto garante que o primeiro card começa centrado e o último também consegue centrar-se antes de chegar ao fim.
+
+Também remover o `<div className="flex-none w-4" />` (trailing spacer) pois com `snap-center` e padding simétrico já não é necessário.
+
+---
+
+### Ficheiros a alterar
 
 | Ficheiro | Alteração |
 |---|---|
-| `src/index.css` | Adicionar bloco CSS explícito para `.scrollbar-none` |
-| `src/components/vianta/HeroSection.tsx` | Remover `pb-2` do div do carousel |
+| `src/components/vianta/VehicleCard.tsx` | `snap-start` → `snap-center` |
+| `src/components/vianta/HeroSection.tsx` | `px-5` → `px-[9vw]`, remover trailing spacer |
 
-Pequena alteração, resultado imediato — a barra de scroll desaparece completamente em todos os browsers.
+### Resultado esperado
+
+- Cada card fica **centrado no ecrã** ao parar o scroll
+- O primeiro card começa centrado (não encostado à esquerda)
+- O último card também centra correctamente
+- O snap continua a funcionar — um card de cada vez
