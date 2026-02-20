@@ -56,7 +56,6 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
         )}
 
         <iframe
-          key={selectedVehicle ?? "default"}
           src={iframeSrc}
           style={{ width: "100%", height: "1007px", border: "none", borderRadius: "3px" }}
           id="inline-D26uSHUDyRjZS4ZZuij4"
