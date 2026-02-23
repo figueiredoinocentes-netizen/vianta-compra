@@ -1,31 +1,46 @@
 
 
-## Imagem do Tesla Dualmotor + Reposicionar categorias
+## Política de Privacidade + Banner de Cookies
 
-### 1. Guardar a imagem no projeto
+### 1. Criar página `/privacidade` -- `src/pages/PrivacyPolicy.tsx`
 
-Copiar `user-uploads://openart-image_NJOPAfhM_1771853219793_raw.jpg` para `public/images/tesla-model-3-dualmotor.jpg`.
+Página completa com a política de privacidade da Dos Inocentes Lda., incluindo:
+- Identificacao do responsavel (Dos Inocentes Lda., NIF, morada)
+- Dados recolhidos (nome, email, telefone via formulario GHL)
+- Finalidade do tratamento (contacto comercial para aluguer TVDE)
+- Base legal (consentimento)
+- Prazo de conservacao
+- Direitos do titular (acesso, retificacao, apagamento, portabilidade)
+- Contacto do responsavel
+- Cookies utilizados (funcionais, terceiros GHL)
+- Layout simples com header e botao para voltar a homepage
 
-### 2. `src/data/vehicles.ts` -- Atualizar imageUrl
+### 2. Criar componente `src/components/vianta/CookieBanner.tsx`
 
-Alterar o `imageUrl` do Tesla Model 3 Dualmotor de `"/images/tesla-model-3.jpg"` para `"/images/tesla-model-3-dualmotor.jpg"`.
+Banner fixo no fundo do ecra que:
+- Aparece se o utilizador ainda nao aceitou/rejeitou cookies (verificar `localStorage`)
+- Texto curto: "Este site utiliza cookies. Consulte a nossa Politica de Privacidade."
+- Dois botoes: "Aceitar" e "Rejeitar"
+- Ao clicar, guarda a preferencia em `localStorage` e esconde o banner
+- Estilo discreto, fundo escuro (`bg-primary`), alinhado com o design existente
 
-### 3. `src/components/vianta/VehicleBottomSheet.tsx` -- Mover categorias
+### 3. Atualizar `src/App.tsx`
 
-Mover a secção de categorias de **depois do grid de detalhes** (linha 166-175) para **entre o badge de disponibilidade e o botão CTA**.
+- Importar e adicionar rota `/privacidade` com o componente `PrivacyPolicy`
+- Importar e renderizar `CookieBanner` globalmente (fora das rotas)
 
-Nova ordem no popup:
-1. Titulo + preço
-2. Badge "Disponivel" / "Disponivel em breve"
-3. **Categorias** (badges coloridas) -- movidas para aqui
-4. Botao CTA "Pedir contacto..."
-5. Grid de detalhes (Ano, Caução, Combustivel, Caixa, Lugares)
+### 4. Atualizar `src/components/vianta/Footer.tsx`
 
-### Ficheiros alterados
+- Alterar os links `href="#"` para:
+  - "Politica de Privacidade" -> `<Link to="/privacidade">`
+  - Remover o link "RGPD" separado (fica coberto pela politica de privacidade) ou apontar para a mesma pagina
 
-| Ficheiro | Alteracao |
+### Ficheiros
+
+| Ficheiro | Acao |
 |---|---|
-| `public/images/tesla-model-3-dualmotor.jpg` | Nova imagem (copia do upload) |
-| `src/data/vehicles.ts` | Atualizar `imageUrl` do Dualmotor |
-| `src/components/vianta/VehicleBottomSheet.tsx` | Mover bloco de categorias para baixo do badge de disponibilidade |
+| `src/pages/PrivacyPolicy.tsx` | Novo -- pagina de politica de privacidade |
+| `src/components/vianta/CookieBanner.tsx` | Novo -- banner de cookies |
+| `src/App.tsx` | Adicionar rota `/privacidade` + `CookieBanner` |
+| `src/components/vianta/Footer.tsx` | Atualizar links para usar `Link` do react-router |
 
