@@ -1,46 +1,58 @@
 
 
-## Política de Privacidade + Banner de Cookies
+## Instalar Meta (Facebook) Pixel -- ID `788545497617754`
 
-### 1. Criar página `/privacidade` -- `src/pages/PrivacyPolicy.tsx`
+### Eventos a rastrear
 
-Página completa com a política de privacidade da Dos Inocentes Lda., incluindo:
-- Identificacao do responsavel (Dos Inocentes Lda., NIF, morada)
-- Dados recolhidos (nome, email, telefone via formulario GHL)
-- Finalidade do tratamento (contacto comercial para aluguer TVDE)
-- Base legal (consentimento)
-- Prazo de conservacao
-- Direitos do titular (acesso, retificacao, apagamento, portabilidade)
-- Contacto do responsavel
-- Cookies utilizados (funcionais, terceiros GHL)
-- Layout simples com header e botao para voltar a homepage
+| Evento Meta | Quando dispara |
+|---|---|
+| `PageView` | Ao carregar a pagina (se houver consentimento de cookies) |
+| `ViewContent` | Ao clicar num card de viatura para ver detalhes |
+| `Lead` | Quando o formulario GHL e submetido (detetado via `postMessage` do iframe) |
 
-### 2. Criar componente `src/components/vianta/CookieBanner.tsx`
+### Conformidade RGPD
 
-Banner fixo no fundo do ecra que:
-- Aparece se o utilizador ainda nao aceitou/rejeitou cookies (verificar `localStorage`)
-- Texto curto: "Este site utiliza cookies. Consulte a nossa Politica de Privacidade."
-- Dois botoes: "Aceitar" e "Rejeitar"
-- Ao clicar, guarda a preferencia em `localStorage` e esconde o banner
-- Estilo discreto, fundo escuro (`bg-primary`), alinhado com o design existente
+O pixel so e carregado apos o utilizador clicar "Aceitar" no banner de cookies. Sem consentimento, nenhum script de tracking e injetado.
 
-### 3. Atualizar `src/App.tsx`
+### Implementacao
 
-- Importar e adicionar rota `/privacidade` com o componente `PrivacyPolicy`
-- Importar e renderizar `CookieBanner` globalmente (fora das rotas)
+#### 1. Criar `src/lib/meta-pixel.ts` (novo)
 
-### 4. Atualizar `src/components/vianta/Footer.tsx`
+Ficheiro utilitario com:
+- Constante `PIXEL_ID = "788545497617754"`
+- `initPixel()` -- injeta o script `fbevents.js`, chama `fbq('init')` e dispara `PageView`
+- `trackEvent(event, params)` -- dispara eventos como `ViewContent` e `Lead`
+- Protecao contra dupla inicializacao
+- Inclui tambem o `<noscript>` pixel via `<img>` criado dinamicamente
 
-- Alterar os links `href="#"` para:
-  - "Politica de Privacidade" -> `<Link to="/privacidade">`
-  - Remover o link "RGPD" separado (fica coberto pela politica de privacidade) ou apontar para a mesma pagina
+#### 2. Atualizar `src/components/vianta/CookieBanner.tsx`
+
+Quando o utilizador clica "Aceitar":
+- Apos guardar no `localStorage`, chamar `initPixel()` para ativar o pixel imediatamente
+
+#### 3. Atualizar `src/App.tsx`
+
+No carregamento da app, verificar se ja existe consentimento no `localStorage`. Se sim, inicializar o pixel automaticamente (para utilizadores que voltam ao site).
+
+#### 4. Atualizar `src/components/vianta/VehicleCard.tsx`
+
+Ao clicar no card (abre o bottom sheet), disparar:
+- `trackEvent("ViewContent", { content_name: vehicle.model })`
+
+#### 5. Atualizar `src/components/vianta/GHLFormSection.tsx`
+
+Adicionar um `useEffect` com listener de `message` na `window`:
+- Filtrar mensagens do iframe GHL (tipicamente `event.data` do tipo `Array`)
+- Quando detetada submissao, disparar `trackEvent("Lead")`
+- Limpar o listener no cleanup
 
 ### Ficheiros
 
 | Ficheiro | Acao |
 |---|---|
-| `src/pages/PrivacyPolicy.tsx` | Novo -- pagina de politica de privacidade |
-| `src/components/vianta/CookieBanner.tsx` | Novo -- banner de cookies |
-| `src/App.tsx` | Adicionar rota `/privacidade` + `CookieBanner` |
-| `src/components/vianta/Footer.tsx` | Atualizar links para usar `Link` do react-router |
+| `src/lib/meta-pixel.ts` | Novo -- utilitario de inicializacao e tracking |
+| `src/components/vianta/CookieBanner.tsx` | Chamar `initPixel()` ao aceitar cookies |
+| `src/App.tsx` | Auto-inicializar pixel se consentimento ja existir |
+| `src/components/vianta/VehicleCard.tsx` | Disparar `ViewContent` ao clicar |
+| `src/components/vianta/GHLFormSection.tsx` | Escutar `postMessage` do GHL e disparar `Lead` |
 
