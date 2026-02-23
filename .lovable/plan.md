@@ -1,19 +1,31 @@
 
 
-## Simplificar card de Caução e remover bloco final
+## Imagem do Tesla Dualmotor + Reposicionar categorias
 
-### Alterações em `src/components/vianta/VehicleBottomSheet.tsx`
+### 1. Guardar a imagem no projeto
 
-**1. Simplificar o card de Caução (linhas 130-135)**
+Copiar `user-uploads://openart-image_NJOPAfhM_1771853219793_raw.jpg` para `public/images/tesla-model-3-dualmotor.jpg`.
 
-Substituir as 4 linhas de conteudo (titulo, valor, prestações, aviso) por apenas:
-- Titulo "Caução"
-- Valor (ex: `600€`)
-- Frase curta: `Pagamento fracionável` em `text-[10px] text-accent`
+### 2. `src/data/vehicles.ts` -- Atualizar imageUrl
 
-Isto mantém a mesma altura dos outros cards (titulo + valor + 1 linha extra pequena).
+Alterar o `imageUrl` do Tesla Model 3 Dualmotor de `"/images/tesla-model-3.jpg"` para `"/images/tesla-model-3-dualmotor.jpg"`.
 
-**2. Eliminar o bloco "Deposit note" (linhas 178-187)**
+### 3. `src/components/vianta/VehicleBottomSheet.tsx` -- Mover categorias
 
-Remover completamente o bloco `<div className="bg-secondary rounded-xl ...">` com a informação sobre caução flexível e financiamento.
+Mover a secção de categorias de **depois do grid de detalhes** (linha 166-175) para **entre o badge de disponibilidade e o botão CTA**.
+
+Nova ordem no popup:
+1. Titulo + preço
+2. Badge "Disponivel" / "Disponivel em breve"
+3. **Categorias** (badges coloridas) -- movidas para aqui
+4. Botao CTA "Pedir contacto..."
+5. Grid de detalhes (Ano, Caução, Combustivel, Caixa, Lugares)
+
+### Ficheiros alterados
+
+| Ficheiro | Alteracao |
+|---|---|
+| `public/images/tesla-model-3-dualmotor.jpg` | Nova imagem (copia do upload) |
+| `src/data/vehicles.ts` | Atualizar `imageUrl` do Dualmotor |
+| `src/components/vianta/VehicleBottomSheet.tsx` | Mover bloco de categorias para baixo do badge de disponibilidade |
 
