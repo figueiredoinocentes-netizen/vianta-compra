@@ -50,7 +50,7 @@ export const vehicles: Vehicle[] = [
     imageUrl: "/images/tesla-model-3-dualmotor.jpg",
     specs: [],
     seats: 5,
-    categories: ["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"],
+    categories: ["Comfort", "Eletric", "Green"],
   },
   {
     id: "seat-leon",
