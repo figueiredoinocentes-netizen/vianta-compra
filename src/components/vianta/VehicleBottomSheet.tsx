@@ -94,16 +94,6 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                   </span>
                 )}
               </div>
-              {/* Categories */}
-              {vehicle.categories && vehicle.categories.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {vehicle.categories.map((cat) => (
-                    <span key={cat} className="bg-accent/10 text-accent text-xs font-semibold px-2.5 py-1 rounded-full">
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
             <div className="text-right">
               {vehicle.previousPrice && (
@@ -173,6 +163,16 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             </div>
           </div>
 
+          {/* Categories */}
+          {vehicle.categories && vehicle.categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5">
+              {vehicle.categories.map((cat) => (
+                <span key={cat} className="bg-accent/10 text-accent text-xs font-semibold px-2.5 py-1 rounded-full">
+                  {cat}
+                </span>
+              ))}
+            </div>
+          )}
 
         </div>
       </div>

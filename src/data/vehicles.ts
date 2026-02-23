@@ -35,7 +35,7 @@ export const vehicles: Vehicle[] = [
     imageUrl: "/images/tesla-model-3.jpg",
     specs: [],
     seats: 5,
-    categories: ["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"],
+    categories: ["Comfort", "Eletric", "Green"],
   },
   {
     id: "tesla-model-3-dualmotor",
@@ -47,7 +47,7 @@ export const vehicles: Vehicle[] = [
     deposit: 600,
     depositInstallments: "300€ + 100€ + 100€ + 100€",
     availability: "available",
-    imageUrl: "/images/tesla-model-3-dualmotor.jpg",
+    imageUrl: "/images/tesla-model-3.jpg",
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"],
