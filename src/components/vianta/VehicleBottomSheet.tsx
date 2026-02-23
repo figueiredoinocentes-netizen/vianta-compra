@@ -130,8 +130,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               <div>
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Caução</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.deposit}€</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">{vehicle.depositInstallments}</p>
-                <p className="text-[10px] text-accent font-medium mt-0.5">Divisível em mais prestações</p>
+                <p className="text-[10px] text-accent font-medium mt-0.5">Pagamento fracionável</p>
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
@@ -175,16 +174,6 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             </div>
           )}
 
-          {/* Deposit note */}
-          <div className="bg-secondary rounded-xl p-3 border border-border">
-            <p className="text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em prestações sem juros:{" "}
-              <span className="font-semibold text-foreground">{vehicle.depositInstallments}</span>
-            </p>
-            <p className="text-xs text-muted-foreground mt-1.5">
-              Precisa de mais parcelas? Contacte-nos — temos opções de financiamento adaptadas a si.
-            </p>
-          </div>
         </div>
       </div>
     </>
