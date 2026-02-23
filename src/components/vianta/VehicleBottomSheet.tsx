@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock, Users } from "lucide-react";
+import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock, Users, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 
@@ -169,6 +169,13 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               <div>
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Lugares</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.seats}</p>
+              </div>
+            </div>
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              <Gauge className="w-4 h-4 text-accent shrink-0" />
+              <div>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Quilometragem</p>
+                <p className="text-sm font-semibold text-foreground">Até 2.000 km</p>
               </div>
             </div>
           </div>
