@@ -16,6 +16,8 @@ export interface Vehicle {
   availability: Availability;
   imageUrl: string;
   specs: string[];
+  seats: number;
+  categories?: string[];
 }
 
 export const vehicles: Vehicle[] = [
@@ -31,7 +33,24 @@ export const vehicles: Vehicle[] = [
     depositInstallments: "300€ + 100€ + 100€ + 100€",
     availability: "available",
     imageUrl: "/images/tesla-model-3.jpg",
-    specs: ["5 lugares", "Autonomia ~450km", "Supercharger incluído"],
+    specs: [],
+    seats: 5,
+    categories: ["Comfort", "Eletric", "Green"],
+  },
+  {
+    id: "tesla-model-3-dualmotor",
+    model: "Tesla Model 3 Dualmotor",
+    year: 2020,
+    transmission: "Automático",
+    fuel: "Elétrico",
+    weeklyPrice: 350,
+    deposit: 600,
+    depositInstallments: "300€ + 100€ + 100€ + 100€",
+    availability: "available",
+    imageUrl: "/images/tesla-model-3.jpg",
+    specs: [],
+    seats: 5,
+    categories: ["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"],
   },
   {
     id: "seat-leon",
@@ -45,7 +64,8 @@ export const vehicles: Vehicle[] = [
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
     imageUrl: "/images/seat-leon.jpg",
-    specs: ["5 lugares", "Caixa manual", "Eficiência diesel"],
+    specs: [],
+    seats: 5,
   },
   {
     id: "fiat-tipo-sw-2021",
@@ -59,7 +79,8 @@ export const vehicles: Vehicle[] = [
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
     imageUrl: "/images/fiat-tipo-sw.jpg",
-    specs: ["5 lugares", "Familiar SW", "Espaçoso e prático"],
+    specs: [],
+    seats: 5,
   },
   {
     id: "fiat-tipo-sw-2020",
@@ -73,6 +94,7 @@ export const vehicles: Vehicle[] = [
     depositInstallments: "150€ + 75€ + 75€",
     availability: "available",
     imageUrl: "/images/fiat-tipo-sw.jpg",
-    specs: ["5 lugares", "Familiar SW", "Espaçoso e prático"],
+    specs: [],
+    seats: 5,
   },
 ];

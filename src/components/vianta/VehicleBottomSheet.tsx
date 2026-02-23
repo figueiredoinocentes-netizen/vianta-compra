@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock } from "lucide-react";
+import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 
@@ -153,23 +153,34 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                 <p className="text-sm font-semibold text-foreground">{vehicle.transmission}</p>
               </div>
             </div>
+            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
+              <Users className="w-4 h-4 text-accent shrink-0" />
+              <div>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Lugares</p>
+                <p className="text-sm font-semibold text-foreground">{vehicle.seats}</p>
+              </div>
+            </div>
           </div>
 
-          {/* Specs list */}
-          <ul className="mb-6 space-y-1.5">
-            {vehicle.specs.map((spec, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm text-foreground">
-                <CheckCircle2 className="w-4 h-4 text-available shrink-0" />
-                {spec}
-              </li>
-            ))}
-          </ul>
+          {/* Categories */}
+          {vehicle.categories && vehicle.categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5">
+              {vehicle.categories.map((cat) => (
+                <span key={cat} className="bg-accent/10 text-accent text-xs font-semibold px-2.5 py-1 rounded-full">
+                  {cat}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Deposit note */}
           <div className="bg-secondary rounded-xl p-3 border border-border">
             <p className="text-xs text-muted-foreground">
               <span className="font-semibold text-foreground">Caução flexível:</span> Pode pagar em prestações sem juros:{" "}
               <span className="font-semibold text-foreground">{vehicle.depositInstallments}</span>
+            </p>
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Precisa de mais parcelas? Contacte-nos — temos opções de financiamento adaptadas a si.
             </p>
           </div>
         </div>
