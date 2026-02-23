@@ -130,6 +130,8 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               <div>
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Caução</p>
                 <p className="text-sm font-semibold text-foreground">{vehicle.deposit}€</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{vehicle.depositInstallments}</p>
+                <p className="text-[10px] text-accent font-medium mt-0.5">Divisível em mais prestações</p>
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
