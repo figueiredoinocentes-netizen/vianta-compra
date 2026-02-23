@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo-vianta-footer.svg";
 
 const Footer = () => {
@@ -8,9 +9,6 @@ const Footer = () => {
           {/* Logo */}
           <img src={logo} alt="Vianta" className="h-11 w-auto" />
 
-
-
-
           {/* Legal info */}
           <div className="text-xs text-primary-foreground/70 space-y-1">
             <p>Dos Inocentes Lda. • NIF: 514 455 624</p>
@@ -19,13 +17,9 @@ const Footer = () => {
 
           {/* Links */}
           <div className="flex gap-4 text-xs text-primary-foreground/60">
-            <a href="#" className="hover:text-primary-foreground transition-colors underline underline-offset-2">
+            <Link to="/privacidade" className="hover:text-primary-foreground transition-colors underline underline-offset-2">
               Política de Privacidade
-            </a>
-            <span>&bull;</span>
-            <a href="#" className="hover:text-primary-foreground transition-colors underline underline-offset-2">
-              RGPD
-            </a>
+            </Link>
           </div>
 
           <p className="text-xs text-primary-foreground/40">
