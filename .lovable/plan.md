@@ -1,47 +1,33 @@
 
 
-## Adicionar Tesla Model 3 Dualmotor + Categorias + Remover bullets
+## Adicionar prestações e aviso no card de Caução
 
-### 1. `src/data/vehicles.ts` -- Novo modelo de dados e nova viatura
+Alteração no ficheiro `src/components/vianta/VehicleBottomSheet.tsx`: no card "Caução" dentro do grid de detalhes, adicionar duas linhas extra abaixo do valor do depósito:
 
-**Alterações ao interface `Vehicle`:**
-- Adicionar campo `categories?: string[]` -- lista de categorias/tags (ex: `["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"]`)
-- Adicionar campo `seats: number` -- número de lugares
+1. As prestações (`vehicle.depositInstallments`) em texto pequeno
+2. Um aviso curto sobre a possibilidade de dividir por mais prestações
 
-**Nova viatura a adicionar (após o Tesla existente):**
+### Resultado visual no card
 
-| Campo | Valor |
-|---|---|
-| id | `"tesla-model-3-dualmotor"` |
-| model | `"Tesla Model 3 Dualmotor"` |
-| year | 2020 |
-| transmission | `"Automático"` |
-| fuel | `"Elétrico"` |
-| weeklyPrice | 350 |
-| deposit | 600 |
-| depositInstallments | `"300€ + 100€ + 100€ + 100€"` |
-| availability | `"available"` |
-| imageUrl | `"/images/tesla-model-3.jpg"` (reutiliza a mesma imagem do outro Tesla) |
-| specs | `[]` (vazio, já não será usado) |
-| seats | 5 |
-| categories | `["Comfort", "Eletric", "Green", "BlackTVDE", "Tours"]` |
+```text
+┌───────────────────────────┐
+│ 🛡  Caução                │
+│    600€                   │
+│    300€ + 100€ + 100€ + 100€  │
+│    Divisível em mais prestações │
+└───────────────────────────┘
+```
 
-Adicionar também `seats: 5` e `categories` vazias ou adequadas às restantes viaturas existentes.
+### Alteração técnica
 
-### 2. `src/components/vianta/VehicleBottomSheet.tsx` -- Popup reestruturado
+**Ficheiro:** `src/components/vianta/VehicleBottomSheet.tsx`
 
-**Remover:** A secção de bullets/specs (linhas 158-166) -- o bloco `<ul>` com os `specs.map()`
+No card de Caução (linhas ~130-137), adicionar abaixo de `<p>{vehicle.deposit}€</p>`:
 
-**Adicionar ao grid de detalhes:** Um 5.o card para "Lugares" com o ícone `Users` do lucide-react, mostrando `vehicle.seats`
+```tsx
+<p className="text-[10px] text-muted-foreground mt-0.5">{vehicle.depositInstallments}</p>
+<p className="text-[10px] text-accent font-medium mt-0.5">Divisível em mais prestações</p>
+```
 
-**Adicionar secção de categorias:** Abaixo do grid de detalhes, quando `vehicle.categories` existir e tiver itens, mostrar uma linha de badges/tags coloridas com as categorias. Cada badge será um `<span>` com estilo `bg-accent/10 text-accent text-xs font-semibold px-2.5 py-1 rounded-full`.
+Nenhum outro ficheiro é alterado.
 
-**Nota de financiamento na caução:** Adicionar um segundo parágrafo ao card da caução flexível:
-> "Precisa de mais parcelas? Contacte-nos — temos opções de financiamento adaptadas a si."
-
-### 3. Ficheiros alterados
-
-| Ficheiro | Alteracao |
-|---|---|
-| `src/data/vehicles.ts` | Adicionar campos `seats` e `categories` ao interface; adicionar Tesla Model 3 Dualmotor; preencher `seats` e `categories` nas viaturas existentes |
-| `src/components/vianta/VehicleBottomSheet.tsx` | Remover lista de specs; adicionar card Lugares ao grid; adicionar secção de categorias; adicionar nota de financiamento |
