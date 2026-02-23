@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { initPixel } from "@/lib/meta-pixel";
 
 const COOKIE_KEY = "vianta_cookie_consent";
 
@@ -14,6 +15,7 @@ const CookieBanner = () => {
 
   const handleConsent = (value: "accepted" | "rejected") => {
     localStorage.setItem(COOKIE_KEY, value);
+    if (value === "accepted") initPixel();
     setVisible(false);
   };
 
