@@ -1,33 +1,19 @@
 
 
-## Adicionar prestações e aviso no card de Caução
+## Simplificar card de Caução e remover bloco final
 
-Alteração no ficheiro `src/components/vianta/VehicleBottomSheet.tsx`: no card "Caução" dentro do grid de detalhes, adicionar duas linhas extra abaixo do valor do depósito:
+### Alterações em `src/components/vianta/VehicleBottomSheet.tsx`
 
-1. As prestações (`vehicle.depositInstallments`) em texto pequeno
-2. Um aviso curto sobre a possibilidade de dividir por mais prestações
+**1. Simplificar o card de Caução (linhas 130-135)**
 
-### Resultado visual no card
+Substituir as 4 linhas de conteudo (titulo, valor, prestações, aviso) por apenas:
+- Titulo "Caução"
+- Valor (ex: `600€`)
+- Frase curta: `Pagamento fracionável` em `text-[10px] text-accent`
 
-```text
-┌───────────────────────────┐
-│ 🛡  Caução                │
-│    600€                   │
-│    300€ + 100€ + 100€ + 100€  │
-│    Divisível em mais prestações │
-└───────────────────────────┘
-```
+Isto mantém a mesma altura dos outros cards (titulo + valor + 1 linha extra pequena).
 
-### Alteração técnica
+**2. Eliminar o bloco "Deposit note" (linhas 178-187)**
 
-**Ficheiro:** `src/components/vianta/VehicleBottomSheet.tsx`
-
-No card de Caução (linhas ~130-137), adicionar abaixo de `<p>{vehicle.deposit}€</p>`:
-
-```tsx
-<p className="text-[10px] text-muted-foreground mt-0.5">{vehicle.depositInstallments}</p>
-<p className="text-[10px] text-accent font-medium mt-0.5">Divisível em mais prestações</p>
-```
-
-Nenhum outro ficheiro é alterado.
+Remover completamente o bloco `<div className="bg-secondary rounded-xl ...">` com a informação sobre caução flexível e financiamento.
 
