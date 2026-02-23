@@ -1,40 +1,27 @@
 
 
-## Otimizar pop-up de viaturas para desktop
+## Adicionar card de quilometragem ao pop-up de viaturas
 
-### Problema atual
+### O que muda
 
-O `VehicleBottomSheet` ocupa toda a largura do ecra em desktop, o que faz com que a imagem do carro fique muito esticada horizontalmente e cortada na vertical (altura fixa de `h-52` = 208px numa largura de ~1240px resulta num aspect ratio muito largo).
+Adicionar um novo card na grelha de detalhes do `VehicleBottomSheet`, ao lado do card de "Lugares", com a informacao de que o aluguer inclui ate 2.000 km.
 
-### Solucao
+### Alteracao
 
-Transformar o componente para funcionar como **modal centrado em desktop** e manter o **bottom sheet em mobile**.
+**`src/components/vianta/VehicleBottomSheet.tsx`**
 
-### Alteracoes em `src/components/vianta/VehicleBottomSheet.tsx`
+- Importar o icone `Gauge` do `lucide-react` (representativo de quilometragem/velocimetro)
+- Adicionar um novo card apos o card de "Lugares" (linha 173), seguindo o mesmo estilo visual dos restantes:
 
-1. **Layout responsivo do container**:
-   - Mobile (default): manter `fixed bottom-0 left-0 right-0` com `translate-y` (bottom sheet atual)
-   - Desktop (`md:` e acima): centrar na tela com `md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:bottom-auto md:rounded-3xl md:max-w-lg md:max-h-[85vh]`
+```text
+  Icone: Gauge
+  Label: Quilometragem
+  Valor: Até 2.000 km
+```
 
-2. **Imagem com proporcao correta**:
-   - Mudar de `h-52` fixo para `aspect-video` (16:9), que funciona bem para fotos de carros
-   - Em desktop, a imagem fica proporcional dentro do modal de ~512px de largura
+- A grelha ja e `grid-cols-2`, por isso o novo card (6.o item) fica alinhado ao lado do de "Lugares", preenchendo a linha de forma uniforme
 
-3. **Layout do conteudo em desktop**:
-   - A largura limitada (`max-w-lg` = 512px) garante que texto, botoes e grelha de detalhes ficam bem proporcionados
-   - Remover o handle bar em desktop (so faz sentido em mobile para swipe)
+### Resultado
 
-### Detalhes tecnicos
-
-Alteracoes no ficheiro `src/components/vianta/VehicleBottomSheet.tsx`:
-
-- Container principal: adicionar classes responsivas `md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:bottom-auto md:left-auto md:right-auto md:rounded-3xl md:max-w-lg md:w-full`
-- Div da imagem: substituir `h-52` por `aspect-video` para manter proporcao 16:9
-- Handle bar: adicionar `md:hidden` para esconder em desktop
-- Animacao em desktop: usar `md:scale` em vez de `translate-y` (fade + zoom em vez de slide up)
-
-### Resultado esperado
-
-- **Mobile**: bottom sheet desliza de baixo, sem alteracoes visuais
-- **Desktop**: modal centrado com ~512px de largura, imagem em 16:9, aspeto limpo e profissional
+A grelha de detalhes passa de 5 para 6 cards (3 linhas completas de 2), com o novo card de quilometragem visualmente consistente com os restantes.
 
