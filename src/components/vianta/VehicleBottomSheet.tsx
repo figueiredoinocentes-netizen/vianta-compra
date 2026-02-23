@@ -175,7 +175,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               <Gauge className="w-4 h-4 text-accent shrink-0" />
               <div>
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Quilometragem</p>
-                <p className="text-sm font-semibold text-foreground">Até 2.000 km</p>
+                <p className="text-sm font-semibold text-foreground">Até 2.000km/semana</p>
               </div>
             </div>
           </div>
