@@ -51,10 +51,10 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
         ref={sheetRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out max-h-[90vh] overflow-y-auto ${open ? "translate-y-0" : "translate-y-full"}`}
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-3xl shadow-2xl transition-all duration-300 ease-out max-h-[90vh] overflow-y-auto md:bottom-auto md:top-1/2 md:left-1/2 md:right-auto md:w-full md:max-w-lg md:rounded-3xl md:max-h-[85vh] ${open ? "translate-y-0 md:-translate-x-1/2 md:-translate-y-1/2 md:scale-100 md:opacity-100" : "translate-y-full md:translate-y-0 md:-translate-x-1/2 md:-translate-y-1/2 md:scale-95 md:opacity-0 md:pointer-events-none"}`}
       >
         {/* Handle bar */}
-        <div className="flex justify-center pt-3 pb-1">
+      <div className="flex justify-center pt-3 pb-1 md:hidden">
           <div className="w-10 h-1 bg-border rounded-full" />
         </div>
 
@@ -67,7 +67,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
         </button>
 
         {/* Car image */}
-        <div className="h-52 bg-secondary overflow-hidden mx-4 rounded-2xl mt-2">
+        <div className="aspect-video bg-secondary overflow-hidden mx-4 rounded-2xl mt-2">
           <img
             src={vehicle.imageUrl}
             alt={vehicle.model}
