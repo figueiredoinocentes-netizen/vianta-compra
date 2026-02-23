@@ -1,6 +1,7 @@
 import { Zap, Fuel, CheckCircle2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
+import { trackEvent } from "@/lib/meta-pixel";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -16,7 +17,7 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
     <div
       className="flex-none w-[88vw] max-w-[360px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center cursor-pointer active:scale-[0.98] transition-transform"
-      onClick={() => onSelect(vehicle)}
+      onClick={() => { trackEvent("ViewContent", { content_name: vehicle.model }); onSelect(vehicle); }}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onSelect(vehicle)}

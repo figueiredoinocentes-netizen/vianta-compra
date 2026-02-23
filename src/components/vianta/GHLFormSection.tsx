@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Car, X } from "lucide-react";
+import { trackEvent } from "@/lib/meta-pixel";
 
 interface GHLFormSectionProps {
   formRef: React.RefObject<HTMLElement>;
@@ -27,6 +28,17 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
     script.async = true;
     document.body.appendChild(script);
     scriptLoaded.current = true;
+  }, []);
+
+  // Listen for GHL form submission via postMessage
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (Array.isArray(event.data)) {
+        trackEvent("Lead");
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   return (
