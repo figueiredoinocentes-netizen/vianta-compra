@@ -1,4 +1,4 @@
-import { Zap, Fuel, CheckCircle2, Clock } from "lucide-react";
+import { Zap, Fuel, CheckCircle2, Clock, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -75,12 +75,16 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
             <FuelIcon fuel={vehicle.fuel} />
             {vehicle.fuelLabel ?? vehicle.fuel}
           </span>
+          <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
+            <Gauge className="w-3.5 h-3.5" />
+            Até 2.000km/sem
+          </span>
         </div>
 
         <Button
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-12"
         >
-          Mais Informação
+          Estou Interessado Nesta Viatura
         </Button>
       </div>
     </div>

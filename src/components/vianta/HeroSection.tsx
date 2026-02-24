@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { vehicles } from "@/data/vehicles";
 import VehicleCard from "./VehicleCard";
-import VehicleBottomSheet from "./VehicleBottomSheet";
 import type { Vehicle } from "@/data/vehicles";
 
 interface HeroSectionProps {
@@ -10,13 +9,10 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
-  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
-  const [sheetOpen, setSheetOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (vehicle: Vehicle) => {
-    setSelectedVehicle(vehicle);
-    setSheetOpen(true);
+    onContact(`${vehicle.model} (${vehicle.year})`);
   };
 
   return (
@@ -51,11 +47,6 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         ← deslize para ver mais →
       </p>
 
-      <VehicleBottomSheet
-        vehicle={selectedVehicle}
-        open={sheetOpen}
-        onClose={() => setSheetOpen(false)}
-        onContact={onContact} />
 
     </section>);
 
