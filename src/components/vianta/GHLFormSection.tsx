@@ -34,14 +34,14 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
     <section
       ref={formRef as React.RefObject<HTMLDivElement>}
       id="formulario"
-      className="bg-background py-12 px-4"
-    >
+      className="bg-background py-12 px-4">
+
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl font-extrabold text-foreground text-center mb-2">
           Peça contacto — é rápido
         </h2>
-        <p className="text-muted-foreground text-center text-sm mb-6">
-          Preencheu o formulário? A nossa equipa entra em contacto em breve.
+        <p className="text-muted-foreground text-center text-sm mb-6">Preencha o formulário para saber mais informações sobre o aluguer da viatura.
+
         </p>
 
         {/* Banner — always rendered, visibility controlled via CSS to avoid DOM insertion conflicts */}
@@ -54,10 +54,10 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
             overflow: "hidden",
             marginBottom: selectedVehicle ? undefined : "0px",
             paddingTop: selectedVehicle ? undefined : "0px",
-            paddingBottom: selectedVehicle ? undefined : "0px",
+            paddingBottom: selectedVehicle ? undefined : "0px"
           }}
-          aria-hidden={!selectedVehicle}
-        >
+          aria-hidden={!selectedVehicle}>
+
           <div className="flex items-center gap-3">
             <Car className="w-5 h-5 text-accent shrink-0" />
             <div>
@@ -70,8 +70,8 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
           <button
             onClick={onClearVehicle}
             className="p-1.5 rounded-full hover:bg-border text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Limpar viatura selecionada"
-          >
+            aria-label="Limpar viatura selecionada">
+
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -93,12 +93,12 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
             data-height="1007"
             data-layout-iframe-id="inline-D26uSHUDyRjZS4ZZuij4"
             data-form-id="D26uSHUDyRjZS4ZZuij4"
-            title="Form 0"
-          />
+            title="Form 0" />
+
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default GHLFormSection;
