@@ -1,21 +1,19 @@
 
 
-# Desativar auto-zoom nos campos do formulário (mobile)
+# Corrigir scroll automático ao clicar nos campos do formulário
 
 ## Problema
-No iOS Safari, quando o utilizador clica num campo de input com font-size inferior a 16px, o browser faz zoom automático. Isto acontece dentro do iframe do GHL e confunde o utilizador.
+Quando se clica num campo dentro do iframe do formulário, o browser tenta fazer scroll automático para garantir que o elemento focado fica visível. Isto causa um salto visual indesejado no modal.
 
 ## Solução
-Adicionar `maximum-scale=1` à meta tag `viewport` no `index.html`. Isto impede o browser de fazer zoom ao focar campos de texto.
+Adicionar `onFocus` handler no `DialogContent` que previne o scroll automático do browser, e usar `overflow: hidden` no body quando o dialog está aberto para impedir scrolls na página por trás.
 
-### Alteração em `index.html`
-Alterar a meta tag viewport de:
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-```
-Para:
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-```
+### Alteração em `src/components/vianta/FormDialog.tsx`
+- Adicionar a prop `onOpenAutoFocus` ao `DialogContent` com `e.preventDefault()` para impedir que o Radix faça focus automático (que dispara o scroll).
+- Manter o `overflow-y-auto` apenas no container do iframe, não no `DialogContent` inteiro — isto limita o scroll ao conteúdo do formulário sem que a página atrás se mova.
 
-**Nota:** Como o formulário está dentro de um iframe externo (GHL), esta é a única forma de controlar o comportamento de zoom do lado da nossa página. O zoom dentro do iframe é controlado pelo browser com base nas propriedades do viewport da página pai.
+### Alteração em `src/components/ui/dialog.tsx`
+- Expor a prop `onOpenAutoFocus` no `DialogContent` (já é suportada pelo Radix, só precisa de ser passada ao `DialogPrimitive.Content`).
+
+Estas são alterações mínimas que resolvem o problema sem afetar o resto da aplicação.
+
