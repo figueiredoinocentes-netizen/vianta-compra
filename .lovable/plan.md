@@ -1,18 +1,21 @@
 
 
-# Corrigir FormDialog: remover banner da viatura + novo form consultoria
+# Desativar auto-zoom nos campos do formulário (mobile)
 
-## Alteracoes
+## Problema
+No iOS Safari, quando o utilizador clica num campo de input com font-size inferior a 16px, o browser faz zoom automático. Isto acontece dentro do iframe do GHL e confunde o utilizador.
 
-### 1. `src/components/vianta/FormDialog.tsx`
-- **Remover o banner/card** que mostra a viatura selecionada (o bloco com icone Car e texto "A pedir contacto sobre"). Remover tambem o import de `Car` e a prop `vehicleLabel`.
-- **Atualizar o formulario de consultoria** para o novo ID:
-  - ID: `f0KULSnF1uiKyvsBdaqO`
-  - Nome: `Form LP Compra Consultoria`
-  - Height: `1183`
-- Remover a logica de query param `?viatura=` no iframe src do stock (ja nao e necessario sem o banner).
+## Solução
+Adicionar `maximum-scale=1` à meta tag `viewport` no `index.html`. Isto impede o browser de fazer zoom ao focar campos de texto.
 
-### 2. `src/pages/Index.tsx`
-- Remover o estado `selectedVehicleLabel` e a prop `vehicleLabel` passada ao FormDialog de stock.
-- Simplificar `openStockDialog` para nao receber/guardar label.
+### Alteração em `index.html`
+Alterar a meta tag viewport de:
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+```
+Para:
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+```
 
+**Nota:** Como o formulário está dentro de um iframe externo (GHL), esta é a única forma de controlar o comportamento de zoom do lado da nossa página. O zoom dentro do iframe é controlado pelo browser com base nas propriedades do viewport da página pai.
