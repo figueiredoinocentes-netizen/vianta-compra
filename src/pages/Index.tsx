@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from "react";
 import TopStrip from "@/components/vianta/TopStrip";
 import HeroSection from "@/components/vianta/HeroSection";
 import AdvantagesSection from "@/components/vianta/AdvantagesSection";
+import ConsultancySection from "@/components/vianta/ConsultancySection";
+import SocialProofSection from "@/components/vianta/SocialProofSection";
 import GHLFormSection from "@/components/vianta/GHLFormSection";
 import Footer from "@/components/vianta/Footer";
 import StickyButton from "@/components/vianta/StickyButton";
@@ -27,7 +29,6 @@ const Index = () => {
       const formTop = formRef.current?.getBoundingClientRect().top ?? Infinity;
       const windowH = window.innerHeight;
 
-      // Show when hero is fully out of view, hide when form is visible
       const pastHero = heroBottom < 0;
       const nearForm = formTop < windowH * 1.2;
 
@@ -40,12 +41,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* SEO */}
-      <title>Vianta — Aluguer de Viaturas para TVDE | Uber & Bolt</title>
+      <title>Vianta — Venda de Viaturas para TVDE | Uber & Bolt</title>
 
       <TopStrip />
       <HeroSection heroRef={heroRef} onContact={scrollToForm} />
       <AdvantagesSection />
+      <ConsultancySection onScrollToForm={() => scrollToForm()} />
+      <SocialProofSection />
       <GHLFormSection formRef={formRef} selectedVehicle={selectedVehicleLabel} onClearVehicle={() => setSelectedVehicleLabel(null)} />
       <Footer />
 

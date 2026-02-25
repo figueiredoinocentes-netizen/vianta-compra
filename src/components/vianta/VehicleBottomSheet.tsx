@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { X, Zap, Fuel, Calendar, Shield, CheckCircle2, Clock, Users, Gauge } from "lucide-react";
+import { X, Zap, Fuel, Calendar, Users, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 
@@ -9,6 +9,12 @@ interface VehicleBottomSheetProps {
   onClose: () => void;
   onContact: (vehicleLabel: string) => void;
 }
+
+const formatPrice = (price: number) =>
+  price.toLocaleString("pt-PT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+const formatMileage = (km: number) =>
+  km.toLocaleString("pt-PT") + " km";
 
 const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottomSheetProps) => {
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -54,7 +60,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
         className={`fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-3xl shadow-2xl transition-all duration-300 ease-out max-h-[90vh] overflow-y-auto md:bottom-auto md:top-1/2 md:left-1/2 md:right-auto md:w-full md:max-w-lg md:rounded-3xl md:max-h-[85vh] ${open ? "translate-y-0 md:-translate-x-1/2 md:-translate-y-1/2 md:scale-100 md:opacity-100" : "translate-y-full md:translate-y-0 md:-translate-x-1/2 md:-translate-y-1/2 md:scale-95 md:opacity-0 md:pointer-events-none"}`}
       >
         {/* Handle bar */}
-      <div className="flex justify-center pt-3 pb-1 md:hidden">
+        <div className="flex justify-center pt-3 pb-1 md:hidden">
           <div className="w-10 h-1 bg-border rounded-full" />
         </div>
 
@@ -81,19 +87,6 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
           <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="text-xl font-semibold text-foreground font-heading tracking-tight">{vehicle.model}</h2>
-              <div className="flex items-center gap-2 mt-1">
-                {vehicle.availability === "available" ? (
-                  <span className="inline-flex items-center gap-1 bg-available-bg text-available text-xs font-semibold px-2.5 py-1 rounded-full">
-                    <CheckCircle2 className="w-3 h-3" />
-                    Disponível
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 bg-soon-bg text-soon-foreground text-xs font-semibold px-2.5 py-1 rounded-full">
-                    <Clock className="w-3 h-3" />
-                    Disponível em breve
-                  </span>
-                )}
-              </div>
               {/* Categories */}
               {vehicle.categories && vehicle.categories.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-2">
@@ -106,15 +99,11 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               )}
             </div>
             <div className="text-right">
-              {vehicle.previousPrice && (
-                <p className="text-sm text-muted-foreground line-through leading-none mb-0.5">{vehicle.previousPrice}€</p>
-              )}
-              <p className="text-3xl font-extrabold text-primary leading-none">{vehicle.weeklyPrice}€</p>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
+              <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
             </div>
           </div>
 
-          {/* CTA button — immediately below title/price */}
+          {/* CTA button */}
           <Button
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-extrabold rounded-xl text-base h-14 shadow-md mt-4 mb-5"
             size="lg"
@@ -123,7 +112,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               onContact(`${vehicle.model} (${vehicle.year})`);
             }}
           >
-            Pedir contacto sobre esta viatura
+            Estou Interessado
           </Button>
 
           {/* Details grid */}
@@ -136,11 +125,10 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-accent shrink-0" />
+              <Gauge className="w-4 h-4 text-accent shrink-0" />
               <div>
-                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Caução</p>
-                <p className="text-sm font-semibold text-foreground">{vehicle.deposit}€</p>
-                <p className="text-[10px] text-accent font-medium mt-0.5">Pagamento fracionável</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Quilometragem</p>
+                <p className="text-sm font-semibold text-foreground">{formatMileage(vehicle.mileage)}</p>
               </div>
             </div>
             <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
@@ -171,16 +159,7 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                 <p className="text-sm font-semibold text-foreground">{vehicle.seats}</p>
               </div>
             </div>
-            <div className="bg-muted rounded-xl p-3 flex items-center gap-2">
-              <Gauge className="w-4 h-4 text-accent shrink-0" />
-              <div>
-                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">Quilometragem</p>
-                <p className="text-sm font-semibold text-foreground">Até 2.000km/semana</p>
-              </div>
-            </div>
           </div>
-
-
         </div>
       </div>
     </>
@@ -188,4 +167,3 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
 };
 
 export default VehicleBottomSheet;
-

@@ -1,4 +1,4 @@
-import { Zap, Fuel, CheckCircle2, Clock, Gauge } from "lucide-react";
+import { Zap, Fuel, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -12,6 +12,12 @@ const FuelIcon = ({ fuel }: { fuel: string }) => {
   if (fuel === "Elétrico") return <Zap className="w-3.5 h-3.5" />;
   return <Fuel className="w-3.5 h-3.5" />;
 };
+
+const formatPrice = (price: number) =>
+  price.toLocaleString("pt-PT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+
+const formatMileage = (km: number) =>
+  km.toLocaleString("pt-PT") + " km";
 
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
@@ -30,20 +36,6 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           className="w-full h-full object-cover"
           loading="eager"
         />
-        {/* Availability badge */}
-        <div className="absolute top-3 left-3">
-          {vehicle.availability === "available" ? (
-            <span className="inline-flex items-center gap-1 bg-available-bg text-available text-xs font-semibold px-2.5 py-1 rounded-full">
-              <CheckCircle2 className="w-3 h-3" />
-              Disponível
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1 bg-soon-bg text-soon-foreground text-xs font-semibold px-2.5 py-1 rounded-full">
-              <Clock className="w-3 h-3" />
-              Disponível em breve
-            </span>
-          )}
-        </div>
       </div>
 
       {/* Card body */}
@@ -54,15 +46,11 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
             <p className="text-muted-foreground text-sm">{vehicle.year}</p>
           </div>
           <div className="text-right">
-            {vehicle.previousPrice && (
-              <p className="text-sm text-muted-foreground line-through leading-none mb-0.5">{vehicle.previousPrice}€</p>
-            )}
-            <p className="text-3xl font-extrabold text-primary leading-none">{vehicle.weeklyPrice}€</p>
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">por semana</p>
+            <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
           </div>
         </div>
 
-        {/* Specs icons */}
+        {/* Specs badges */}
         <div className="flex items-center gap-3 mb-5 text-muted-foreground">
           <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -77,14 +65,14 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           </span>
           <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
             <Gauge className="w-3.5 h-3.5" />
-            Até 2.000km/sem
+            {formatMileage(vehicle.mileage)}
           </span>
         </div>
 
         <Button
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-12"
         >
-          Estou Interessado Nesta Viatura
+          Estou Interessado
         </Button>
       </div>
     </div>

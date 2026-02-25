@@ -1,4 +1,3 @@
-export type Availability = "available" | "soon";
 export type Transmission = "Automático" | "Manual";
 export type Fuel = "Elétrico" | "Híbrido" | "Gasolina" | "Diesel";
 
@@ -9,11 +8,8 @@ export interface Vehicle {
   transmission: Transmission;
   fuel: Fuel;
   fuelLabel?: string;
-  weeklyPrice: number;
-  previousPrice?: number;
-  deposit: number;
-  depositInstallments: string;
-  availability: Availability;
+  salePrice: number;
+  mileage: number;
   imageUrl: string;
   specs: string[];
   seats: number;
@@ -27,11 +23,8 @@ export const vehicles: Vehicle[] = [
     year: 2022,
     transmission: "Automático",
     fuel: "Elétrico",
-    weeklyPrice: 360,
-    previousPrice: 380,
-    deposit: 600,
-    depositInstallments: "300€ + 100€ + 100€ + 100€",
-    availability: "available",
+    salePrice: 28900,
+    mileage: 65000,
     imageUrl: "/images/tesla-model-3.jpg",
     specs: [],
     seats: 5,
@@ -43,10 +36,8 @@ export const vehicles: Vehicle[] = [
     year: 2020,
     transmission: "Automático",
     fuel: "Elétrico",
-    weeklyPrice: 350,
-    deposit: 600,
-    depositInstallments: "300€ + 100€ + 100€ + 100€",
-    availability: "available",
+    salePrice: 26500,
+    mileage: 95000,
     imageUrl: "/images/tesla-model-3-dualmotor.jpg",
     specs: [],
     seats: 5,
@@ -59,10 +50,8 @@ export const vehicles: Vehicle[] = [
     transmission: "Manual",
     fuel: "Diesel",
     fuelLabel: "Gasóleo/Diesel",
-    weeklyPrice: 250,
-    deposit: 300,
-    depositInstallments: "150€ + 75€ + 75€",
-    availability: "available",
+    salePrice: 15900,
+    mileage: 120000,
     imageUrl: "/images/seat-leon.jpg",
     specs: [],
     seats: 5,
@@ -74,10 +63,8 @@ export const vehicles: Vehicle[] = [
     transmission: "Manual",
     fuel: "Diesel",
     fuelLabel: "Gasóleo/Diesel",
-    weeklyPrice: 235,
-    deposit: 300,
-    depositInstallments: "150€ + 75€ + 75€",
-    availability: "available",
+    salePrice: 14500,
+    mileage: 85000,
     imageUrl: "/images/fiat-tipo-sw.jpg",
     specs: [],
     seats: 5,
@@ -89,10 +76,8 @@ export const vehicles: Vehicle[] = [
     transmission: "Manual",
     fuel: "Diesel",
     fuelLabel: "Gasóleo/Diesel",
-    weeklyPrice: 235,
-    deposit: 300,
-    depositInstallments: "150€ + 75€ + 75€",
-    availability: "available",
+    salePrice: 13500,
+    mileage: 110000,
     imageUrl: "/images/fiat-tipo-sw.jpg",
     specs: [],
     seats: 5,
