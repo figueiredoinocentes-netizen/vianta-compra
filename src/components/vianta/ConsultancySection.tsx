@@ -52,13 +52,13 @@ const ConsultancySection = ({ onScrollToForm }: ConsultancySectionProps) => {
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={i} className="relative flex gap-4 items-start">
+              <div key={i} className="relative flex items-start">
                 {/* Step circle */}
-                <div className="absolute -left-8 w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 z-10">
+                <div className="absolute -left-8 top-0 w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0 z-10">
                   <Icon className="w-4 h-4 text-accent-foreground" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-foreground text-sm mb-0.5">{step.title}</h3>
+                <div className="min-h-[2rem] flex flex-col justify-center">
+                  <h3 className="font-bold text-foreground text-sm leading-8">{step.title}</h3>
                   <p className="text-muted-foreground text-xs leading-relaxed">{step.description}</p>
                 </div>
               </div>
