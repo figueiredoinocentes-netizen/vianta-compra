@@ -10,6 +10,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ThankYou from "./pages/ThankYou";
 import CookieBanner from "./components/vianta/CookieBanner";
 import { initPixel } from "@/lib/meta-pixel";
+import { initClarity } from "@/lib/clarity";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const AppInner = () => {
   useEffect(() => {
     if (localStorage.getItem("vianta_cookie_consent") === "accepted") {
       initPixel();
+      initClarity();
     }
   }, []);
 
