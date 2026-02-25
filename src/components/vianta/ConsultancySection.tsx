@@ -8,7 +8,7 @@ interface ConsultancySectionProps {
 const steps = [
   {
     icon: ClipboardList,
-    title: "Brief",
+    title: "Avaliação",
     description: "Budget, tipo de carro e objetivo TVDE.",
   },
   {
