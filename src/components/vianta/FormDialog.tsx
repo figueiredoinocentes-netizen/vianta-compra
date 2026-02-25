@@ -1,4 +1,3 @@
-import { Car, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,6 @@ interface FormDialogProps {
   type: FormType;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  vehicleLabel?: string | null;
 }
 
 const FORMS: Record<FormType, { id: string; height: number; title: string; name: string }> = {
@@ -25,16 +23,16 @@ const FORMS: Record<FormType, { id: string; height: number; title: string; name:
     name: "Form LP Compra Stock",
   },
   consultancy: {
-    id: "D26uSHUDyRjZS4ZZuij4",
-    height: 1007,
+    id: "f0KULSnF1uiKyvsBdaqO",
+    height: 1183,
     title: "Consultoria automóvel",
-    name: "Form 0",
+    name: "Form LP Compra Consultoria",
   },
 };
 
 const BASE = "https://api.bfdigital.io/widget/form";
 
-const FormDialog = ({ type, open, onOpenChange, vehicleLabel }: FormDialogProps) => {
+const FormDialog = ({ type, open, onOpenChange }: FormDialogProps) => {
   const scriptLoaded = useRef(false);
   const form = FORMS[type];
 
@@ -51,10 +49,7 @@ const FormDialog = ({ type, open, onOpenChange, vehicleLabel }: FormDialogProps)
     scriptLoaded.current = true;
   }, []);
 
-  const iframeSrc =
-    type === "stock" && vehicleLabel
-      ? `${BASE}/${form.id}?viatura=${encodeURIComponent(vehicleLabel)}`
-      : `${BASE}/${form.id}`;
+  const iframeSrc = `${BASE}/${form.id}`;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -67,19 +62,6 @@ const FormDialog = ({ type, open, onOpenChange, vehicleLabel }: FormDialogProps)
             Preencha o formulário para saber mais.
           </DialogDescription>
         </DialogHeader>
-
-        {/* Vehicle banner (stock only) */}
-        {type === "stock" && vehicleLabel && (
-          <div className="flex items-center gap-3 bg-muted border border-border rounded-xl px-4 py-3 mx-5 mt-3">
-            <Car className="w-5 h-5 text-accent shrink-0" />
-            <div>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest font-heading">
-                A pedir contacto sobre
-              </p>
-              <p className="text-sm font-semibold text-foreground">{vehicleLabel}</p>
-            </div>
-          </div>
-        )}
 
         {/* GHL iframe */}
         <div className="px-5 pb-5 pt-3">

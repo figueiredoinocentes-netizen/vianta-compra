@@ -15,10 +15,7 @@ const Index = () => {
   // Dialog state
   const [stockDialogOpen, setStockDialogOpen] = useState(false);
   const [consultancyDialogOpen, setConsultancyDialogOpen] = useState(false);
-  const [selectedVehicleLabel, setSelectedVehicleLabel] = useState<string | null>(null);
-
-  const openStockDialog = (vehicleLabel: string) => {
-    setSelectedVehicleLabel(vehicleLabel);
+  const openStockDialog = () => {
     setStockDialogOpen(true);
   };
 
@@ -57,7 +54,6 @@ const Index = () => {
         type="stock"
         open={stockDialogOpen}
         onOpenChange={setStockDialogOpen}
-        vehicleLabel={selectedVehicleLabel}
       />
       <FormDialog
         type="consultancy"
