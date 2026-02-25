@@ -19,7 +19,7 @@ const steps = [
   {
     icon: CheckCircle,
     title: "Validação e aprovação",
-    description: "Tu escolhes — só avançamos com a tua aprovação.",
+    description: "Você escolhe — só avançamos com a sua aprovação.",
   },
   {
     icon: ShoppingCart,
@@ -29,7 +29,7 @@ const steps = [
   {
     icon: Truck,
     title: "Entrega pronta a trabalhar",
-    description: "Recebes a viatura pronta para atividade TVDE.",
+    description: "Recebe a viatura pronta para atividade TVDE.",
   },
 ];
 
@@ -38,10 +38,10 @@ const ConsultancySection = ({ onScrollToForm }: ConsultancySectionProps) => {
     <section className="bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl font-extrabold text-foreground text-center mb-2 leading-tight">
-          Não encontraste a viatura certa?
+          Não encontrou a viatura certa?
         </h2>
         <p className="text-muted-foreground text-center text-sm mb-10 max-w-md mx-auto">
-          Não te preocupes, diz-nos o que procuras. Com o nosso serviço de consultoria automóvel encontramos a melhor solução para cada motorista.
+          Não se preocupe, diga-nos o que procura. Com o nosso serviço de consultoria automóvel encontramos a melhor solução para cada motorista.
         </p>
 
         {/* Vertical stepper */}
