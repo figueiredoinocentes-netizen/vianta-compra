@@ -58,11 +58,11 @@ const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
       ref={formRef}
       className="overflow-hidden transition-all duration-500 ease-in-out"
       style={{
-        maxHeight: open ? `${form.height + 120}px` : "0px",
+        maxHeight: open ? `${form.height + 200}px` : "0px",
         opacity: open ? 1 : 0,
       }}
     >
-      <div className="bg-muted py-10 px-4">
+      <div className="bg-muted pt-10 pb-20 px-4">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-xl font-extrabold text-foreground text-center mb-1 font-heading">
             {form.title}
