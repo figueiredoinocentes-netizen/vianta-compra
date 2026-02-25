@@ -63,28 +63,31 @@ const FormDialog = ({ type, open, onOpenChange }: FormDialogProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        {/* GHL iframe */}
+        {/* GHL iframe – wrapped in a div so the GHL script's DOM mutations
+             don't conflict with React's reconciliation on unmount */}
         <div className="px-5 pb-5 pt-3">
-          {open && (
-            <iframe
-              key={iframeSrc}
-              src={iframeSrc}
-              style={{ width: "100%", height: `${form.height}px`, border: "none", borderRadius: "3px" }}
-              id={`inline-${form.id}`}
-              data-layout='{"id":"INLINE"}'
-              data-trigger-type="alwaysShow"
-              data-trigger-value=""
-              data-activation-type="alwaysActivated"
-              data-activation-value=""
-              data-deactivation-type="neverDeactivate"
-              data-deactivation-value=""
-              data-form-name={form.name}
-              data-height={form.height}
-              data-layout-iframe-id={`inline-${form.id}`}
-              data-form-id={form.id}
-              title={form.name}
-            />
-          )}
+          <div ref={(node) => {
+            if (!node || !open) return;
+            // Clear previous iframe if any
+            node.innerHTML = "";
+            const iframe = document.createElement("iframe");
+            iframe.src = iframeSrc;
+            iframe.style.cssText = `width:100%;height:${form.height}px;border:none;border-radius:3px`;
+            iframe.id = `inline-${form.id}`;
+            iframe.setAttribute("data-layout", '{"id":"INLINE"}');
+            iframe.setAttribute("data-trigger-type", "alwaysShow");
+            iframe.setAttribute("data-trigger-value", "");
+            iframe.setAttribute("data-activation-type", "alwaysActivated");
+            iframe.setAttribute("data-activation-value", "");
+            iframe.setAttribute("data-deactivation-type", "neverDeactivate");
+            iframe.setAttribute("data-deactivation-value", "");
+            iframe.setAttribute("data-form-name", form.name);
+            iframe.setAttribute("data-height", String(form.height));
+            iframe.setAttribute("data-layout-iframe-id", `inline-${form.id}`);
+            iframe.setAttribute("data-form-id", form.id);
+            iframe.title = form.name;
+            node.appendChild(iframe);
+          }} />
         </div>
       </DialogContent>
     </Dialog>
