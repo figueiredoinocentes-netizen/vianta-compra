@@ -1,19 +1,14 @@
 import { useRef } from "react";
 import { vehicles } from "@/data/vehicles";
 import VehicleCard from "./VehicleCard";
-import type { Vehicle } from "@/data/vehicles";
 
 interface HeroSectionProps {
   heroRef: React.RefObject<HTMLElement>;
-  onContact: (vehicleLabel: string) => void;
+  onContact: () => void;
 }
 
 const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
   const carouselRef = useRef<HTMLDivElement>(null);
-
-  const handleSelect = (vehicle: Vehicle) => {
-    onContact(`${vehicle.model} (${vehicle.year})`);
-  };
 
   return (
     <section
@@ -35,7 +30,7 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         <VehicleCard
           key={vehicle.id}
           vehicle={vehicle}
-          onSelect={handleSelect} />
+          onSelect={onContact} />
         )}
       </div>
 

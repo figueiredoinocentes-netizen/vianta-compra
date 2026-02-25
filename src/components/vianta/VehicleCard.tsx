@@ -5,7 +5,7 @@ import { trackEvent } from "@/lib/meta-pixel";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
-  onSelect: (vehicle: Vehicle) => void;
+  onSelect: () => void;
 }
 
 const FuelIcon = ({ fuel }: { fuel: string }) => {
@@ -23,10 +23,10 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
     <div
       className="flex-none w-[88vw] max-w-[360px] bg-card rounded-2xl shadow-md border border-border overflow-hidden snap-center cursor-pointer active:scale-[0.98] transition-transform"
-      onClick={() => { trackEvent("ViewContent", { content_name: vehicle.model }); onSelect(vehicle); }}
+      onClick={() => { trackEvent("ViewContent", { content_name: vehicle.model }); onSelect(); }}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onSelect(vehicle)}
+      onKeyDown={(e) => e.key === "Enter" && onSelect()}
     >
       {/* Car image */}
       <div className="relative bg-secondary h-52 overflow-hidden">

@@ -1,26 +1,29 @@
 import { useRef, useEffect, useState } from "react";
 import TopStrip from "@/components/vianta/TopStrip";
 import HeroSection from "@/components/vianta/HeroSection";
-import AdvantagesSection from "@/components/vianta/AdvantagesSection";
+import InlineForm from "@/components/vianta/InlineForm";
 import ConsultancySection from "@/components/vianta/ConsultancySection";
+import AdvantagesSection from "@/components/vianta/AdvantagesSection";
 import SocialProofSection from "@/components/vianta/SocialProofSection";
 import Footer from "@/components/vianta/Footer";
 import StickyButton from "@/components/vianta/StickyButton";
-import FormDialog from "@/components/vianta/FormDialog";
 
 const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
+  const stockFormRef = useRef<HTMLDivElement>(null);
+  const consultancyFormRef = useRef<HTMLDivElement>(null);
   const [showStickyBtn, setShowStickyBtn] = useState(false);
+  const [stockFormOpen, setStockFormOpen] = useState(false);
+  const [consultancyFormOpen, setConsultancyFormOpen] = useState(false);
 
-  // Dialog state
-  const [stockDialogOpen, setStockDialogOpen] = useState(false);
-  const [consultancyDialogOpen, setConsultancyDialogOpen] = useState(false);
-  const openStockDialog = () => {
-    setStockDialogOpen(true);
+  const openStockForm = () => {
+    setStockFormOpen(true);
+    setTimeout(() => stockFormRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
-  const openConsultancyDialog = () => {
-    setConsultancyDialogOpen(true);
+  const openConsultancyForm = () => {
+    setConsultancyFormOpen(true);
+    setTimeout(() => consultancyFormRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
   const scrollToHero = () => {
@@ -42,24 +45,15 @@ const Index = () => {
       <title>Vianta — Venda de Viaturas para TVDE | Uber & Bolt</title>
 
       <TopStrip />
-      <HeroSection heroRef={heroRef} onContact={openStockDialog} />
-      <ConsultancySection onScrollToForm={openConsultancyDialog} />
+      <HeroSection heroRef={heroRef} onContact={openStockForm} />
+      <InlineForm type="stock" open={stockFormOpen} formRef={stockFormRef} />
+      <ConsultancySection onScrollToForm={openConsultancyForm} />
+      <InlineForm type="consultancy" open={consultancyFormOpen} formRef={consultancyFormRef} />
       <AdvantagesSection />
       <SocialProofSection />
       <Footer />
 
       <StickyButton visible={showStickyBtn} onScrollToTop={scrollToHero} />
-
-      <FormDialog
-        type="stock"
-        open={stockDialogOpen}
-        onOpenChange={setStockDialogOpen}
-      />
-      <FormDialog
-        type="consultancy"
-        open={consultancyDialogOpen}
-        onOpenChange={setConsultancyDialogOpen}
-      />
     </div>
   );
 };
