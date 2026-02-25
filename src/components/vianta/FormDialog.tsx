@@ -53,7 +53,7 @@ const FormDialog = ({ type, open, onOpenChange }: FormDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto p-0 gap-0">
+      <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] p-0 gap-0" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader className="p-5 pb-0">
           <DialogTitle className="text-xl font-extrabold font-heading">
             {form.title}
@@ -65,7 +65,7 @@ const FormDialog = ({ type, open, onOpenChange }: FormDialogProps) => {
 
         {/* GHL iframe – wrapped in a div so the GHL script's DOM mutations
              don't conflict with React's reconciliation on unmount */}
-        <div className="px-5 pb-5 pt-3">
+        <div className="px-5 pb-5 pt-3 overflow-y-auto">
           <div ref={(node) => {
             if (!node || !open) return;
             // Clear previous iframe if any
