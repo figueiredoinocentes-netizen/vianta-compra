@@ -24,7 +24,7 @@ const steps = [
   {
     icon: ShoppingCart,
     title: "Compra + preparação",
-    description: "Tratamos de tudo: compra, inspeção e preparação.",
+    description: "Tratamos de tudo: compra, inspeção, extintor, dísticos e preparação.",
   },
   {
     icon: Truck,
