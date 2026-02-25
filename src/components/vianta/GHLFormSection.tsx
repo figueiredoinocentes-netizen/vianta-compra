@@ -10,9 +10,6 @@ interface GHLFormSectionProps {
 const BASE_URL = "https://api.bfdigital.io/widget/form/D26uSHUDyRjZS4ZZuij4";
 
 const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSectionProps) => {
-  // Keep the iframe container isolated — GHL script will manipulate DOM inside it.
-  // We never conditionally mount/unmount siblings of the iframe to avoid React
-  // insertBefore/removeChild conflicts with GHL's DOM modifications.
   const iframeContainerRef = useRef<HTMLDivElement>(null);
   const scriptLoaded = useRef(false);
 
@@ -29,7 +26,6 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
     scriptLoaded.current = true;
   }, []);
 
-
   return (
     <section
       ref={formRef as React.RefObject<HTMLDivElement>}
@@ -40,11 +36,11 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
         <h2 className="text-2xl font-extrabold text-foreground text-center mb-2">
           Peça contacto — é rápido
         </h2>
-        <p className="text-muted-foreground text-center text-sm mb-6">Preencha o formulário para saber mais informações sobre o aluguer da viatura.
-
+        <p className="text-muted-foreground text-center text-sm mb-6">
+          Preencha o formulário para saber mais sobre a compra da viatura.
         </p>
 
-        {/* Banner — always rendered, visibility controlled via CSS to avoid DOM insertion conflicts */}
+        {/* Banner */}
         <div
           className="flex items-center justify-between bg-muted border border-border rounded-xl px-4 py-3 mb-6 transition-all duration-300"
           style={{
@@ -54,7 +50,7 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
             overflow: "hidden",
             marginBottom: selectedVehicle ? undefined : "0px",
             paddingTop: selectedVehicle ? undefined : "0px",
-            paddingBottom: selectedVehicle ? undefined : "0px"
+            paddingBottom: selectedVehicle ? undefined : "0px",
           }}
           aria-hidden={!selectedVehicle}>
 
@@ -71,7 +67,6 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
             onClick={onClearVehicle}
             className="p-1.5 rounded-full hover:bg-border text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Limpar viatura selecionada">
-
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -94,11 +89,10 @@ const GHLFormSection = ({ formRef, selectedVehicle, onClearVehicle }: GHLFormSec
             data-layout-iframe-id="inline-D26uSHUDyRjZS4ZZuij4"
             data-form-id="D26uSHUDyRjZS4ZZuij4"
             title="Form 0" />
-
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 export default GHLFormSection;
