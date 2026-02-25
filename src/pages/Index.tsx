@@ -45,8 +45,8 @@ const Index = () => {
 
       <TopStrip />
       <HeroSection heroRef={heroRef} onContact={scrollToForm} />
-      <AdvantagesSection />
       <ConsultancySection onScrollToForm={() => scrollToForm()} />
+      <AdvantagesSection />
       <SocialProofSection />
       <GHLFormSection formRef={formRef} selectedVehicle={selectedVehicleLabel} onClearVehicle={() => setSelectedVehicleLabel(null)} />
       <Footer />
