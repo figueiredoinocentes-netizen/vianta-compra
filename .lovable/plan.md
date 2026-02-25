@@ -1,19 +1,51 @@
 
 
-# Corrigir scroll automático ao clicar nos campos do formulário
+# Formularios inline escondidos (expandem ao clicar)
 
-## Problema
-Quando se clica num campo dentro do iframe do formulário, o browser tenta fazer scroll automático para garantir que o elemento focado fica visível. Isto causa um salto visual indesejado no modal.
+## Abordagem
+Os formularios ficam escondidos na pagina e so aparecem quando o utilizador clica num botao CTA. Sem pop-up, sem pagina nova -- o formulario expande no sitio com uma animacao suave e a pagina faz scroll ate ele.
 
-## Solução
-Adicionar `onFocus` handler no `DialogContent` que previne o scroll automático do browser, e usar `overflow: hidden` no body quando o dialog está aberto para impedir scrolls na página por trás.
+## Estrutura da pagina
 
-### Alteração em `src/components/vianta/FormDialog.tsx`
-- Adicionar a prop `onOpenAutoFocus` ao `DialogContent` com `e.preventDefault()` para impedir que o Radix faça focus automático (que dispara o scroll).
-- Manter o `overflow-y-auto` apenas no container do iframe, não no `DialogContent` inteiro — isto limita o scroll ao conteúdo do formulário sem que a página atrás se mova.
+```text
+TopStrip
+HeroSection (carrossel de viaturas)
+  -> botao "Estou Interessado" expande e faz scroll para InlineForm stock
+InlineForm stock (escondido por defeito, expande ao clicar)
+ConsultancySection
+  -> botao "Quero este servico" expande e faz scroll para InlineForm consultoria
+InlineForm consultancy (escondido por defeito, expande ao clicar)
+AdvantagesSection
+SocialProofSection
+Footer
+```
 
-### Alteração em `src/components/ui/dialog.tsx`
-- Expor a prop `onOpenAutoFocus` no `DialogContent` (já é suportada pelo Radix, só precisa de ser passada ao `DialogPrimitive.Content`).
+## Alteracoes
 
-Estas são alterações mínimas que resolvem o problema sem afetar o resto da aplicação.
+### 1. Novo componente `src/components/vianta/InlineForm.tsx`
+- Recebe props: `type` ("stock" | "consultancy"), `open` (boolean), `formRef` (ref para scroll)
+- Quando `open` e `false`, renderiza uma div vazia com altura 0 (invisivel)
+- Quando `open` e `true`, expande com animacao (transition de max-height ou similar) e mostra:
+  - Titulo e descricao
+  - Iframe GHL (criado imperativamente via ref callback, como ja feito no FormDialog)
+- Usa a mesma tecnica imperativa para criar o iframe e evitar conflitos React/GHL
+
+### 2. Atualizar `src/pages/Index.tsx`
+- Remover imports de `FormDialog` e estados `stockDialogOpen` / `consultancyDialogOpen`
+- Adicionar dois estados: `stockFormOpen` e `consultancyFormOpen` (booleanos)
+- Adicionar dois refs: `stockFormRef` e `consultancyFormRef`
+- `onContact` (hero): faz `setStockFormOpen(true)` e scroll suave ate `stockFormRef`
+- `onScrollToForm` (consultoria): faz `setConsultancyFormOpen(true)` e scroll suave ate `consultancyFormRef`
+- Inserir `<InlineForm>` nas posicoes corretas entre as seccoes
+
+### 3. Simplificar `HeroSection.tsx` e `VehicleCard.tsx`
+- `onContact` passa a `() => void` (sem label de viatura, so dispara o scroll/expand)
+
+### 4. Remover `src/components/vianta/FormDialog.tsx`
+- Ja nao e necessario
+
+## Detalhes tecnicos
+- Animacao de expansao com CSS transition em `max-height` (0 -> valor necessario) e `opacity`
+- Scroll com `scrollIntoView({ behavior: "smooth" })` apos um pequeno delay (setTimeout 100ms) para dar tempo a animacao iniciar
+- O iframe so e criado no DOM quando `open` passa a `true` pela primeira vez (performance)
 
