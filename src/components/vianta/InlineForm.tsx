@@ -20,7 +20,7 @@ const FORMS: Record<FormType, { id: string; height: number; title: string; descr
     id: "f0KULSnF1uiKyvsBdaqO",
     height: 1183,
     title: "Consultoria automóvel",
-    description: "Diga-nos o que procura e encontramos a melhor solução.",
+    description: "Deixe o contacto e faça a avaliação gratuita.",
     name: "Form LP Compra Consultoria",
   },
 };
