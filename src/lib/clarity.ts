@@ -1,4 +1,4 @@
-const CLARITY_ID = "vmw36x980t";
+const CLARITY_ID = "vmzzs8mcix";
 
 let initialized = false;
 
