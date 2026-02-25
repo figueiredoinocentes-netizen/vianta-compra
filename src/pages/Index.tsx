@@ -4,19 +4,26 @@ import HeroSection from "@/components/vianta/HeroSection";
 import AdvantagesSection from "@/components/vianta/AdvantagesSection";
 import ConsultancySection from "@/components/vianta/ConsultancySection";
 import SocialProofSection from "@/components/vianta/SocialProofSection";
-import GHLFormSection from "@/components/vianta/GHLFormSection";
 import Footer from "@/components/vianta/Footer";
 import StickyButton from "@/components/vianta/StickyButton";
+import FormDialog from "@/components/vianta/FormDialog";
 
 const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLElement>(null);
   const [showStickyBtn, setShowStickyBtn] = useState(false);
+
+  // Dialog state
+  const [stockDialogOpen, setStockDialogOpen] = useState(false);
+  const [consultancyDialogOpen, setConsultancyDialogOpen] = useState(false);
   const [selectedVehicleLabel, setSelectedVehicleLabel] = useState<string | null>(null);
 
-  const scrollToForm = (vehicleLabel?: string) => {
-    if (vehicleLabel !== undefined) setSelectedVehicleLabel(vehicleLabel);
-    formRef.current?.scrollIntoView({ behavior: "smooth" });
+  const openStockDialog = (vehicleLabel: string) => {
+    setSelectedVehicleLabel(vehicleLabel);
+    setStockDialogOpen(true);
+  };
+
+  const openConsultancyDialog = () => {
+    setConsultancyDialogOpen(true);
   };
 
   const scrollToHero = () => {
@@ -26,13 +33,7 @@ const Index = () => {
   useEffect(() => {
     const handleScroll = () => {
       const heroBottom = heroRef.current?.getBoundingClientRect().bottom ?? 0;
-      const formTop = formRef.current?.getBoundingClientRect().top ?? Infinity;
-      const windowH = window.innerHeight;
-
-      const pastHero = heroBottom < 0;
-      const nearForm = formTop < windowH * 1.2;
-
-      setShowStickyBtn(pastHero && !nearForm);
+      setShowStickyBtn(heroBottom < 0);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -44,14 +45,25 @@ const Index = () => {
       <title>Vianta — Venda de Viaturas para TVDE | Uber & Bolt</title>
 
       <TopStrip />
-      <HeroSection heroRef={heroRef} onContact={scrollToForm} />
-      <ConsultancySection onScrollToForm={() => scrollToForm()} />
+      <HeroSection heroRef={heroRef} onContact={openStockDialog} />
+      <ConsultancySection onScrollToForm={openConsultancyDialog} />
       <AdvantagesSection />
       <SocialProofSection />
-      <GHLFormSection formRef={formRef} selectedVehicle={selectedVehicleLabel} onClearVehicle={() => setSelectedVehicleLabel(null)} />
       <Footer />
 
       <StickyButton visible={showStickyBtn} onScrollToTop={scrollToHero} />
+
+      <FormDialog
+        type="stock"
+        open={stockDialogOpen}
+        onOpenChange={setStockDialogOpen}
+        vehicleLabel={selectedVehicleLabel}
+      />
+      <FormDialog
+        type="consultancy"
+        open={consultancyDialogOpen}
+        onOpenChange={setConsultancyDialogOpen}
+      />
     </div>
   );
 };
