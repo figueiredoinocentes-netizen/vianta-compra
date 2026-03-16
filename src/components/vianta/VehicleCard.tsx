@@ -36,6 +36,14 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           className="w-full h-full object-cover"
           loading="eager"
         />
+        {vehicle.availableFrom && (
+          <div className="absolute top-0 left-0 right-0 bg-[hsl(var(--soon-bg))] border-b border-[hsl(var(--soon)_/_0.3)] px-3 py-2 flex items-center justify-center gap-1.5">
+            <Clock className="w-4 h-4 text-[hsl(var(--soon-foreground))]" />
+            <span className="text-sm font-bold text-[hsl(var(--soon-foreground))]">
+              Disponível a partir de {vehicle.availableFrom}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Card body */}
