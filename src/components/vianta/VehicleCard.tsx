@@ -77,11 +77,6 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           </span>
         </div>
 
-        {vehicle.availableFrom && (
-          <p className="text-xs text-muted-foreground mb-3 text-center font-medium">
-            Disponível a partir de: {vehicle.availableFrom}
-          </p>
-        )}
 
         <Button
           className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-12"
