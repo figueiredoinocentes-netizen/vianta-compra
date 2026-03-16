@@ -17,7 +17,7 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       className="bg-primary pt-8 pb-10">
 
       <div className="px-5 mb-8">
-        <h1 className="text-3xl font-bold text-primary-foreground leading-tight mb-2 text-center font-heading tracking-tight">Encontre a sua viatura ideal</h1>
+        <h1 className="text-3xl font-bold text-primary-foreground leading-tight mb-2 text-center font-heading tracking-tight">Adquira a sua viatura TVDE</h1>
         <p className="text-primary-foreground/70 text-sm text-center mt-1">Viaturas preparadas para atividade TVDE, prontas a trabalhar.</p>
       </div>
 
