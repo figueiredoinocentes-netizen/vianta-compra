@@ -26,7 +26,7 @@ export const vehicles: Vehicle[] = [
     fuel: "Elétrico",
     salePrice: 28500,
     mileage: 10000,
-    imageUrl: "/placeholder.svg",
+    imageUrl: "/images/peugeot-e2008.png",
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
