@@ -34,10 +34,6 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         )}
       </div>
 
-      {/* Swipe hint */}
-      <p className="text-center text-primary-foreground/50 text-xs mt-5">
-        ← deslize para ver mais →
-      </p>
     </section>
   );
 };
