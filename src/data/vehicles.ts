@@ -39,7 +39,7 @@ export const vehicles: Vehicle[] = [
     fuel: "Elétrico",
     salePrice: 29000,
     mileage: 10000,
-    imageUrl: "/placeholder.svg",
+    imageUrl: "/images/byd-ato3.png",
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
