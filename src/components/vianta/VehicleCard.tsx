@@ -1,4 +1,4 @@
-import { Zap, Fuel, Gauge } from "lucide-react";
+import { Zap, Fuel, Gauge, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
