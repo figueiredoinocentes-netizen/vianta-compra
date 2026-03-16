@@ -11,7 +11,7 @@ const SocialProofSection = () => {
 
         <div className="relative mx-auto overflow-hidden rounded-2xl border border-border" style={{ maxWidth: 320, aspectRatio: "9/16", maxHeight: 500 }}>
           <iframe
-            src="https://www.youtube.com/embed/ebgSf5tP7iE"
+            src="https://www.youtube.com/embed/n5XBwfwWOvQ"
             title="Vianta — Testemunho"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
