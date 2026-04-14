@@ -43,6 +43,6 @@ export const vehicles: Vehicle[] = [
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
-    availableFrom: "25/03/2026",
+    
   },
 ];
