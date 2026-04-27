@@ -11,19 +11,12 @@ import StickyButton from "@/components/vianta/StickyButton";
 const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
   const stockFormRef = useRef<HTMLDivElement>(null);
-  const consultancyFormRef = useRef<HTMLDivElement>(null);
   const [showStickyBtn, setShowStickyBtn] = useState(false);
   const [stockFormOpen, setStockFormOpen] = useState(false);
-  const [consultancyFormOpen, setConsultancyFormOpen] = useState(false);
 
   const openStockForm = () => {
     setStockFormOpen(true);
     setTimeout(() => stockFormRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
-  };
-
-  const openConsultancyForm = () => {
-    setConsultancyFormOpen(true);
-    setTimeout(() => consultancyFormRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
   const scrollToHero = () => {
@@ -47,8 +40,7 @@ const Index = () => {
       <TopStrip />
       <HeroSection heroRef={heroRef} onContact={openStockForm} />
       <InlineForm type="stock" open={stockFormOpen} formRef={stockFormRef} />
-      <ConsultancySection onScrollToForm={openConsultancyForm} />
-      <InlineForm type="consultancy" open={consultancyFormOpen} formRef={consultancyFormRef} />
+      <ConsultancySection onScrollToForm={openStockForm} />
       <AdvantagesSection />
       <SocialProofSection />
       <Footer />
