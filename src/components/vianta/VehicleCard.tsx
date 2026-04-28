@@ -35,6 +35,11 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           alt={vehicle.model}
           className="w-full h-full object-cover"
           loading="eager"
+          onError={(e) => {
+            const img = e.currentTarget;
+            if (img.src.endsWith("/placeholder.svg")) return;
+            img.src = "/placeholder.svg";
+          }}
         />
         {vehicle.availability === "stock" && (
           <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
