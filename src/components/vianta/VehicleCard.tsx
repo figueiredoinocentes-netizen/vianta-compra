@@ -68,10 +68,11 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           <div className="text-right shrink-0">
             {vehicle.monthlyPrice ? (
               <>
-                <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap">
+                <p className="text-xs text-muted-foreground leading-none">desde</p>
+                <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap mt-1">
                   {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
                 </p>
-                <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">desde {formatPrice(vehicle.salePrice)}</p>
+                <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">{formatPrice(vehicle.salePrice)}</p>
               </>
             ) : (
               <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
