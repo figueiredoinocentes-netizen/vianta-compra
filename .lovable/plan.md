@@ -1,45 +1,52 @@
-# Adicionar Opel Mokka-e e introduzir badge "Stock" vs "Por Encomenda"
+## Atualização do design dos cards de viaturas
 
-## 1. Imagem do veículo
-- Copiar a imagem carregada para `src/assets/opel-mokka-e.png` (apesar de mostrar matrícula "VIANTA", trata-se de um Opel Mokka preto — usa-se como foto do carro)
-- Nota: as outras viaturas estão em `/public/images/`. Para manter consistência, copiar para `public/images/opel-mokka-e.png`
+Redesenhar os cards na secção "Viaturas Disponíveis" para destacar a prestação mensal como valor principal e adicionar novos campos (versão e autonomia real).
 
-## 2. Modelo de dados — `src/data/vehicles.ts`
-- Adicionar campo opcional `availability: "stock" | "order"` ao tipo `Vehicle`
-  - `"stock"` → entrega imediata
-  - `"order"` → entrega em 30 a 60 dias
-- Marcar Peugeot e2008 e BYD Ato 3 com `availability: "stock"`
-- Adicionar nova entrada Opel Mokka-e:
-  - `id: "opel-mokka-e"`
-  - `model: "Opel Mokka-e"`
-  - `year: 2023`
-  - `transmission: "Automático"`, `fuel: "Elétrico"`
-  - `salePrice: 20000`, `mileage: 20000`
-  - `imageUrl: "/images/opel-mokka-e.png"`
-  - `seats: 5`, `categories: ["Comfort", "Eletric", "Green"]`
-  - `availability: "order"`
+### 1. `src/data/vehicles.ts` — novos campos
 
-## 3. Badge na imagem do card — `src/components/vianta/VehicleCard.tsx`
-Substituir o banner atual de `availableFrom` por um sistema de badge canto superior esquerdo da imagem:
+Adicionar à interface `Vehicle`:
+- `version?: string` — designação da versão/trim
+- `realRange?: number` — autonomia real em km (para elétricos)
+- `monthlyPrice?: number` — prestação mensal em €
 
-- **Stock disponível** (verde): ícone `CheckCircle2` + texto "Em Stock"
-- **Por encomenda** (âmbar/laranja): ícone `Clock` + texto "Por Encomenda · 30-60 dias"
+Preencher cada viatura com valores inventados plausíveis:
 
-A badge é uma pill pequena (não banner full-width), mais subtil e elegante que o banner antigo. O `availableFrom` antigo deixa de ser usado (mantemos o campo no tipo por retro-compat, mas sem render).
+| Viatura | Versão | Autonomia | Prestação |
+|---|---|---|---|
+| Peugeot e2008 | GT Electric 50kWh | 320 km | 285€/mês |
+| BYD Ato 3 Design | Design 60.5kWh | 360 km | 295€/mês |
+| Opel Mokka-e | Elegance 50kWh | 290 km | 199€/mês |
+| MG MG4 | Standard 51kWh | 310 km | 189€/mês |
 
-## 4. Detalhe no bottom sheet — `src/components/vianta/VehicleBottomSheet.tsx`
-Adicionar uma linha informativa no topo (logo abaixo do título ou perto do preço) consoante a `availability`:
-- Stock → "Disponível em stock — entrega imediata após reserva"
-- Encomenda → "Por encomenda — entrega em 30 a 60 dias"
+### 2. `src/components/vianta/VehicleCard.tsx` — novo layout
 
-## Detalhes técnicos
+**Cabeçalho (modelo + versão):**
+```
+Peugeot e2008
+GT Electric 50kWh           ← novo, text-xs text-muted-foreground
+2024
+```
 
-**Ficheiros alterados:**
-- `src/data/vehicles.ts` — novo tipo + 3 entradas atualizadas
-- `src/components/vianta/VehicleCard.tsx` — substituir bloco do banner por badge condicional
-- `src/components/vianta/VehicleBottomSheet.tsx` — adicionar linha de availability
-- `public/images/opel-mokka-e.png` — nova imagem (copiada do upload)
+**Bloco de preço (lado direito do cabeçalho):**
+```
+285€/mês                    ← destaque principal: text-3xl font-extrabold text-primary
+desde 28 500€               ← secundário: text-xs text-muted-foreground
+```
 
-**Cores das badges** (usar tokens existentes ou inline Tailwind):
-- Stock: fundo `bg-emerald-500/15`, texto `text-emerald-700`, border `border-emerald-500/30`
-- Encomenda: fundo `bg-amber-500/15`, texto `text-amber-700`, border `border-amber-500/30`
+**Specs badges (linha de ícones):**
+- Substituir o badge "Automático" por "350 km" com ícone `BatteryCharging` da lucide-react
+- Manter os badges de combustível e quilometragem
+- Para viaturas sem `realRange`, manter fallback para transmissão
+
+Layout final dos badges: `[⚡ 320 km] [⚡ Elétrico] [📊 10 000 km]`
+
+### 3. Detalhes técnicos
+
+- Formatação prestação: `${monthlyPrice}€/mês`
+- Formatação preço secundário: `desde ${formatPrice(salePrice)}`
+- Ícone autonomia: `BatteryCharging` (lucide-react), tamanho `w-3.5 h-3.5`
+- O `VehicleBottomSheet` mantém o preço total como valor principal (não muda nesta tarefa, exceto se quiseres que eu também atualize lá)
+
+### Ficheiros a alterar
+- `src/data/vehicles.ts`
+- `src/components/vianta/VehicleCard.tsx`

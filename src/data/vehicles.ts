@@ -5,11 +5,14 @@ export type Availability = "stock" | "order";
 export interface Vehicle {
   id: string;
   model: string;
+  version?: string;
   year: number;
   transmission: Transmission;
   fuel: Fuel;
   fuelLabel?: string;
   salePrice: number;
+  monthlyPrice?: number;
+  realRange?: number;
   mileage: number;
   imageUrl: string;
   specs: string[];
