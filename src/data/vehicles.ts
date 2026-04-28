@@ -62,4 +62,18 @@ export const vehicles: Vehicle[] = [
     categories: ["Comfort", "Eletric", "Green"],
     availability: "order",
   },
+  {
+    id: "mg-mg4",
+    model: "MG MG4",
+    year: 2023,
+    transmission: "Automático",
+    fuel: "Elétrico",
+    salePrice: 22000,
+    mileage: 10000,
+    imageUrl: "/images/mg-mg4.png",
+    specs: [],
+    seats: 5,
+    categories: ["Comfort", "Eletric", "Green"],
+    availability: "order",
+  },
 ];
