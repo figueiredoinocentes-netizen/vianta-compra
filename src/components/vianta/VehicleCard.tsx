@@ -65,10 +65,10 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
             )}
             <p className="text-muted-foreground text-sm mt-1">{vehicle.year}</p>
           </div>
-          <div className="text-right shrink-0">
+          <div className="shrink-0 flex flex-col items-end">
             {vehicle.monthlyPrice ? (
               <>
-                <p className="text-xs text-muted-foreground leading-none">desde</p>
+                <p className="text-xs text-muted-foreground leading-none self-start">desde</p>
                 <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap mt-1">
                   {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
                 </p>
