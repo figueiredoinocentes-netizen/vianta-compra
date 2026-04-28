@@ -1,4 +1,4 @@
-import { Zap, Fuel, Gauge, Clock } from "lucide-react";
+import { Zap, Fuel, Gauge, Clock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -36,12 +36,16 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           className="w-full h-full object-cover"
           loading="eager"
         />
-        {vehicle.availableFrom && (
-          <div className="absolute top-0 left-0 right-0 bg-[hsl(var(--soon-bg))] border-b border-[hsl(var(--soon)_/_0.3)] px-3 py-2 flex items-center justify-center gap-1.5">
-            <Clock className="w-4 h-4 text-[hsl(var(--soon-foreground))]" />
-            <span className="text-sm font-bold text-[hsl(var(--soon-foreground))]">
-              Disponível a partir de {vehicle.availableFrom}
-            </span>
+        {vehicle.availability === "stock" && (
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            Em Stock
+          </div>
+        )}
+        {vehicle.availability === "order" && (
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <Clock className="w-3.5 h-3.5" />
+            Por Encomenda · 30-60 dias
           </div>
         )}
       </div>
