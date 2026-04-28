@@ -68,7 +68,7 @@ export const vehicles: Vehicle[] = [
     year: 2023,
     transmission: "Automático",
     fuel: "Elétrico",
-    salePrice: 22000,
+    salePrice: 19000,
     mileage: 10000,
     imageUrl: "/images/mg-mg4.png",
     specs: [],
