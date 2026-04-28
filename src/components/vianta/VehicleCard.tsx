@@ -1,4 +1,4 @@
-import { Zap, Fuel, Gauge, Clock, CheckCircle2 } from "lucide-react";
+import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
