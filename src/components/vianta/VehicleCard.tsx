@@ -52,25 +52,44 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
 
       {/* Card body */}
       <div className="p-5">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="font-semibold text-foreground text-lg leading-tight font-heading">{vehicle.model}</h3>
-            <p className="text-muted-foreground text-sm">{vehicle.year}</p>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="min-w-0">
+            <h3 className="font-semibold text-foreground text-lg leading-tight font-heading truncate">{vehicle.model}</h3>
+            {vehicle.version && (
+              <p className="text-muted-foreground text-xs mt-0.5 truncate">{vehicle.version}</p>
+            )}
+            <p className="text-muted-foreground text-sm mt-1">{vehicle.year}</p>
           </div>
-          <div className="text-right">
-            <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
+          <div className="text-right shrink-0">
+            {vehicle.monthlyPrice ? (
+              <>
+                <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap">
+                  {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
+                </p>
+                <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">desde {formatPrice(vehicle.salePrice)}</p>
+              </>
+            ) : (
+              <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
+            )}
           </div>
         </div>
 
         {/* Specs badges */}
         <div className="flex items-center gap-3 mb-5 text-muted-foreground">
-          <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-            </svg>
-            {vehicle.transmission}
-          </span>
+          {vehicle.realRange ? (
+            <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
+              <BatteryCharging className="w-3.5 h-3.5" />
+              {vehicle.realRange} km
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
+              </svg>
+              {vehicle.transmission}
+            </span>
+          )}
           <span className="inline-flex items-center gap-1 text-xs bg-muted px-2 py-1 rounded-md">
             <FuelIcon fuel={vehicle.fuel} />
             {vehicle.fuelLabel ?? vehicle.fuel}
