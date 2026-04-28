@@ -6,7 +6,8 @@ export interface Vehicle {
   id: string;
   model: string;
   version?: string;
-  year: number;
+  /** String para preservar formatos como "06/2024" ou "2023" vindos da sheet */
+  year: string;
   transmission: Transmission;
   fuel: Fuel;
   fuelLabel?: string;
@@ -22,12 +23,16 @@ export interface Vehicle {
   availability?: Availability;
 }
 
-export const vehicles: Vehicle[] = [
+/**
+ * Fallback estático — usado apenas como referência ou se a sheet falhar.
+ * Os dados em produção vêm de Google Sheets via src/lib/sheet-vehicles.ts
+ */
+export const fallbackVehicles: Vehicle[] = [
   {
     id: "peugeot-e2008",
     model: "Peugeot e2008",
     version: "GT Electric 50kWh",
-    year: 2024,
+    year: "2024",
     transmission: "Automático",
     fuel: "Elétrico",
     salePrice: 28500,
@@ -39,56 +44,5 @@ export const vehicles: Vehicle[] = [
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
     availability: "stock",
-  },
-  {
-    id: "byd-ato3-design",
-    model: "BYD Ato 3 Design",
-    version: "Design 60.5kWh",
-    year: 2023,
-    transmission: "Automático",
-    fuel: "Elétrico",
-    salePrice: 29000,
-    monthlyPrice: 295,
-    realRange: 360,
-    mileage: 10000,
-    imageUrl: "/images/byd-ato3.png",
-    specs: [],
-    seats: 5,
-    categories: ["Comfort", "Eletric", "Green"],
-    availability: "stock",
-  },
-  {
-    id: "opel-mokka-e",
-    model: "Opel Mokka-e",
-    version: "Elegance 50kWh",
-    year: 2023,
-    transmission: "Automático",
-    fuel: "Elétrico",
-    salePrice: 20000,
-    monthlyPrice: 199,
-    realRange: 290,
-    mileage: 20000,
-    imageUrl: "/images/opel-mokka-e.png",
-    specs: [],
-    seats: 5,
-    categories: ["Comfort", "Eletric", "Green"],
-    availability: "order",
-  },
-  {
-    id: "mg-mg4",
-    model: "MG MG4",
-    version: "Standard 51kWh",
-    year: 2023,
-    transmission: "Automático",
-    fuel: "Elétrico",
-    salePrice: 19000,
-    monthlyPrice: 189,
-    realRange: 310,
-    mileage: 10000,
-    imageUrl: "/images/mg-mg4.png",
-    specs: [],
-    seats: 5,
-    categories: ["Comfort", "Eletric", "Green"],
-    availability: "order",
   },
 ];

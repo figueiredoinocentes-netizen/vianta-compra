@@ -1,0 +1,148 @@
+/**
+ * Carrega viaturas dinamicamente da Google Sheet pública (aba "Venda").
+ *
+ * IMPORTANTE: A sheet TEM de continuar com permissão "Qualquer pessoa com o
+ * link pode ver". Se for tornada privada este endpoint deixa de funcionar.
+ */
+import type { Vehicle, Fuel, Transmission, Availability } from "@/data/vehicles";
+
+const SHEET_ID = "1IymwMQtujdohVQPEuIfjxqZvH8EfZTLyp8wW7K7hO00";
+const SHEET_NAME = "Venda";
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+/** Parser CSV minimal — lida com aspas duplas e vírgulas dentro de campos. */
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        field += c;
+      }
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else if (c === "\r") { /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+/** "28 500,00 €" -> 28500 ; "" -> undefined */
+function parsePtNumber(v: string | undefined): number | undefined {
+  if (!v) return undefined;
+  const cleaned = v.replace(/[€\s]/g, "").replace(/\./g, "").replace(",", ".");
+  if (!cleaned) return undefined;
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : undefined;
+}
+
+/** Converte URL Drive em URL embutível como <img>. */
+function normalizeDriveUrl(url: string | undefined): string {
+  if (!url) return "/placeholder.svg";
+  const m = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  return url;
+}
+
+function slugify(s: string): string {
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function mapAvailability(estado: string): Availability | null {
+  const e = estado.trim().toLowerCase();
+  if (e === "para venda") return "stock";
+  if (e === "por encomenda") return "order";
+  return null;
+}
+
+function mapFuel(v: string): Fuel {
+  const x = v.trim().toLowerCase();
+  if (x.startsWith("elét") || x.startsWith("elec")) return "Elétrico";
+  if (x.startsWith("híb") || x.startsWith("hib")) return "Híbrido";
+  if (x.startsWith("dies")) return "Diesel";
+  return "Gasolina";
+}
+
+function mapTransmission(v: string): Transmission {
+  return v.trim().toLowerCase().startsWith("manual") ? "Manual" : "Automático";
+}
+
+export async function fetchVehicles(): Promise<Vehicle[]> {
+  const res = await fetch(CSV_URL, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Sheet HTTP ${res.status}`);
+  const text = await res.text();
+  const rows = parseCsv(text);
+  if (rows.length < 2) return [];
+
+  const header = rows[0].map((h) => h.trim());
+  const idx = (name: string) => header.indexOf(name);
+
+  const iCarro = idx("Carro");
+  const iVersao = idx("Versão");
+  const iValor = idx("Valor");
+  const iPrest = idx("120 Meses/10 anos");
+  const iAuton = idx("Autonomia Real");
+  const iCategorias = idx("Categorias");
+  const iComb = idx("Combustível");
+  const iEstado = idx("Estado");
+  const iAno = idx("Ano");
+  const iKm = idx("KM's");
+  const iCaixa = idx("Caixa");
+  const iFoto = idx("Foto");
+
+  const vehicles: Vehicle[] = [];
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    if (!row || row.length === 0) continue;
+    const estado = row[iEstado] ?? "";
+    const availability = mapAvailability(estado);
+    if (!availability) continue;
+
+    const model = (row[iCarro] ?? "").trim();
+    if (!model) continue;
+
+    const version = (row[iVersao] ?? "").trim() || undefined;
+    const year = (row[iAno] ?? "").trim();
+    const salePrice = parsePtNumber(row[iValor]) ?? 0;
+    const monthlyPrice = parsePtNumber(row[iPrest]);
+    const realRange = parsePtNumber(row[iAuton]);
+    const mileage = parsePtNumber(row[iKm]) ?? 0;
+    const fuel = mapFuel(row[iComb] ?? "");
+    const transmission = mapTransmission(row[iCaixa] ?? "");
+    const imageUrl = normalizeDriveUrl(row[iFoto]);
+    const categories = (row[iCategorias] ?? "")
+      .split(",").map((c) => c.trim()).filter(Boolean);
+
+    vehicles.push({
+      id: `${slugify(model)}-${r}`,
+      model,
+      version,
+      year,
+      transmission,
+      fuel,
+      salePrice,
+      monthlyPrice,
+      realRange,
+      mileage,
+      imageUrl,
+      specs: [],
+      seats: 5,
+      categories: categories.length ? categories : undefined,
+      availability,
+    });
+  }
+
+  return vehicles;
+}
