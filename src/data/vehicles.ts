@@ -1,5 +1,6 @@
 export type Transmission = "Automático" | "Manual";
 export type Fuel = "Elétrico" | "Híbrido" | "Gasolina" | "Diesel";
+export type Availability = "stock" | "order";
 
 export interface Vehicle {
   id: string;
@@ -15,6 +16,7 @@ export interface Vehicle {
   seats: number;
   categories?: string[];
   availableFrom?: string;
+  availability?: Availability;
 }
 
 export const vehicles: Vehicle[] = [
@@ -30,6 +32,7 @@ export const vehicles: Vehicle[] = [
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
+    availability: "stock",
   },
   {
     id: "byd-ato3-design",
@@ -43,6 +46,20 @@ export const vehicles: Vehicle[] = [
     specs: [],
     seats: 5,
     categories: ["Comfort", "Eletric", "Green"],
-    
+    availability: "stock",
+  },
+  {
+    id: "opel-mokka-e",
+    model: "Opel Mokka-e",
+    year: 2023,
+    transmission: "Automático",
+    fuel: "Elétrico",
+    salePrice: 20000,
+    mileage: 20000,
+    imageUrl: "/images/opel-mokka-e.png",
+    specs: [],
+    seats: 5,
+    categories: ["Comfort", "Eletric", "Green"],
+    availability: "order",
   },
 ];

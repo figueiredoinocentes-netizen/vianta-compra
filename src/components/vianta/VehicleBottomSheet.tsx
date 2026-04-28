@@ -103,6 +103,20 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             </div>
           </div>
 
+          {/* Availability info */}
+          {vehicle.availability === "stock" && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-sm font-semibold px-3 py-2 rounded-lg">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              Disponível em stock — entrega imediata após reserva
+            </div>
+          )}
+          {vehicle.availability === "order" && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-700 text-sm font-semibold px-3 py-2 rounded-lg">
+              <span className="w-2 h-2 rounded-full bg-amber-500" />
+              Por encomenda — entrega em 30 a 60 dias
+            </div>
+          )}
+
           {/* CTA button */}
           <Button
             className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-extrabold rounded-xl text-base h-14 shadow-md mt-4 mb-5"
