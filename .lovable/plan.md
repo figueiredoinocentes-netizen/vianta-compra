@@ -1,33 +1,27 @@
-## Reposicionar label "desde" no VehicleCard
+## Adicionar estado "Disponível em Breve"
 
-Atualmente o bloco de preço está todo `text-right`, fazendo o "desde" alinhar à direita. Pretende-se:
+Novo terceiro estado no badge sobre a foto do carro (em conjunto com "Em Stock" e "Por Encomenda · 30-60 dias"), mostrando a data da coluna `Disponível a partir de` da sheet.
 
-```
-desde
-280€/mês
-        19.000€
-```
+### Mapeamento
 
-— `desde` alinhado à esquerda, mesmo por cima do "2" de `280€/mês`
-— `280€/mês` mantém destaque (grande, bold, primary)
-— `19.000€` (preço de venda) por baixo, alinhado à direita
+Na sheet, coluna `Estado` pode ter o valor `Disponível em Breve` (qualquer variante por confirmar — assumimos exatamente esta string, case-insensitive). Coluna `Disponível a partir de` contém a data (formato livre, ex.: `01/2026` ou `Janeiro 2026`).
 
-### Alteração
+### Alterações
 
-Em `src/components/vianta/VehicleCard.tsx`, no bloco com `monthlyPrice`:
-- Remover `text-right` do container e usar `flex flex-col items-end` (para alinhar tudo à direita por defeito)
-- O `desde` recebe `self-start` (alinha à esquerda da própria coluna, ou seja, mesmo por cima do início do `280€/mês` já que a largura da coluna é a do conteúdo mais largo)
+**`src/data/vehicles.ts`**
+- Adicionar `"soon"` ao tipo `Availability`: `"stock" | "order" | "soon"`.
 
-```tsx
-<div className="shrink-0 flex flex-col items-end">
-  <p className="text-xs text-muted-foreground leading-none self-start">desde</p>
-  <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap mt-1">
-    {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
-  </p>
-  <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">
-    {formatPrice(vehicle.salePrice)}
-  </p>
-</div>
-```
+**`src/lib/sheet-vehicles.ts`**
+- Em `mapAvailability`, reconhecer `"disponível em breve"` / `"disponivel em breve"` → `"soon"`.
+- Preencher o já existente campo `availableFrom` no objeto `Vehicle` a partir da coluna `Disponível a partir de` quando `availability === "soon"`.
 
-Caso sem `monthlyPrice` mantém-se `text-right` simples.
+**`src/components/vianta/VehicleCard.tsx`**
+- Adicionar terceiro badge para `availability === "soon"` no mesmo lugar dos outros (canto superior esquerdo da imagem):
+  - Ícone: `CalendarClock` (lucide-react) — distingue dos restantes (`CheckCircle2` para stock, `Clock` para encomenda).
+  - Cores: paleta azul para diferenciar — `bg-sky-500/15 border-sky-500/30 text-sky-700`.
+  - Texto: `Disponível em Breve · {vehicle.availableFrom}` (omitir o sufixo se a data não estiver preenchida).
+
+### Notas
+
+- Sem alterações de business logic além do mapping; é puramente apresentação + um novo valor enum.
+- Nenhuma alteração no carregamento ou no resto da página.

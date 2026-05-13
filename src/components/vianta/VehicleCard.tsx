@@ -1,4 +1,4 @@
-import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging } from "lucide-react";
+import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging, CalendarClock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -51,6 +51,12 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
             <Clock className="w-3.5 h-3.5" />
             Por Encomenda · 30-60 dias
+          </div>
+        )}
+        {vehicle.availability === "soon" && (
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-sky-500/15 border border-sky-500/30 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <CalendarClock className="w-3.5 h-3.5" />
+            Disponível em Breve{vehicle.availableFrom ? ` · ${vehicle.availableFrom}` : ""}
           </div>
         )}
       </div>
