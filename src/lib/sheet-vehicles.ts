@@ -64,6 +64,7 @@ function mapAvailability(estado: string): Availability | null {
   const e = estado.trim().toLowerCase();
   if (e === "para venda") return "stock";
   if (e === "por encomenda") return "order";
+  if (e === "disponível em breve" || e === "disponivel em breve") return "soon";
   return null;
 }
 
