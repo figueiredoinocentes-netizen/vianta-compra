@@ -102,6 +102,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iKm = idx("KM's");
   const iCaixa = idx("Caixa");
   const iFoto = idx("Foto");
+  const iDispDe = idx("Disponível a partir de");
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
@@ -125,6 +126,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
     const imageUrl = normalizeDriveUrl(row[iFoto]);
     const categories = (row[iCategorias] ?? "")
       .split(",").map((c) => c.trim()).filter(Boolean);
+    const availableFrom = iDispDe >= 0 ? (row[iDispDe] ?? "").trim() || undefined : undefined;
 
     vehicles.push({
       id: `${slugify(model)}-${r}`,
@@ -142,6 +144,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       seats: 5,
       categories: categories.length ? categories : undefined,
       availability,
+      availableFrom,
     });
   }
 
