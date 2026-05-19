@@ -26,8 +26,8 @@ const FORMS: Record<FormType, { id: string; height: number; title: string; descr
 };
 
 const BASE = "https://api.bfdigital.io/widget/form";
-// Extra space around iframe inside the muted section (pt-10 pb-20 + header) ~ 280px
-const WRAPPER_PADDING = 280;
+// Extra space around iframe inside the muted section (header + pt-10 + pb-40 + safe area for sticky CTA)
+const WRAPPER_PADDING = 420;
 
 const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
   const scriptLoaded = useRef(false);

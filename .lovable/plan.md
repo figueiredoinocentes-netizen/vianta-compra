@@ -1,29 +1,20 @@
-## Problema
+## Objetivo
+Garantir que, no mobile, o botão de submissão do formulário nunca fica escondido quando os campos dinâmicos expandem.
 
-O iframe do formulário GHL tem uma altura fixa (`height: 1183px`) definida no `InlineForm.tsx`. Quando o utilizador preenche/expande todos os campos dinâmicos, o conteúdo real do formulário ultrapassa essa altura e a CTA fica escondida atrás da secção seguinte ("Não encontrou a viatura certa?").
+## Plano
+1. Ajustar a lógica de altura do `InlineForm` para deixar de depender de um valor fixo insuficiente quando o iframe cresce com campos dinâmicos.
+2. Reservar espaço seguro no fundo do formulário em mobile para impedir que o CTA flutuante ou a secção seguinte interfiram visualmente com a área final do iframe.
+3. Rever a visibilidade/comportamento do botão flutuante enquanto o formulário estiver aberto, para evitar sobreposição no fundo do ecrã.
+4. Validar no viewport móvel com o formulário expandido e com todos os campos dinâmicos selecionados, confirmando que o botão de submissão fica totalmente visível e clicável.
 
-Além disso, o wrapper exterior também tem `maxHeight: form.height + 200px`, o que limita o crescimento mesmo que o iframe cresça.
+## Detalhes técnicos
+- `src/components/vianta/InlineForm.tsx`
+  - Substituir o cálculo rígido de `maxHeight`/padding por uma abordagem que acompanhe melhor a altura real do iframe.
+  - Aumentar a folga inferior em mobile e evitar corte do conteúdo final.
+- `src/pages/Index.tsx`
+  - Passar estado suficiente para controlar o botão flutuante enquanto o formulário estiver aberto.
+- `src/components/vianta/StickyButton.tsx`
+  - Manter o CTA flutuante fora do caminho quando o formulário estiver ativo.
 
-## Solução
-
-Permitir que o iframe cresça dinamicamente conforme o conteúdo do formulário, ouvindo as mensagens `postMessage` que o `form_embed.js` da GHL envia com a altura real do formulário, e remover o tecto fixo do wrapper quando aberto.
-
-### Alterações em `src/components/vianta/InlineForm.tsx`
-
-1. **Altura inicial generosa + auto-resize**: manter `form.height` como altura inicial (evita "salto" visual), mas adicionar um listener `window.addEventListener("message", ...)` que detecta mensagens vindas do iframe da GHL (origem `api.bfdigital.io`) com a nova altura do formulário e atualiza:
-   - a altura do `<iframe>` 
-   - o `maxHeight` do wrapper exterior
-
-2. **Wrapper sem tecto rígido quando aberto**: substituir `maxHeight: open ? form.height + 200 : 0` por uma altura controlada por estado (`useState<number>`) que reflete a altura medida do iframe + padding da secção (`pt-10 pb-20` ≈ 120px). Quando ainda não temos medição, usar `form.height + 200` como fallback.
-
-3. **Cleanup do listener** no `useEffect` de unmount.
-
-### Detalhes técnicos
-
-- O script `form_embed.js` da GHL envia eventos `postMessage` no formato aproximado `{ type: "hsFormCallback" | "form-resize" | ..., height: number, id: <formId> }`. Vamos filtrar por `event.origin.includes("bfdigital.io")` e por `event.data.id === form.id` (ou similar) antes de aceitar a altura.
-- Se o formato exato da mensagem variar, aceitar qualquer `event.data.height` numérico vindo da origem correta, com um mínimo de `form.height` para não encolher demasiado.
-- Nenhuma mudança de lógica de negócio nem em outros ficheiros.
-
-## Ficheiros alterados
-
-- `src/components/vianta/InlineForm.tsx` (apenas presentação/comportamento do embed)
+## Resultado esperado
+Mesmo com todos os campos dinâmicos abertos no mobile, o utilizador vê sempre o botão de submissão completo, sem ficar escondido pela secção seguinte nem pelo botão flutuante.
