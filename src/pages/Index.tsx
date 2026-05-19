@@ -45,7 +45,7 @@ const Index = () => {
       <SocialProofSection />
       <Footer />
 
-      <StickyButton visible={showStickyBtn} onClick={openStockForm} />
+      <StickyButton visible={showStickyBtn && !stockFormOpen} onClick={openStockForm} />
     </div>
   );
 };
