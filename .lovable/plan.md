@@ -1,27 +1,29 @@
-## Adicionar estado "Disponível em Breve"
+## Problema
 
-Novo terceiro estado no badge sobre a foto do carro (em conjunto com "Em Stock" e "Por Encomenda · 30-60 dias"), mostrando a data da coluna `Disponível a partir de` da sheet.
+O iframe do formulário GHL tem uma altura fixa (`height: 1183px`) definida no `InlineForm.tsx`. Quando o utilizador preenche/expande todos os campos dinâmicos, o conteúdo real do formulário ultrapassa essa altura e a CTA fica escondida atrás da secção seguinte ("Não encontrou a viatura certa?").
 
-### Mapeamento
+Além disso, o wrapper exterior também tem `maxHeight: form.height + 200px`, o que limita o crescimento mesmo que o iframe cresça.
 
-Na sheet, coluna `Estado` pode ter o valor `Disponível em Breve` (qualquer variante por confirmar — assumimos exatamente esta string, case-insensitive). Coluna `Disponível a partir de` contém a data (formato livre, ex.: `01/2026` ou `Janeiro 2026`).
+## Solução
 
-### Alterações
+Permitir que o iframe cresça dinamicamente conforme o conteúdo do formulário, ouvindo as mensagens `postMessage` que o `form_embed.js` da GHL envia com a altura real do formulário, e remover o tecto fixo do wrapper quando aberto.
 
-**`src/data/vehicles.ts`**
-- Adicionar `"soon"` ao tipo `Availability`: `"stock" | "order" | "soon"`.
+### Alterações em `src/components/vianta/InlineForm.tsx`
 
-**`src/lib/sheet-vehicles.ts`**
-- Em `mapAvailability`, reconhecer `"disponível em breve"` / `"disponivel em breve"` → `"soon"`.
-- Preencher o já existente campo `availableFrom` no objeto `Vehicle` a partir da coluna `Disponível a partir de` quando `availability === "soon"`.
+1. **Altura inicial generosa + auto-resize**: manter `form.height` como altura inicial (evita "salto" visual), mas adicionar um listener `window.addEventListener("message", ...)` que detecta mensagens vindas do iframe da GHL (origem `api.bfdigital.io`) com a nova altura do formulário e atualiza:
+   - a altura do `<iframe>` 
+   - o `maxHeight` do wrapper exterior
 
-**`src/components/vianta/VehicleCard.tsx`**
-- Adicionar terceiro badge para `availability === "soon"` no mesmo lugar dos outros (canto superior esquerdo da imagem):
-  - Ícone: `CalendarClock` (lucide-react) — distingue dos restantes (`CheckCircle2` para stock, `Clock` para encomenda).
-  - Cores: paleta azul para diferenciar — `bg-sky-500/15 border-sky-500/30 text-sky-700`.
-  - Texto: `Disponível em Breve · {vehicle.availableFrom}` (omitir o sufixo se a data não estiver preenchida).
+2. **Wrapper sem tecto rígido quando aberto**: substituir `maxHeight: open ? form.height + 200 : 0` por uma altura controlada por estado (`useState<number>`) que reflete a altura medida do iframe + padding da secção (`pt-10 pb-20` ≈ 120px). Quando ainda não temos medição, usar `form.height + 200` como fallback.
 
-### Notas
+3. **Cleanup do listener** no `useEffect` de unmount.
 
-- Sem alterações de business logic além do mapping; é puramente apresentação + um novo valor enum.
-- Nenhuma alteração no carregamento ou no resto da página.
+### Detalhes técnicos
+
+- O script `form_embed.js` da GHL envia eventos `postMessage` no formato aproximado `{ type: "hsFormCallback" | "form-resize" | ..., height: number, id: <formId> }`. Vamos filtrar por `event.origin.includes("bfdigital.io")` e por `event.data.id === form.id` (ou similar) antes de aceitar a altura.
+- Se o formato exato da mensagem variar, aceitar qualquer `event.data.height` numérico vindo da origem correta, com um mínimo de `form.height` para não encolher demasiado.
+- Nenhuma mudança de lógica de negócio nem em outros ficheiros.
+
+## Ficheiros alterados
+
+- `src/components/vianta/InlineForm.tsx` (apenas presentação/comportamento do embed)

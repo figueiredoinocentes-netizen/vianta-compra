@@ -26,13 +26,16 @@ const FORMS: Record<FormType, { id: string; height: number; title: string; descr
 };
 
 const BASE = "https://api.bfdigital.io/widget/form";
+// Extra space around iframe inside the muted section (pt-10 pb-20 + header) ~ 280px
+const WRAPPER_PADDING = 280;
 
 const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
   const scriptLoaded = useRef(false);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [hasOpened, setHasOpened] = useState(false);
   const form = FORMS[type];
+  const [iframeHeight, setIframeHeight] = useState(form.height);
 
-  // Only create iframe once open is true for the first time
   useEffect(() => {
     if (open && !hasOpened) setHasOpened(true);
   }, [open, hasOpened]);
@@ -51,6 +54,29 @@ const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
     scriptLoaded.current = true;
   }, []);
 
+  // Listen for height updates from GHL iframe
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (!event.origin.includes("bfdigital.io")) return;
+      const data = event.data;
+      if (!data || typeof data !== "object") return;
+      // GHL posts various shapes; accept any numeric height referencing our form
+      const candidate =
+        (typeof data.height === "number" && data.height) ||
+        (data.payload && typeof data.payload.height === "number" && data.payload.height) ||
+        0;
+      const matchesForm =
+        !data.id || data.id === form.id || (data.payload && data.payload.id === form.id);
+      if (candidate > 0 && matchesForm) {
+        const newHeight = Math.max(candidate, 400);
+        setIframeHeight(newHeight);
+        if (iframeRef.current) iframeRef.current.style.height = `${newHeight}px`;
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [form.id]);
+
   const iframeSrc = `${BASE}/${form.id}`;
 
   return (
@@ -58,7 +84,7 @@ const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
       ref={formRef}
       className="overflow-hidden transition-all duration-500 ease-in-out"
       style={{
-        maxHeight: open ? `${form.height + 200}px` : "0px",
+        maxHeight: open ? `${iframeHeight + WRAPPER_PADDING}px` : "0px",
         opacity: open ? 1 : 0,
       }}
     >
@@ -91,6 +117,7 @@ const InlineForm = ({ type, open, formRef }: InlineFormProps) => {
                 iframe.setAttribute("data-layout-iframe-id", `inline-${form.id}`);
                 iframe.setAttribute("data-form-id", form.id);
                 iframe.title = form.name;
+                iframeRef.current = iframe;
                 node.appendChild(iframe);
               }}
             />
