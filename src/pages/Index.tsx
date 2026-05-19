@@ -45,7 +45,7 @@ const Index = () => {
       <SocialProofSection />
       <Footer />
 
-      <StickyButton visible={showStickyBtn} onScrollToTop={scrollToHero} />
+      <StickyButton visible={showStickyBtn} onClick={openStockForm} />
     </div>
   );
 };

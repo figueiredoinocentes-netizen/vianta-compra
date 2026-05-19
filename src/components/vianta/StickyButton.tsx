@@ -1,11 +1,9 @@
-import { ChevronUp } from "lucide-react";
-
 interface StickyButtonProps {
   visible: boolean;
-  onScrollToTop: () => void;
+  onClick: () => void;
 }
 
-const StickyButton = ({ visible, onScrollToTop }: StickyButtonProps) => {
+const StickyButton = ({ visible, onClick }: StickyButtonProps) => {
   return (
     <div
       className={`fixed bottom-5 left-1/2 -translate-x-1/2 z-30 transition-all duration-300 ${
@@ -13,11 +11,10 @@ const StickyButton = ({ visible, onScrollToTop }: StickyButtonProps) => {
       }`}
     >
       <button
-        onClick={onScrollToTop}
-        className="flex items-center gap-2 bg-primary text-primary-foreground font-bold text-sm px-5 py-3 rounded-full shadow-lg active:scale-95 transition-transform"
+        onClick={onClick}
+        className="flex items-center gap-2 bg-cta text-cta-foreground font-bold text-sm px-5 py-3 rounded-full shadow-lg active:scale-95 transition-transform"
       >
-        <ChevronUp className="w-4 h-4" />
-        Ver viaturas
+        Estou Interessado
       </button>
     </div>
   );
