@@ -114,7 +114,7 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
 
 
         <Button
-          className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-12"
+          className="w-full bg-cta hover:bg-cta/90 text-cta-foreground font-semibold rounded-xl h-12"
         >
           Estou Interessado
         </Button>
