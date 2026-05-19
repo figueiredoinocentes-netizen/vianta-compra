@@ -45,6 +45,9 @@
     --radius: 0.75rem;
 
     /* Custom Vianta tokens */
+    --cta: 25 95% 54%;
+    --cta-foreground: 0 0% 100%;
+
     --available: 142 72% 35%;
     --available-foreground: 0 0% 100%;
     --available-bg: 142 60% 93%;
