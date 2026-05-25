@@ -58,9 +58,9 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
         )}
       </div>
 
-      {/* Carousel */}
+      {/* Carousel (mobile) / Vertical list (desktop) */}
       <div ref={carouselRef}
-      className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw]"
+      className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none px-[9vw] md:flex-col md:items-center md:overflow-x-visible md:snap-none md:px-5 md:max-w-2xl md:mx-auto md:gap-6"
       style={{ WebkitOverflowScrolling: "touch" }}>
 
         {loading && (
