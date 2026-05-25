@@ -22,7 +22,7 @@ const formatMileage = (km: number) =>
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   return (
     <div
-      className="flex-none w-[88vw] max-w-[360px] snap-center md:flex-initial md:w-full md:max-w-none md:snap-align-none bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
+      className="flex-none w-[88vw] max-w-[360px] snap-center md:flex-initial md:w-auto md:max-w-none md:snap-align-none bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
       onClick={() => { trackEvent("ViewContent", { content_name: vehicle.model }); onSelect(); }}
       role="button"
       tabIndex={0}
