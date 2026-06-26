@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import TopStrip from "@/components/vianta/TopStrip";
 import HeroSection from "@/components/vianta/HeroSection";
 import InlineForm from "@/components/vianta/InlineForm";
-import ConsultancySection from "@/components/vianta/ConsultancySection";
+
 import AdvantagesSection from "@/components/vianta/AdvantagesSection";
 import SocialProofSection from "@/components/vianta/SocialProofSection";
 import Footer from "@/components/vianta/Footer";
@@ -40,7 +40,7 @@ const Index = () => {
       <TopStrip />
       <HeroSection heroRef={heroRef} onContact={openStockForm} />
       <InlineForm type="stock" open={stockFormOpen} formRef={stockFormRef} />
-      <ConsultancySection onScrollToForm={openStockForm} />
+      
       <AdvantagesSection />
       <SocialProofSection />
       <Footer />
