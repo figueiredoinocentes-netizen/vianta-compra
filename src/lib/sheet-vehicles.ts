@@ -138,6 +138,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       year,
       transmission,
       fuel,
+      fuelLabel,
       salePrice,
       monthlyPrice,
       realRange,
