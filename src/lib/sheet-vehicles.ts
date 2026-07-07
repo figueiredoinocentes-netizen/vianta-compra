@@ -122,7 +122,9 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
     const monthlyPrice = parsePtNumber(row[iPrest]);
     const realRange = parsePtNumber(row[iAuton]);
     const mileage = parsePtNumber(row[iKm]) ?? 0;
-    const fuel = mapFuel(row[iComb] ?? "");
+    const fuelRaw = (row[iComb] ?? "").trim();
+    const fuel = mapFuel(fuelRaw);
+    const fuelLabel = fuelRaw || undefined;
     const transmission = mapTransmission(row[iCaixa] ?? "");
     const imageUrl = normalizeDriveUrl(row[iFoto]);
     const categories = (row[iCategorias] ?? "")
