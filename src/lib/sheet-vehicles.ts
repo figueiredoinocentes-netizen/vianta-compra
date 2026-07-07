@@ -73,6 +73,7 @@ function mapFuel(v: string): Fuel {
   if (x.startsWith("elét") || x.startsWith("elec")) return "Elétrico";
   if (x.startsWith("híb") || x.startsWith("hib")) return "Híbrido";
   if (x.startsWith("dies")) return "Diesel";
+  if (x === "gpl" || x === "glp" || x === "lpg" || x.includes("gpl") || x.includes("lpg")) return "GPL";
   return "Gasolina";
 }
 
