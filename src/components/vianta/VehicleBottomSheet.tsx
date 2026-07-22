@@ -98,9 +98,11 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
                 </div>
               )}
             </div>
-            <div className="text-right">
-              <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
-            </div>
+            {vehicle.salePrice > 0 && (
+              <div className="text-right">
+                <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
+              </div>
+            )}
           </div>
 
           {/* Availability info */}
