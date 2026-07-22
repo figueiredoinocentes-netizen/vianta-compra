@@ -78,11 +78,13 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
                 <p className="text-3xl font-extrabold text-primary leading-none whitespace-nowrap mt-1">
                   {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
                 </p>
-                <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">{formatPrice(vehicle.salePrice)}</p>
+                {vehicle.salePrice > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1 whitespace-nowrap">{formatPrice(vehicle.salePrice)}</p>
+                )}
               </>
-            ) : (
+            ) : vehicle.salePrice > 0 ? (
               <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
-            )}
+            ) : null}
           </div>
         </div>
 
