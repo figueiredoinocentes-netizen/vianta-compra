@@ -44,6 +44,8 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
 
   if (!vehicle) return null;
 
+  const unavailable = vehicle.availability === "sold" || vehicle.availability === "reserved";
+
   return (
     <>
       {/* Overlay */}
