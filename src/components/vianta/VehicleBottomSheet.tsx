@@ -119,11 +119,29 @@ const VehicleBottomSheet = ({ vehicle, open, onClose, onContact }: VehicleBottom
             </div>
           )}
 
+          {vehicle.availability === "sold" && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-slate-500/10 border border-slate-500/30 text-slate-700 text-sm font-semibold px-3 py-2 rounded-lg">
+              <span className="w-2 h-2 rounded-full bg-slate-500" />
+              Vendido — já não disponível
+            </div>
+          )}
+          {vehicle.availability === "reserved" && (
+            <div className="mt-4 inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/30 text-violet-700 text-sm font-semibold px-3 py-2 rounded-lg">
+              <span className="w-2 h-2 rounded-full bg-violet-500" />
+              Reservado — em processo de fecho
+            </div>
+          )}
+
           {/* CTA button */}
           <Button
-            className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-extrabold rounded-xl text-base h-14 shadow-md mt-4 mb-5"
+            disabled={unavailable}
+            className={
+              unavailable
+                ? "w-full bg-muted text-muted-foreground font-extrabold rounded-xl text-base h-14 mt-4 mb-5 cursor-not-allowed"
+                : "w-full bg-accent hover:bg-accent/90 text-accent-foreground font-extrabold rounded-xl text-base h-14 shadow-md mt-4 mb-5"
+            }
             size="lg"
-            onClick={() => {
+            onClick={unavailable ? undefined : () => {
               onClose();
               onContact(`${vehicle.model} (${vehicle.year})`);
             }}
