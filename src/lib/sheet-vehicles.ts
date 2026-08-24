@@ -181,5 +181,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
     });
   }
 
+  vehicles.sort((a, b) => ORDER[a.availability ?? "stock"] - ORDER[b.availability ?? "stock"]);
+
   return vehicles;
 }
