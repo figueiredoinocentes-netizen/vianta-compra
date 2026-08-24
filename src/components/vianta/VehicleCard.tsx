@@ -1,4 +1,4 @@
-import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging, CalendarClock } from "lucide-react";
+import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging, CalendarClock, XCircle, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -20,6 +20,7 @@ const formatMileage = (km: number) =>
   km.toLocaleString("pt-PT") + " km";
 
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
+  const unavailable = vehicle.availability === "sold" || vehicle.availability === "reserved";
   return (
     <div
       className="flex-none w-[88vw] max-w-[360px] snap-center md:flex-initial md:w-auto md:max-w-none md:snap-align-none bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
@@ -57,6 +58,18 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
           <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-sky-500/15 border border-sky-500/30 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
             <CalendarClock className="w-3.5 h-3.5" />
             Disponível em Breve{vehicle.availableFrom ? ` · ${vehicle.availableFrom}` : ""}
+          </div>
+        )}
+        {vehicle.availability === "sold" && (
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-slate-500/15 border border-slate-500/30 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <XCircle className="w-3.5 h-3.5" />
+            Vendido
+          </div>
+        )}
+        {vehicle.availability === "reserved" && (
+          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-violet-500/15 border border-violet-500/30 text-violet-700 text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <Lock className="w-3.5 h-3.5" />
+            Reservado
           </div>
         )}
       </div>
@@ -116,7 +129,13 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
 
 
         <Button
-          className="w-full bg-cta hover:bg-cta/90 text-cta-foreground font-semibold rounded-xl h-12"
+          disabled={unavailable}
+          onClick={unavailable ? (e) => { e.stopPropagation(); } : undefined}
+          className={
+            unavailable
+              ? "w-full bg-muted text-muted-foreground font-semibold rounded-xl h-12 cursor-not-allowed"
+              : "w-full bg-cta hover:bg-cta/90 text-cta-foreground font-semibold rounded-xl h-12"
+          }
         >
           Estou Interessado
         </Button>

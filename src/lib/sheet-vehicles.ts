@@ -65,8 +65,27 @@ function mapAvailability(estado: string): Availability | null {
   if (e === "para venda") return "stock";
   if (e === "por encomenda") return "order";
   if (e === "disponível em breve" || e === "disponivel em breve") return "soon";
+  if (e === "vendido") return "sold";
+  if (e === "acordo verbal") return "reserved";
   return null;
 }
+
+/** "17/8/2026" | "17/08/2026" -> Date | null */
+function parsePtDate(v: string | undefined): Date | null {
+  if (!v) return null;
+  const m = v.trim().match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+  if (!m) return null;
+  const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function daysSince(date: Date): number {
+  return (Date.now() - date.getTime()) / 86400000;
+}
+
+const ORDER: Record<Availability, number> = {
+  stock: 0, order: 0, soon: 0, reserved: 1, sold: 2,
+};
 
 function mapFuel(v: string): Fuel {
   const x = v.trim().toLowerCase();
@@ -104,6 +123,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iCaixa = idx("Caixa");
   const iFoto = idx("Foto");
   const iDispDe = idx("Disponível a partir de");
+  const iDataVendido = idx("Data Vendido");
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
@@ -112,6 +132,15 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
     const estado = row[iEstado] ?? "";
     const availability = mapAvailability(estado);
     if (!availability) continue;
+
+    if (availability === "sold") {
+      // Defensivo: se a coluna "Data Vendido" ainda não existir, esconder como antes.
+      if (iDataVendido < 0) continue;
+      const soldAt = parsePtDate(row[iDataVendido]);
+      if (!soldAt) continue;
+      const age = daysSince(soldAt);
+      if (age > 30) continue;
+    }
 
     const model = (row[iCarro] ?? "").trim();
     if (!model) continue;
@@ -151,6 +180,8 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       availableFrom,
     });
   }
+
+  vehicles.sort((a, b) => ORDER[a.availability ?? "stock"] - ORDER[b.availability ?? "stock"]);
 
   return vehicles;
 }
