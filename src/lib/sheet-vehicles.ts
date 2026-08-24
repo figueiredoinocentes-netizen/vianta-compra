@@ -123,6 +123,7 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iCaixa = idx("Caixa");
   const iFoto = idx("Foto");
   const iDispDe = idx("Disponível a partir de");
+  const iDataVendido = idx("Data Vendido");
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
@@ -131,6 +132,15 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
     const estado = row[iEstado] ?? "";
     const availability = mapAvailability(estado);
     if (!availability) continue;
+
+    if (availability === "sold") {
+      // Defensivo: se a coluna "Data Vendido" ainda não existir, esconder como antes.
+      if (iDataVendido < 0) continue;
+      const soldAt = parsePtDate(row[iDataVendido]);
+      if (!soldAt) continue;
+      const age = daysSince(soldAt);
+      if (age > 30) continue;
+    }
 
     const model = (row[iCarro] ?? "").trim();
     if (!model) continue;
