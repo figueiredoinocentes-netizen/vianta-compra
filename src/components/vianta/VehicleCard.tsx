@@ -20,6 +20,7 @@ const formatMileage = (km: number) =>
   km.toLocaleString("pt-PT") + " km";
 
 const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
+  const unavailable = vehicle.availability === "sold" || vehicle.availability === "reserved";
   return (
     <div
       className="flex-none w-[88vw] max-w-[360px] snap-center md:flex-initial md:w-auto md:max-w-none md:snap-align-none bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
@@ -128,7 +129,13 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
 
 
         <Button
-          className="w-full bg-cta hover:bg-cta/90 text-cta-foreground font-semibold rounded-xl h-12"
+          disabled={unavailable}
+          onClick={unavailable ? (e) => { e.stopPropagation(); } : undefined}
+          className={
+            unavailable
+              ? "w-full bg-muted text-muted-foreground font-semibold rounded-xl h-12 cursor-not-allowed"
+              : "w-full bg-cta hover:bg-cta/90 text-cta-foreground font-semibold rounded-xl h-12"
+          }
         >
           Estou Interessado
         </Button>
