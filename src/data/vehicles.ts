@@ -1,6 +1,6 @@
 export type Transmission = "Automático" | "Manual";
 export type Fuel = "Elétrico" | "Híbrido" | "Gasolina" | "Diesel" | "GPL";
-export type Availability = "stock" | "order" | "soon";
+export type Availability = "stock" | "order" | "soon" | "sold" | "reserved";
 
 export interface Vehicle {
   id: string;
