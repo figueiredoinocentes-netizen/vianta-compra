@@ -48,11 +48,27 @@ function parsePtNumber(v: string | undefined): number | undefined {
 }
 
 /** Converte URL Drive em URL embutível como <img>. */
-function normalizeDriveUrl(url: string | undefined): string {
+function normalizeDriveUrl(url: string | undefined, size = 800): string {
   if (!url) return "/placeholder.svg";
   const m = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
-  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w${size}`;
   return url;
+}
+
+/**
+ * "Fotos Reais" pode conter: vazio, um link de ficheiro Drive, vários links
+ * (vírgula ou quebra de linha) ou um link de PASTA Drive.
+ * Links de pasta são ignorados (não é possível listar sem API autenticada).
+ */
+function parseRealPhotos(raw: string | undefined): string[] {
+  if (!raw) return [];
+  return raw
+    .split(/[\n,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((u) => /^https?:\/\//i.test(u))
+    .filter((u) => !/\/drive\/(u\/\d+\/)?folders\//i.test(u))
+    .map((u) => normalizeDriveUrl(u, 1200));
 }
 
 function slugify(s: string): string {
