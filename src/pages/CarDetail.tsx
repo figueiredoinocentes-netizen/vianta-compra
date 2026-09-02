@@ -15,6 +15,7 @@ import { fetchVehicles } from "@/lib/sheet-vehicles";
 import InlineForm from "@/components/vianta/InlineForm";
 import TopStrip from "@/components/vianta/TopStrip";
 import Footer from "@/components/vianta/Footer";
+import StickyButton from "@/components/vianta/StickyButton";
 import { trackEvent } from "@/lib/meta-pixel";
 
 const formatPrice = (price: number) =>
