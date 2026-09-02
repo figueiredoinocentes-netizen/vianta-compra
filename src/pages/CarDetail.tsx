@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft, Zap, Fuel, Calendar, Gauge, Users, Palette, Battery,
-  BatteryCharging, Briefcase, ShieldCheck, CheckCircle2,
+  BatteryCharging, Briefcase, ShieldCheck, CheckCircle2, Wallet,
   Clock, CalendarClock, XCircle, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -143,33 +143,45 @@ const CarDetail = () => {
         </Link>
 
         {/* Gallery */}
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {photos.map((src, i) => (
-              <CarouselItem key={`${src}-${i}`}>
-                <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
-                  <img
-                    src={src}
-                    alt={`${vehicle.model} — foto ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      if (img.src.endsWith("/placeholder.svg")) return;
-                      img.src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {photos.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </>
-          )}
-        </Carousel>
+        <div className="relative">
+          <Carousel setApi={setApi} className="w-full">
+            <CarouselContent>
+              {photos.map((src, i) => (
+                <CarouselItem key={`${src}-${i}`}>
+                  <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
+                    <img
+                      src={src}
+                      alt={`${vehicle.model} — foto ${i + 1}`}
+                      className="w-full h-full object-cover"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        if (img.src.endsWith("/placeholder.svg")) return;
+                        img.src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {photos.length > 1 && (
+              <>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </>
+            )}
+          </Carousel>
+
+          {/* Badge "Pronto para TVDE" — evoca o dístico oficial (moldura preta, "TVDE" em destaque) */}
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-2 bg-background/95 backdrop-blur-sm border-2 border-foreground rounded-lg pl-2.5 pr-3 py-1.5 shadow-md">
+            <span className="text-sm font-extrabold tracking-tight text-foreground leading-none">TVDE</span>
+            <span className="w-px h-6 bg-foreground/20" />
+            <div className="leading-tight">
+              <p className="text-[11px] font-bold text-foreground">Pronto a operar</p>
+              <p className="text-[10px] text-muted-foreground">Inspeção + extintor incluídos</p>
+            </div>
+          </div>
+        </div>
 
         {photos.length > 1 && (
           <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
@@ -238,22 +250,21 @@ const CarDetail = () => {
           </>
         )}
 
-        {/* O que está incluído */}
-        <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">O que está incluído</h2>
-        <ul className="bg-muted rounded-xl p-4 space-y-3">
-          {[
-            "Viatura pronta a operar: dístico, inspeção e extintor incluídos",
-            "Mediação de financiamento e seguro",
-            "Garantia Standard Vianta (motor e caixa, 18 meses, extensível até 36 com custo adicional)",
-            "Acompanhamento pós-venda",
-            "Integração na frota Vianta com Slot",
-          ].map((item) => (
-            <li key={item} className="flex items-start gap-2 text-sm text-foreground">
-              <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
+        {/* Slot — opera já com a viatura na frota Vianta */}
+        <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Opere já com Slot</h2>
+        <div className="bg-accent/10 border border-accent/20 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Wallet className="w-4 h-4 text-accent shrink-0" />
+            <p className="text-sm font-semibold text-foreground">Já tem carro. A Vianta trata do resto.</p>
+          </div>
+          <p className="text-2xl font-extrabold text-primary leading-none">
+            35€<span className="text-base font-bold">/semana</span>
+            <span className="text-xs font-medium text-muted-foreground ml-1.5">+ IVA (6%)</span>
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Valor fixo — não é percentagem sobre faturação. Gestão administrativa completa, pagamentos semanais e suporte direto do gestor de frota.
+          </p>
+        </div>
 
         {/* Garantias */}
         {(vehicle.warrantyVehicle || vehicle.warrantyBattery) && (
