@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft, Zap, Fuel, Calendar, Gauge, Users, Palette, Battery,
-  BatteryCharging, Briefcase, ShieldCheck, Sparkles, CheckCircle2,
+  BatteryCharging, Briefcase, ShieldCheck, CheckCircle2,
   Clock, CalendarClock, XCircle, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,6 @@ import { fetchVehicles } from "@/lib/sheet-vehicles";
 import InlineForm from "@/components/vianta/InlineForm";
 import TopStrip from "@/components/vianta/TopStrip";
 import Footer from "@/components/vianta/Footer";
-import StickyButton from "@/components/vianta/StickyButton";
 import { trackEvent } from "@/lib/meta-pixel";
 
 const formatPrice = (price: number) =>
@@ -54,6 +53,12 @@ const AvailabilityBadge = ({ vehicle }: { vehicle: Vehicle }) => {
   }
 };
 
+/** Classes partilhadas pelo CTA em-linha (fim da página) e pelo CTA flutuante — têm de ter o mesmo aspeto. */
+const ctaClassName = (unavailable: boolean) =>
+  unavailable
+    ? "w-full bg-muted text-muted-foreground font-extrabold rounded-xl text-base h-14 cursor-not-allowed"
+    : "w-full bg-cta hover:bg-cta/90 text-cta-foreground font-extrabold rounded-xl text-base h-14 shadow-md";
+
 const CarDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
@@ -61,9 +66,9 @@ const CarDetail = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [formOpen, setFormOpen] = useState(false);
-  const [showStickyBtn, setShowStickyBtn] = useState(false);
+  const [showFloatingCta, setShowFloatingCta] = useState(true);
   const formRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
+  const bottomCtaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,15 +90,17 @@ const CarDetail = () => {
     return () => { api.off("select", onSelect); };
   }, [api]);
 
+  // Esconde o CTA flutuante assim que o CTA "real" do fim da página entra em vista.
   useEffect(() => {
-    const handleScroll = () => {
-      const galleryBottom = galleryRef.current?.getBoundingClientRect().bottom ?? 0;
-      setShowStickyBtn(galleryBottom < 0);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const node = bottomCtaRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowFloatingCta(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [vehicle]);
 
   const openForm = () => {
     if (vehicle) trackEvent("ViewContent", { content_name: vehicle.model });
@@ -130,56 +137,54 @@ const CarDetail = () => {
       <title>{`${vehicle.model}${vehicle.version ? " " + vehicle.version : ""} — Vianta TVDE`}</title>
       <TopStrip />
 
-      <main className="flex-1 w-full max-w-3xl mx-auto px-5 pb-10">
+      <main className="flex-1 w-full max-w-3xl mx-auto px-5 pb-28">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mt-4 mb-3">
           <ArrowLeft className="w-4 h-4" /> Voltar às viaturas
         </Link>
 
         {/* Gallery */}
-        <div ref={galleryRef}>
-          <Carousel setApi={setApi} className="w-full">
-            <CarouselContent>
-              {photos.map((src, i) => (
-                <CarouselItem key={`${src}-${i}`}>
-                  <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
-                    <img
-                      src={src}
-                      alt={`${vehicle.model} — foto ${i + 1}`}
-                      className="w-full h-full object-cover"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      onError={(e) => {
-                        const img = e.currentTarget;
-                        if (img.src.endsWith("/placeholder.svg")) return;
-                        img.src = "/placeholder.svg";
-                      }}
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {photos.length > 1 && (
-              <>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
-              </>
-            )}
-          </Carousel>
-
+        <Carousel setApi={setApi} className="w-full">
+          <CarouselContent>
+            {photos.map((src, i) => (
+              <CarouselItem key={`${src}-${i}`}>
+                <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
+                  <img
+                    src={src}
+                    alt={`${vehicle.model} — foto ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading={i === 0 ? "eager" : "lazy"}
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      if (img.src.endsWith("/placeholder.svg")) return;
+                      img.src = "/placeholder.svg";
+                    }}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
           {photos.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
-              {photos.map((src, i) => (
-                <button
-                  key={`thumb-${i}`}
-                  onClick={() => api?.scrollTo(i)}
-                  className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
-                  aria-label={`Ver foto ${i + 1}`}
-                >
-                  <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-                </button>
-              ))}
-            </div>
+            <>
+              <CarouselPrevious className="left-2" />
+              <CarouselNext className="right-2" />
+            </>
           )}
-        </div>
+        </Carousel>
+
+        {photos.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
+            {photos.map((src, i) => (
+              <button
+                key={`thumb-${i}`}
+                onClick={() => api?.scrollTo(i)}
+                className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
+                aria-label={`Ver foto ${i + 1}`}
+              >
+                <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Title + price */}
         <div className="mt-5 flex items-start justify-between gap-4">
@@ -273,23 +278,39 @@ const CarDetail = () => {
           </>
         ) : null}
 
-        {/* CTA */}
-        <Button
-          disabled={unavailable}
-          onClick={unavailable ? undefined : openForm}
-          size="lg"
-          className={
-            unavailable
-              ? "w-full bg-muted text-muted-foreground font-extrabold rounded-xl text-base h-14 mt-6 cursor-not-allowed"
-              : "w-full bg-cta hover:bg-cta/90 text-cta-foreground font-extrabold rounded-xl text-base h-14 mt-6 shadow-md"
-          }
-        >
-          Estou Interessado
-        </Button>
+        {/* CTA (fim da página) */}
+        <div ref={bottomCtaRef} className="mt-6">
+          <Button
+            disabled={unavailable}
+            onClick={unavailable ? undefined : openForm}
+            size="lg"
+            className={ctaClassName(unavailable)}
+          >
+            Estou Interessado
+          </Button>
+        </div>
       </main>
 
       <InlineForm type="stock" open={formOpen} formRef={formRef} />
-      <StickyButton visible={showStickyBtn && !formOpen && !unavailable} onClick={openForm} />
+
+      {/* CTA flutuante — visível desde o topo, visual idêntico ao botão acima, esconde-se quando esse entra em vista */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-30 px-5 pb-5 pt-3 bg-gradient-to-t from-background via-background/95 to-transparent transition-all duration-300 ${
+          showFloatingCta && !formOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+      >
+        <div className="max-w-3xl mx-auto">
+          <Button
+            disabled={unavailable}
+            onClick={unavailable ? undefined : openForm}
+            size="lg"
+            className={ctaClassName(unavailable)}
+          >
+            Estou Interessado
+          </Button>
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
