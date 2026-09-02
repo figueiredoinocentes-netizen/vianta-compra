@@ -212,12 +212,10 @@ const CarDetail = () => {
                 <p className="text-3xl font-extrabold text-primary leading-none mt-1 whitespace-nowrap">
                   {vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span>
                 </p>
+                <p className="text-[10px] text-muted-foreground/80 mt-0.5">(120 meses)</p>
                 {vehicle.salePrice > 0 && (
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(vehicle.salePrice)}</p>
                 )}
-                <p className="text-[10px] text-muted-foreground/80 mt-1 max-w-[150px] leading-snug">
-                  Financiamento a 120 meses, sujeito a aprovação de crédito.
-                </p>
               </>
             ) : vehicle.salePrice > 0 ? (
               <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
