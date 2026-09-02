@@ -205,14 +205,6 @@ const CarDetail = () => {
           </div>
         </div>
 
-        {/* Highlight */}
-        {vehicle.highlight && (
-          <div className="mt-4 bg-accent/10 border border-accent/20 rounded-xl p-4 flex gap-2.5">
-            <Sparkles className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <p className="text-sm text-foreground whitespace-pre-line">{vehicle.highlight}</p>
-          </div>
-        )}
-
         {/* Specs */}
         <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Especificações</h2>
         <div className="grid grid-cols-2 gap-3">
