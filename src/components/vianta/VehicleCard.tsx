@@ -1,4 +1,5 @@
 import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging, CalendarClock, XCircle, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
