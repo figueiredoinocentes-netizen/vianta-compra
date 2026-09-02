@@ -136,48 +136,50 @@ const CarDetail = () => {
         </Link>
 
         {/* Gallery */}
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {photos.map((src, i) => (
-              <CarouselItem key={`${src}-${i}`}>
-                <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
-                  <img
-                    src={src}
-                    alt={`${vehicle.model} — foto ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      if (img.src.endsWith("/placeholder.svg")) return;
-                      img.src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {photos.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </>
-          )}
-        </Carousel>
+        <div ref={galleryRef}>
+          <Carousel setApi={setApi} className="w-full">
+            <CarouselContent>
+              {photos.map((src, i) => (
+                <CarouselItem key={`${src}-${i}`}>
+                  <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
+                    <img
+                      src={src}
+                      alt={`${vehicle.model} — foto ${i + 1}`}
+                      className="w-full h-full object-cover"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        if (img.src.endsWith("/placeholder.svg")) return;
+                        img.src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {photos.length > 1 && (
+              <>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </>
+            )}
+          </Carousel>
 
-        {photos.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
-            {photos.map((src, i) => (
-              <button
-                key={`thumb-${i}`}
-                onClick={() => api?.scrollTo(i)}
-                className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
-                aria-label={`Ver foto ${i + 1}`}
-              >
-                <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-              </button>
-            ))}
-          </div>
-        )}
+          {photos.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
+              {photos.map((src, i) => (
+                <button
+                  key={`thumb-${i}`}
+                  onClick={() => api?.scrollTo(i)}
+                  className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
+                  aria-label={`Ver foto ${i + 1}`}
+                >
+                  <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Title + price */}
         <div className="mt-5 flex items-start justify-between gap-4">
