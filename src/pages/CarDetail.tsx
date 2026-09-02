@@ -172,11 +172,11 @@ const CarDetail = () => {
             )}
           </Carousel>
 
-          {/* Badge "Pronto para TVDE" — evoca o dístico oficial (moldura preta, "TVDE" em destaque) */}
-          <div className="absolute top-3 left-3 z-10 flex items-center gap-2 bg-background/95 backdrop-blur-sm border-2 border-foreground rounded-lg pl-2.5 pr-3 py-1.5 shadow-md">
-            <span className="text-sm font-extrabold tracking-tight text-foreground leading-none">TVDE</span>
-            <span className="w-px h-6 bg-foreground/20" />
-            <div className="leading-tight">
+          {/* Badge "Pronto para TVDE" — evoca o dístico oficial (moldura preta, "TVDE" em destaque). Compacto em mobile para não tapar o carro; texto completo a partir de sm. */}
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 flex items-center gap-2 bg-background/95 backdrop-blur-sm border-2 border-foreground rounded-lg pl-2 pr-2 py-1 sm:pl-2.5 sm:pr-3 sm:py-1.5 shadow-md">
+            <span className="text-xs sm:text-sm font-extrabold tracking-tight text-foreground leading-none">TVDE</span>
+            <span className="hidden sm:block w-px h-6 bg-foreground/20" />
+            <div className="hidden sm:block leading-tight">
               <p className="text-[11px] font-bold text-foreground">Pronto a operar</p>
               <p className="text-[10px] text-muted-foreground">Inspeção + extintor incluídos</p>
             </div>
