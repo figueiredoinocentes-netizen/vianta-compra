@@ -85,6 +85,16 @@ const CarDetail = () => {
     return () => { api.off("select", onSelect); };
   }, [api]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const galleryBottom = galleryRef.current?.getBoundingClientRect().bottom ?? 0;
+      setShowStickyBtn(galleryBottom < 0);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const openForm = () => {
     if (vehicle) trackEvent("ViewContent", { content_name: vehicle.model });
     setFormOpen(true);
