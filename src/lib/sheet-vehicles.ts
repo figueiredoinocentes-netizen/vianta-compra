@@ -189,6 +189,9 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       .split(",").map((c) => c.trim()).filter(Boolean);
     const availableFrom = iDispDe >= 0 ? (row[iDispDe] ?? "").trim() || undefined : undefined;
 
+    const realPhotos = parseRealPhotos(cell(row, iFotosReais));
+    const gallery = realPhotos.length ? realPhotos : [imageUrl];
+
     vehicles.push({
       id: `${slugify(model)}-${r}`,
       model,
