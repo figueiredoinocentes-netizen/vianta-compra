@@ -61,7 +61,9 @@ const CarDetail = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [formOpen, setFormOpen] = useState(false);
+  const [showStickyBtn, setShowStickyBtn] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
