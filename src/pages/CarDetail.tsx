@@ -15,6 +15,7 @@ import { fetchVehicles } from "@/lib/sheet-vehicles";
 import InlineForm from "@/components/vianta/InlineForm";
 import TopStrip from "@/components/vianta/TopStrip";
 import Footer from "@/components/vianta/Footer";
+import StickyButton from "@/components/vianta/StickyButton";
 import { trackEvent } from "@/lib/meta-pixel";
 
 const formatPrice = (price: number) =>
@@ -60,7 +61,9 @@ const CarDetail = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [formOpen, setFormOpen] = useState(false);
+  const [showStickyBtn, setShowStickyBtn] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +84,16 @@ const CarDetail = () => {
     api.on("select", onSelect);
     return () => { api.off("select", onSelect); };
   }, [api]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const galleryBottom = galleryRef.current?.getBoundingClientRect().bottom ?? 0;
+      setShowStickyBtn(galleryBottom < 0);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const openForm = () => {
     if (vehicle) trackEvent("ViewContent", { content_name: vehicle.model });
@@ -123,48 +136,50 @@ const CarDetail = () => {
         </Link>
 
         {/* Gallery */}
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {photos.map((src, i) => (
-              <CarouselItem key={`${src}-${i}`}>
-                <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
-                  <img
-                    src={src}
-                    alt={`${vehicle.model} — foto ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      if (img.src.endsWith("/placeholder.svg")) return;
-                      img.src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          {photos.length > 1 && (
-            <>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </>
-          )}
-        </Carousel>
+        <div ref={galleryRef}>
+          <Carousel setApi={setApi} className="w-full">
+            <CarouselContent>
+              {photos.map((src, i) => (
+                <CarouselItem key={`${src}-${i}`}>
+                  <div className="aspect-video bg-secondary rounded-2xl overflow-hidden">
+                    <img
+                      src={src}
+                      alt={`${vehicle.model} — foto ${i + 1}`}
+                      className="w-full h-full object-cover"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        if (img.src.endsWith("/placeholder.svg")) return;
+                        img.src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {photos.length > 1 && (
+              <>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2" />
+              </>
+            )}
+          </Carousel>
 
-        {photos.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
-            {photos.map((src, i) => (
-              <button
-                key={`thumb-${i}`}
-                onClick={() => api?.scrollTo(i)}
-                className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
-                aria-label={`Ver foto ${i + 1}`}
-              >
-                <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
-              </button>
-            ))}
-          </div>
-        )}
+          {photos.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto scrollbar-none mt-3">
+              {photos.map((src, i) => (
+                <button
+                  key={`thumb-${i}`}
+                  onClick={() => api?.scrollTo(i)}
+                  className={`shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-colors ${current === i ? "border-accent" : "border-transparent"}`}
+                  aria-label={`Ver foto ${i + 1}`}
+                >
+                  <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Title + price */}
         <div className="mt-5 flex items-start justify-between gap-4">
@@ -189,14 +204,6 @@ const CarDetail = () => {
             ) : null}
           </div>
         </div>
-
-        {/* Highlight */}
-        {vehicle.highlight && (
-          <div className="mt-4 bg-accent/10 border border-accent/20 rounded-xl p-4 flex gap-2.5">
-            <Sparkles className="w-4 h-4 text-accent shrink-0 mt-0.5" />
-            <p className="text-sm text-foreground whitespace-pre-line">{vehicle.highlight}</p>
-          </div>
-        )}
 
         {/* Specs */}
         <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Especificações</h2>
@@ -225,6 +232,23 @@ const CarDetail = () => {
             </div>
           </>
         )}
+
+        {/* O que está incluído */}
+        <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">O que está incluído</h2>
+        <ul className="bg-muted rounded-xl p-4 space-y-3">
+          {[
+            "Viatura pronta a operar: dístico, inspeção e extintor incluídos",
+            "Mediação de financiamento e seguro",
+            "Garantia Standard Vianta (motor e caixa, 18 meses, extensível até 36 com custo adicional)",
+            "Acompanhamento pós-venda",
+            "Integração na frota Vianta com Slot",
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-2 text-sm text-foreground">
+              <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
 
         {/* Garantias */}
         {(vehicle.warrantyVehicle || vehicle.warrantyBattery) && (
@@ -265,6 +289,7 @@ const CarDetail = () => {
       </main>
 
       <InlineForm type="stock" open={formOpen} formRef={formRef} />
+      <StickyButton visible={showStickyBtn && !formOpen && !unavailable} onClick={openForm} />
       <Footer />
     </div>
   );
