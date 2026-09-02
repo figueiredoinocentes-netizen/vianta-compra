@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ThankYou from "./pages/ThankYou";
+import CarDetail from "./pages/CarDetail";
 import CookieBanner from "./components/vianta/CookieBanner";
 import { initPixel } from "@/lib/meta-pixel";
 import { initClarity } from "@/lib/clarity";
