@@ -11,6 +11,13 @@ interface HeroSectionProps {
 
 const FUEL_ORDER: Fuel[] = ["Elétrico", "Híbrido", "Gasolina", "Diesel", "GPL"];
 
+/** Categorias Uber em destaque — curadas (não é a lista completa de tags da sheet). */
+const CATEGORY_FILTERS: { label: string; tag: string }[] = [
+  { label: "Standard", tag: "UberX" },
+  { label: "Comfort", tag: "Comfort" },
+  { label: "Black", tag: "Black" },
+];
+
 const VehicleSkeleton = () => (
   <div className="w-full bg-card rounded-2xl shadow-md border border-border overflow-hidden">
     <div className="h-52 bg-muted animate-pulse" />
@@ -30,6 +37,7 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [fuelFilter, setFuelFilter] = useState<Fuel | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [maxMonthly, setMaxMonthly] = useState<number | null>(null);
   const priceBounds = useRef<{ min: number; max: number } | null>(null);
 
@@ -62,12 +70,14 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
   const filteredVehicles = useMemo(() => {
     return vehicles.filter((v) => {
       if (fuelFilter && v.fuel !== fuelFilter) return false;
+      if (categoryFilter && !v.categories?.includes(categoryFilter)) return false;
       if (maxMonthly !== null && v.monthlyPrice && v.monthlyPrice > maxMonthly) return false;
       return true;
     });
-  }, [vehicles, fuelFilter, maxMonthly]);
+  }, [vehicles, fuelFilter, categoryFilter, maxMonthly]);
 
-  const filtersActive = fuelFilter !== null || (priceBounds.current && maxMonthly !== priceBounds.current.max);
+  const filtersActive =
+    fuelFilter !== null || categoryFilter !== null || (priceBounds.current && maxMonthly !== priceBounds.current.max);
 
   return (
     <section
@@ -94,7 +104,8 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
       {!loading && vehicles.length > 0 && (
         <div className="px-5 md:px-6 md:max-w-6xl md:mx-auto mb-5">
           <div className="bg-card rounded-2xl p-4 shadow-md">
-            <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest font-heading">Combustível</span>
+            <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1 mt-2">
               <button
                 onClick={() => setFuelFilter(null)}
                 className={`${chipBase} ${!fuelFilter ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/70"}`}
@@ -108,6 +119,25 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
                   className={`${chipBase} ${fuelFilter === f ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/70"}`}
                 >
                   {f}
+                </button>
+              ))}
+            </div>
+
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest font-heading mt-4 block">Categoria Uber</span>
+            <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1 mt-2">
+              <button
+                onClick={() => setCategoryFilter(null)}
+                className={`${chipBase} ${!categoryFilter ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/70"}`}
+              >
+                Todas
+              </button>
+              {CATEGORY_FILTERS.map(({ label, tag }) => (
+                <button
+                  key={tag}
+                  onClick={() => setCategoryFilter(categoryFilter === tag ? null : tag)}
+                  className={`${chipBase} ${categoryFilter === tag ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-muted/70"}`}
+                >
+                  {label}
                 </button>
               ))}
             </div>
@@ -130,7 +160,7 @@ const HeroSection = ({ heroRef, onContact }: HeroSectionProps) => {
 
             {filtersActive && (
               <button
-                onClick={() => { setFuelFilter(null); setMaxMonthly(priceBounds.current?.max ?? null); }}
+                onClick={() => { setFuelFilter(null); setCategoryFilter(null); setMaxMonthly(priceBounds.current?.max ?? null); }}
                 className="text-xs font-semibold text-accent underline underline-offset-2 mt-3"
               >
                 Repor filtros
