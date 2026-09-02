@@ -140,6 +140,19 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iFoto = idx("Foto");
   const iDispDe = idx("Disponível a partir de");
   const iDataVendido = idx("Data Vendido");
+  const iPonto = idx("Ponto Diferenciador");
+  const iCavalos = idx("Cavalos");
+  const iBateria = idx("Bateria");
+  const iBagageira = idx("Volume Bagageira");
+  const iEstadoBat = idx("Estado da Bateria");
+  const iGarVia = idx("Garantia Viatura");
+  const iGarBat = idx("Garantia Bateria");
+  const iCor = idx("Cor");
+  const iFimTvde = idx("Fim Elegivel TVDE");
+  const iFotosReais = idx("Fotos Reais");
+
+  const cell = (row: string[], i: number) =>
+    i >= 0 ? (row[i] ?? "").trim() || undefined : undefined;
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
