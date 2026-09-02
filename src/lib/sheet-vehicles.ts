@@ -210,6 +210,16 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       categories: categories.length ? categories : undefined,
       availability,
       availableFrom,
+      highlight: cell(row, iPonto),
+      horsepower: cell(row, iCavalos),
+      battery: cell(row, iBateria),
+      bootVolume: cell(row, iBagageira),
+      batteryHealth: cell(row, iEstadoBat),
+      warrantyVehicle: cell(row, iGarVia),
+      warrantyBattery: cell(row, iGarBat),
+      color: cell(row, iCor),
+      tvdeEligibleUntil: cell(row, iFimTvde),
+      gallery,
     });
   }
 
