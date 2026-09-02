@@ -268,16 +268,16 @@ const CarDetail = () => {
           </p>
         </div>
 
-        {/* Garantias */}
-        {(vehicle.warrantyVehicle || vehicle.warrantyBattery) && (
-          <>
-            <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Garantias</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <SpecItem icon={<ShieldCheck className="w-4 h-4" />} label="Garantia Viatura" value={vehicle.warrantyVehicle} />
-              <SpecItem icon={<ShieldCheck className="w-4 h-4" />} label="Garantia Bateria" value={vehicle.warrantyBattery} />
-            </div>
-          </>
-        )}
+        {/* Garantias — mostra sempre pelo menos a garantia standard Vianta, mesmo sem garantia de fábrica na sheet */}
+        <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Garantias</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <SpecItem
+            icon={<ShieldCheck className="w-4 h-4" />}
+            label="Garantia Viatura"
+            value={vehicle.warrantyVehicle ?? "Garantia Standard Vianta (18 meses)"}
+          />
+          <SpecItem icon={<ShieldCheck className="w-4 h-4" />} label="Garantia Bateria" value={vehicle.warrantyBattery} />
+        </div>
 
         {/* CTA (fim da página) */}
         <div ref={bottomCtaRef} className="mt-6">

@@ -151,8 +151,13 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iFimTvde = idx("Fim Elegivel TVDE");
   const iFotosReais = idx("Fotos Reais");
 
-  const cell = (row: string[], i: number) =>
-    i >= 0 ? (row[i] ?? "").trim() || undefined : undefined;
+  /** "--", "-" ou "n/a" na sheet significam "não aplicável" — tratar como vazio. */
+  const cell = (row: string[], i: number) => {
+    if (i < 0) return undefined;
+    const v = (row[i] ?? "").trim();
+    if (!v || /^(-{1,2}|n\/?a)$/i.test(v)) return undefined;
+    return v;
+  };
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
