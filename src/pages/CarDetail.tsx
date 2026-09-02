@@ -233,6 +233,23 @@ const CarDetail = () => {
           </>
         )}
 
+        {/* O que está incluído */}
+        <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">O que está incluído</h2>
+        <ul className="bg-muted rounded-xl p-4 space-y-3">
+          {[
+            "Viatura pronta a operar: dístico, inspeção e extintor incluídos",
+            "Mediação de financiamento e seguro",
+            "Garantia Standard Vianta (motor e caixa, 18 meses, extensível até 36 com custo adicional)",
+            "Acompanhamento pós-venda",
+            "Integração na frota Vianta com Slot",
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-2 text-sm text-foreground">
+              <CheckCircle2 className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
         {/* Garantias */}
         {(vehicle.warrantyVehicle || vehicle.warrantyBattery) && (
           <>
