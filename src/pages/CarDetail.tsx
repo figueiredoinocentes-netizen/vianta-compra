@@ -235,7 +235,6 @@ const CarDetail = () => {
           {isElectric && <SpecItem icon={<BatteryCharging className="w-4 h-4" />} label="Estado da Bateria" value={vehicle.batteryHealth} />}
           <SpecItem icon={<BatteryCharging className="w-4 h-4" />} label="Autonomia Real" value={vehicle.realRange ? `${vehicle.realRange} km` : undefined} />
           <SpecItem icon={<Briefcase className="w-4 h-4" />} label="Bagageira" value={vehicle.bootVolume ? `${vehicle.bootVolume} L` : undefined} />
-          <SpecItem icon={<CalendarClock className="w-4 h-4" />} label="Fim Elegível TVDE" value={vehicle.tvdeEligibleUntil} />
         </div>
 
         {/* Categorias */}
@@ -255,14 +254,14 @@ const CarDetail = () => {
         <div className="bg-accent/10 border border-accent/20 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <Wallet className="w-4 h-4 text-accent shrink-0" />
-            <p className="text-sm font-semibold text-foreground">Já tem carro. A Vianta trata do resto.</p>
+            <p className="text-sm font-semibold text-foreground">Adquira o seu carro e junte-se à nossa frota.</p>
           </div>
           <p className="text-2xl font-extrabold text-primary leading-none">
             35€<span className="text-base font-bold">/semana</span>
             <span className="text-xs font-medium text-muted-foreground ml-1.5">+ IVA (6%)</span>
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            Valor fixo — não é percentagem sobre faturação. Gestão administrativa completa, pagamentos semanais e suporte direto do gestor de frota.
+            Gestão administrativa completa, pagamentos semanais, acesso a app com relatório financeiro e suporte direto do gestor de frota.
           </p>
         </div>
 
