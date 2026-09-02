@@ -139,6 +139,14 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
         >
           Estou Interessado
         </Button>
+
+        <Link
+          to={`/carro/${vehicle.id}`}
+          onClick={(e) => e.stopPropagation()}
+          className="block text-center text-sm font-semibold text-accent underline underline-offset-4 mt-3"
+        >
+          Ver ficha completa
+        </Link>
       </div>
     </div>
   );
