@@ -215,6 +215,9 @@ const CarDetail = () => {
                 {vehicle.salePrice > 0 && (
                   <p className="text-xs text-muted-foreground mt-1">{formatPrice(vehicle.salePrice)}</p>
                 )}
+                <p className="text-[10px] text-muted-foreground/80 mt-1 max-w-[150px] leading-snug">
+                  Financiamento a 120 meses, sujeito a aprovação de crédito.
+                </p>
               </>
             ) : vehicle.salePrice > 0 ? (
               <p className="text-3xl font-extrabold text-primary leading-none">{formatPrice(vehicle.salePrice)}</p>
@@ -275,18 +278,6 @@ const CarDetail = () => {
             </div>
           </>
         )}
-
-        {/* Financiamento */}
-        {vehicle.monthlyPrice ? (
-          <>
-            <h2 className="text-sm font-semibold text-foreground font-heading uppercase tracking-widest mt-6 mb-3">Financiamento</h2>
-            <div className="bg-muted rounded-xl p-4">
-              <p className="text-sm text-muted-foreground">Mensalidade indicativa a 120 meses</p>
-              <p className="text-2xl font-extrabold text-primary mt-1">{vehicle.monthlyPrice}€<span className="text-base font-bold">/mês</span></p>
-              <p className="text-xs text-muted-foreground mt-2">Valor indicativo, sujeito a aprovação de crédito.</p>
-            </div>
-          </>
-        ) : null}
 
         {/* CTA (fim da página) */}
         <div ref={bottomCtaRef} className="mt-6">
