@@ -48,11 +48,27 @@ function parsePtNumber(v: string | undefined): number | undefined {
 }
 
 /** Converte URL Drive em URL embutível como <img>. */
-function normalizeDriveUrl(url: string | undefined): string {
+function normalizeDriveUrl(url: string | undefined, size = 800): string {
   if (!url) return "/placeholder.svg";
   const m = url.match(/\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
-  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w${size}`;
   return url;
+}
+
+/**
+ * "Fotos Reais" pode conter: vazio, um link de ficheiro Drive, vários links
+ * (vírgula ou quebra de linha) ou um link de PASTA Drive.
+ * Links de pasta são ignorados (não é possível listar sem API autenticada).
+ */
+function parseRealPhotos(raw: string | undefined): string[] {
+  if (!raw) return [];
+  return raw
+    .split(/[\n,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((u) => /^https?:\/\//i.test(u))
+    .filter((u) => !/\/drive\/(u\/\d+\/)?folders\//i.test(u))
+    .map((u) => normalizeDriveUrl(u, 1200));
 }
 
 function slugify(s: string): string {
@@ -124,6 +140,19 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
   const iFoto = idx("Foto");
   const iDispDe = idx("Disponível a partir de");
   const iDataVendido = idx("Data Vendido");
+  const iPonto = idx("Ponto Diferenciador");
+  const iCavalos = idx("Cavalos");
+  const iBateria = idx("Bateria");
+  const iBagageira = idx("Volume Bagageira");
+  const iEstadoBat = idx("Estado da Bateria");
+  const iGarVia = idx("Garantia Viatura");
+  const iGarBat = idx("Garantia Bateria");
+  const iCor = idx("Cor");
+  const iFimTvde = idx("Fim Elegivel TVDE");
+  const iFotosReais = idx("Fotos Reais");
+
+  const cell = (row: string[], i: number) =>
+    i >= 0 ? (row[i] ?? "").trim() || undefined : undefined;
 
   const vehicles: Vehicle[] = [];
   for (let r = 1; r < rows.length; r++) {
@@ -160,6 +189,9 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       .split(",").map((c) => c.trim()).filter(Boolean);
     const availableFrom = iDispDe >= 0 ? (row[iDispDe] ?? "").trim() || undefined : undefined;
 
+    const realPhotos = parseRealPhotos(cell(row, iFotosReais));
+    const gallery = realPhotos.length ? realPhotos : [imageUrl];
+
     vehicles.push({
       id: `${slugify(model)}-${r}`,
       model,
@@ -178,6 +210,16 @@ export async function fetchVehicles(): Promise<Vehicle[]> {
       categories: categories.length ? categories : undefined,
       availability,
       availableFrom,
+      highlight: cell(row, iPonto),
+      horsepower: cell(row, iCavalos),
+      battery: cell(row, iBateria),
+      bootVolume: cell(row, iBagageira),
+      batteryHealth: cell(row, iEstadoBat),
+      warrantyVehicle: cell(row, iGarVia),
+      warrantyBattery: cell(row, iGarBat),
+      color: cell(row, iCor),
+      tvdeEligibleUntil: cell(row, iFimTvde),
+      gallery,
     });
   }
 

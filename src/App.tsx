@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ThankYou from "./pages/ThankYou";
+import CarDetail from "./pages/CarDetail";
 import CookieBanner from "./components/vianta/CookieBanner";
 import { initPixel } from "@/lib/meta-pixel";
 import { initClarity } from "@/lib/clarity";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/privacidade" element={<PrivacyPolicy />} />
           <Route path="/obrigado" element={<ThankYou />} />
+          <Route path="/carro/:id" element={<CarDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

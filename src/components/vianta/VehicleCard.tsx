@@ -1,4 +1,5 @@
 import { Zap, Fuel, Gauge, Clock, CheckCircle2, BatteryCharging, CalendarClock, XCircle, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/data/vehicles";
 import { trackEvent } from "@/lib/meta-pixel";
@@ -139,6 +140,14 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
         >
           Estou Interessado
         </Button>
+
+        <Link
+          to={`/carro/${vehicle.id}`}
+          onClick={(e) => e.stopPropagation()}
+          className="block text-center text-sm font-semibold text-accent underline underline-offset-4 mt-3"
+        >
+          Ver ficha completa
+        </Link>
       </div>
     </div>
   );

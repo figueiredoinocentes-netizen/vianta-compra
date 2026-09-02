@@ -21,6 +21,18 @@ export interface Vehicle {
   categories?: string[];
   availableFrom?: string;
   availability?: Availability;
+  /** Texto livre de destaque da viatura */
+  highlight?: string;
+  horsepower?: string;
+  battery?: string;
+  bootVolume?: string;
+  batteryHealth?: string;
+  warrantyVehicle?: string;
+  warrantyBattery?: string;
+  color?: string;
+  tvdeEligibleUntil?: string;
+  /** Galeria de fotos (fotos reais + foto de stock como fallback) */
+  gallery?: string[];
 }
 
 /**
