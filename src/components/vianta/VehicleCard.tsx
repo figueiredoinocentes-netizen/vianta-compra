@@ -24,7 +24,7 @@ const VehicleCard = ({ vehicle, onSelect }: VehicleCardProps) => {
   const unavailable = vehicle.availability === "sold" || vehicle.availability === "reserved";
   return (
     <div
-      className="flex-none w-[88vw] max-w-[360px] snap-center md:flex-initial md:w-auto md:max-w-none md:snap-align-none bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
+      className="w-full bg-card rounded-2xl shadow-md border border-border overflow-hidden cursor-pointer active:scale-[0.98] transition-transform"
       onClick={() => { trackEvent("ViewContent", { content_name: vehicle.model }); onSelect(); }}
       role="button"
       tabIndex={0}
