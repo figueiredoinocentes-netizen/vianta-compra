@@ -289,6 +289,7 @@ const CarDetail = () => {
       </main>
 
       <InlineForm type="stock" open={formOpen} formRef={formRef} />
+      <StickyButton visible={showStickyBtn && !formOpen && !unavailable} onClick={openForm} />
       <Footer />
     </div>
   );
